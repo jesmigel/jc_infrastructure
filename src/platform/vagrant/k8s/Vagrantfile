@@ -1,0 +1,125 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+# Defaults for config options defined in CONFIG
+$num_instances ||= 3
+$instance_name_prefix ||= "k8s"
+$vm_gui ||= false
+$vm_memory ||= 6144
+$vm_cpus ||= 4
+$shared_folders ||= {}
+$forwarded_ports ||= {}
+$subnet ||= "10.8.41"
+$os ||= "ubuntu/bionic64"
+$box ||= $os
+$network_plugin ||= "weave"
+# Setting multi_networking to true will install Multus: https://github.com/intel/multus-cni
+$multi_networking ||= false
+# The first three nodes are etcd servers
+$etcd_instances ||= $num_instances
+# The first two nodes are kube masters
+$kube_master_instances ||= $num_instances == 1 ? $num_instances : ($num_instances - 1)
+# All nodes are kube nodes
+$kube_node_instances ||= $num_instances
+# The following only works when using the libvirt provider
+$kube_node_instances_with_disks ||= false
+$kube_node_instances_with_disks_size ||= "60GB"
+
+$kube_node_instances_with_disks_number ||= 2
+$override_disk_size ||= false
+$disk_size ||= "60GB"
+$local_path_provisioner_enabled ||= false
+$local_path_provisioner_claim_root ||= "/opt/local-path-provisioner/"
+
+if Vagrant.has_plugin?("vagrant-proxyconf")
+  $no_proxy = ENV['NO_PROXY'] || ENV['no_proxy'] || "127.0.0.1,localhost"
+  (1..$num_instances).each do |i|
+      $no_proxy += ",#{$subnet}.#{i+100}"
+  end
+end
+
+Vagrant.configure("2") do |config|
+  config.vagrant.plugins = ["dns"]
+  config.vm.box = $box
+
+  # plugin conflict
+  if Vagrant.has_plugin?("vagrant-vbguest") then
+    config.vbguest.auto_update = false
+  end
+
+  # always use Vagrants insecure key
+  config.ssh.insert_key = false
+
+  if ($override_disk_size)
+    unless Vagrant.has_plugin?("vagrant-disksize")
+      system "vagrant plugin install vagrant-disksize"
+    end
+    config.disksize.size = $disk_size
+  end
+
+  config.dns.tld = "vm"
+
+  (1..$num_instances).each do |i|
+    config.vm.define vm_name = "%s-%01d" % [$instance_name_prefix, i] do |node|
+      node.vm.hostname = vm_name
+      node.dns.patterns = [/^(\w+\.)*#{vm_name}\.vm$/]
+
+      if Vagrant.has_plugin?("vagrant-proxyconf")
+        node.proxy.http     = ENV['HTTP_PROXY'] || ENV['http_proxy'] || ""
+        node.proxy.https    = ENV['HTTPS_PROXY'] || ENV['https_proxy'] ||  ""
+        node.proxy.no_proxy = $no_proxy
+      end
+
+      node.vm.provider :virtualbox do |vb|
+        vb.memory = $vm_memory
+        vb.cpus = $vm_cpus
+        vb.gui = $vm_gui
+        vb.linked_clone = true
+        vb.customize ["modifyvm", :id, "--vram", "8"] # ubuntu defaults to 256 MB which is a waste of precious RAM
+      end
+
+      node.vm.provider :libvirt do |lv|
+        lv.memory = $vm_memory
+        lv.cpus = $vm_cpus
+        lv.default_prefix = 'kubespray'
+        # Fix kernel panic on fedora 28
+        if $os == "fedora"
+          lv.cpu_mode = "host-passthrough"
+        end
+      end
+
+      if $kube_node_instances_with_disks
+        # Libvirt
+        driverletters = ('a'..'z').to_a
+        node.vm.provider :libvirt do |lv|
+          # always make /dev/sd{a/b/c} so that CI can ensure that
+          # virtualbox and libvirt will have the same devices to use for OSDs
+          (1..$kube_node_instances_with_disks_number).each do |d|
+            lv.storage :file, :device => "hd#{driverletters[d]}", :path => "disk-#{i}-#{d}-#{DISK_UUID}.disk", :size => $kube_node_instances_with_disks_size, :bus => "ide"
+          end
+        end
+      end
+
+      if $expose_docker_tcp
+        node.vm.network "forwarded_port", guest: 2375, host: ($expose_docker_tcp + i - 1), auto_correct: true
+      end
+
+      $forwarded_ports.each do |guest, host|
+        node.vm.network "forwarded_port", guest: guest, host: host, auto_correct: true
+      end
+
+      node.vm.synced_folder ".", "/vagrant", disabled: false, type: "rsync", rsync__args: ['--verbose', '--archive', '--delete', '-z'] , rsync__exclude: ['.git','venv']
+      $shared_folders.each do |src, dst|
+        node.vm.synced_folder src, dst, type: "rsync", rsync__args: ['--verbose', '--archive', '--delete', '-z']
+      end
+
+      ip = "#{$subnet}.#{i+100}"
+      node.vm.network :private_network, ip: ip
+
+      # Disable swap for each vm
+      node.vm.provision "shell", inline: "swapoff -a"
+
+    end
+  end
+end
