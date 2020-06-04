@@ -10,6 +10,16 @@ data:
       url: https://kubernetes-charts.storage.googleapis.com
     - type: git
       url: https://github.com/jesmigel/jc_infrastructure.git
+  resource.customizations: |
+    networking.k8s.io/Ingress:
+      health.lua: |
+        hs = {}
+        hs.status = "Healthy"
+        return hs
+    admissionregistration.k8s.io/MutatingWebhookConfiguration:
+      ignoreDifferences: |
+        jsonPointers:
+        - /webhooks/0/clientConfig/caBundle
 kind: ConfigMap
 metadata:
   annotations: {}
