@@ -77,15 +77,15 @@ status_ng:
 	$(call vm_status, $(_VAGRANT_NG))
 	$(call dns_status, $(_VAGRANT_NG))
 
-login_ng: init-ssh
-	ssh -F $(_VAGRANT_SSH_CONFIG) local.vm
+login_ng:
+	$(call login_vagrant, $(_VAGRANT_NG))
 
 login_1: init-ssh
-	ssh -F $(_VAGRANT_SSH_CONFIG) k8s-1
+	$(call login_ssh, $(_VAGRANT_SSH_CONFIG), k8s-1)
 login_2: init-ssh
-	ssh -F $(_VAGRANT_SSH_CONFIG) k8s-2
+	$(call login_ssh, $(_VAGRANT_SSH_CONFIG), k8s-2)
 login_3: init-ssh
-	ssh -F $(_VAGRANT_SSH_CONFIG) k8s-3
+	$(call login_ssh, $(_VAGRANT_SSH_CONFIG), k8s-3)
 
 k8_inventory: k8_inventory_venv k8_inventory_build
 
@@ -137,6 +137,17 @@ cluster_init:
 cluster_rsync:
 	rsync  -az -e "ssh -F $(_VAGRANT_SSH_CONFIG)" k8s-1:/home/vagrant/.kube/config .vagrant.kube.config
 	@echo "export KUBECONFIG=.vagrant.kube.config"
+
+
+# VAGRANT SSH to Node
+define login_vagrant
+	cd $(1) && vagrant ssh
+endef
+
+define login_ssh
+	ssh -F $(1) $(2)
+endef
+
 
 # VM EXEC
 define vm_exec
