@@ -2,18 +2,14 @@ apiVersion: v1
 data:
   admin.enabled: "true"
   repositories: |
-    - name: storageos
-      type: helm
-      url: https://charts.storageos.com
     - name: vault
       type: helm
       url: https://helm.releases.hashicorp.com
-    - name: rook-helm
-      type: helm
-      url: https://charts.rook.io/release
     - name: CNCF
       type: helm
       url: https://kubernetes-charts.storage.googleapis.com
+    - type: git
+      url: https://github.com/jesmigel/jc_infrastructure.git
 kind: ConfigMap
 metadata:
   annotations: {}

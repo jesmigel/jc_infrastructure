@@ -11,6 +11,8 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
     nginx.org/ssl-services: "argocd-server"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  labels:
+    app.kubernetes.io/instance: argocd
 spec:
   rules:
   - host: cd.local-1.vm
