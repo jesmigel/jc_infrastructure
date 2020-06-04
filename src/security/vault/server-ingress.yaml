@@ -1,0 +1,22 @@
+---
+# Source: vault/templates/server-ingress.yaml
+apiVersion: networking.k8s.io/v1beta1
+
+kind: Ingress
+metadata:
+  name: stable-vault-0.6.0
+  namespace: vault
+  labels:
+    helm.sh/chart: vault-0.6.0
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/instance: stable-vault-0.6.0
+    app.kubernetes.io/managed-by: Helm
+spec:
+  rules:
+    - host: "vault.local-1.vm"
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: stable-vault-0.6.0
+              servicePort: 8200

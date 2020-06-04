@@ -1,0 +1,19 @@
+---
+# Source: vault/templates/server-clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: stable-vault-0.6.0-server-binding
+  labels:
+    helm.sh/chart: vault-0.6.0
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/instance: stable-vault-0.6.0
+    app.kubernetes.io/managed-by: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:auth-delegator
+subjects:
+- kind: ServiceAccount
+  name: stable-vault-0.6.0
+  namespace: vault

@@ -1,0 +1,16 @@
+resources:
+  - ns.yaml
+  - pv.yaml
+  - injector-serviceaccount.yaml
+  - injector-clusterrole.yaml
+  - injector-clusterrolebinding.yaml
+  - injector-deployment.yaml
+  - injector-mutating-webhook.yaml
+  - injector-service.yaml
+  - server-serviceaccount.yaml
+  - server-clusterrolebinding.yaml
+  - server-config-configmap.yaml
+  - server-headless-service.yaml
+  - server-statefulset.yaml
+  - server-service.yaml
+  - server-ingress.yaml
