@@ -1,0 +1,136 @@
+---
+# Source: harbor/templates/registry/registry-dpl.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "stable-harbor-1-4-0-harbor-registry"
+  labels:
+    heritage: Helm
+    release: stable-harbor-1-4-0
+    chart: harbor
+    app: "harbor"
+    component: registry
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      release: stable-harbor-1-4-0
+      app: "harbor"
+      component: registry
+  template:
+    metadata:
+      labels:
+        heritage: Helm
+        release: stable-harbor-1-4-0
+        chart: harbor
+        app: "harbor"
+        component: registry
+      annotations:
+        checksum/configmap: 63b538d225dd6d272d4aaf2e247a406ead440bea3d5dc8a478e487213827f14e
+        checksum/secret: 5c78d59637245dc483c8ac7a84b3f33a1b5a213ad865062f78e0bc2699c064eb
+        checksum/secret-jobservice: 6cf9895fdbd2298adc873bc6f6fd484ce9d5f8ecac7839abb44c713ae4aebfd0
+        checksum/secret-core: 1d47ea8af0fa726ace84101c7d5b3d56d707ed7b956dd61fc294785852d6a558
+    spec:
+      securityContext:
+        fsGroup: 10000
+      containers:
+      - name: registry
+        image: goharbor/registry-photon:v2.0.0
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /
+            scheme: HTTP
+            port: 5000
+          initialDelaySeconds: 300
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            scheme: HTTP
+            port: 5000
+          initialDelaySeconds: 1
+          periodSeconds: 10
+        args: ["serve", "/etc/registry/config.yml"]
+        envFrom:
+        - secretRef:
+            name: "stable-harbor-1-4-0-harbor-registry"
+        env:
+        ports:
+        - containerPort: 5000
+        - containerPort: 5001
+        volumeMounts:
+        - name: registry-data
+          mountPath: /storage
+          subPath: 
+        - name: registry-root-certificate
+          mountPath: /etc/registry/root.crt
+          subPath: tls.crt
+        - name: registry-htpasswd
+          mountPath: /etc/registry/passwd
+          subPath: passwd
+        - name: registry-config
+          mountPath: /etc/registry/config.yml
+          subPath: config.yml
+      - name: registryctl
+        image: goharbor/harbor-registryctl:v2.0.0
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            scheme: HTTP
+            port: 8080
+          initialDelaySeconds: 300
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            scheme: HTTP
+            port: 8080
+          initialDelaySeconds: 1
+          periodSeconds: 10
+        args: ["serve", "/etc/registry/config.yml"]
+        envFrom:
+        - secretRef:
+            name: "stable-harbor-1-4-0-harbor-registry"
+        env:
+        - name: CORE_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: stable-harbor-1-4-0-harbor-core
+              key: secret
+        - name: JOBSERVICE_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: stable-harbor-1-4-0-harbor-jobservice
+              key: JOBSERVICE_SECRET
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: registry-data
+          mountPath: /storage
+          subPath: 
+        - name: registry-config
+          mountPath: /etc/registry/config.yml
+          subPath: config.yml
+        - name: registry-config
+          mountPath: /etc/registryctl/config.yml
+          subPath: ctl-config.yml
+      volumes:
+      - name: registry-htpasswd
+        secret:
+          secretName: stable-harbor-1-4-0-harbor-registry
+          items:
+            - key: REGISTRY_HTPASSWD
+              path: passwd
+      - name: registry-root-certificate
+        secret:
+          secretName: stable-harbor-1-4-0-harbor-core
+      - name: registry-config
+        configMap:
+          name: "stable-harbor-1-4-0-harbor-registry"
+      - name: registry-data
+        persistentVolumeClaim:
+          claimName: stable-harbor-1-4-0-harbor-registry

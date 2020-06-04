@@ -1,0 +1,103 @@
+---
+# Source: harbor/templates/core/core-dpl.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stable-harbor-1-4-0-harbor-core
+  labels:
+    heritage: Helm
+    release: stable-harbor-1-4-0
+    chart: harbor
+    app: "harbor"
+    component: core
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      release: stable-harbor-1-4-0
+      app: "harbor"
+      component: core
+  template:
+    metadata:
+      labels:
+        release: stable-harbor-1-4-0
+        app: "harbor"
+        component: core
+      annotations:
+        checksum/configmap: dd006e6512dfcc89a66d60c0e98588f17b99aa19ebbe26775d644cc50e69ca01
+        checksum/secret: 9fb9c74973a88f1da04f885ab299c686ddbdb3d061f78f3b8a399d6d37f98743
+        checksum/secret-jobservice: 8fde92c151ed0b688e07e366631e0ced4a7fa929e52bed5087f33c0a09694838
+    spec:
+      securityContext:
+        fsGroup: 10000
+      containers:
+      - name: core
+        image: goharbor/harbor-core:v2.0.0
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /api/v2.0/ping
+            scheme: HTTP
+            port: 8080
+          initialDelaySeconds: 300
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/v2.0/ping
+            scheme: HTTP
+            port: 8080
+          initialDelaySeconds: 20
+          periodSeconds: 10
+        envFrom:
+        - configMapRef:
+            name: "stable-harbor-1-4-0-harbor-core"
+        - secretRef:
+            name: "stable-harbor-1-4-0-harbor-core"
+        env:
+          - name: CORE_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: stable-harbor-1-4-0-harbor-core
+                key: secret
+          - name: JOBSERVICE_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: "stable-harbor-1-4-0-harbor-jobservice"
+                key: JOBSERVICE_SECRET
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: config
+          mountPath: /etc/core/app.conf
+          subPath: app.conf
+        - name: secret-key
+          mountPath: /etc/core/key
+          subPath: key
+        - name: token-service-private-key
+          mountPath: /etc/core/private_key.pem
+          subPath: tls.key
+        - name: ca-download
+          mountPath: /etc/core/ca
+        - name: psc
+          mountPath: /etc/core/token
+      volumes:
+      - name: config
+        configMap:
+          name: stable-harbor-1-4-0-harbor-core
+          items:
+            - key: app.conf
+              path: app.conf
+      - name: secret-key
+        secret:
+          secretName: stable-harbor-1-4-0-harbor-core
+          items:
+            - key: secretKey
+              path: key
+      - name: token-service-private-key
+        secret:
+          secretName: stable-harbor-1-4-0-harbor-core
+      - name: ca-download
+        secret:
+          secretName: "stable-harbor-1-4-0-harbor-ingress"
+      - name: psc
+        emptyDir: {}

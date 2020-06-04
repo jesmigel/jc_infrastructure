@@ -1,0 +1,62 @@
+---
+# Source: harbor/templates/redis/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: stable-harbor-1-4-0-harbor-redis
+  labels:
+    heritage: Helm
+    release: stable-harbor-1-4-0
+    chart: harbor
+    app: "harbor"
+    component: redis
+spec:
+  replicas: 1
+  serviceName: stable-harbor-1-4-0-harbor-redis
+  selector:
+    matchLabels:
+      release: stable-harbor-1-4-0
+      app: "harbor"
+      component: redis
+  template:
+    metadata:
+      labels:
+        heritage: Helm
+        release: stable-harbor-1-4-0
+        chart: harbor
+        app: "harbor"
+        component: redis
+    spec:
+      securityContext:
+        fsGroup: 999
+      containers:
+      - name: redis
+        image: goharbor/redis-photon:v2.0.0
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          tcpSocket:
+            port: 6379
+          initialDelaySeconds: 300
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 6379
+          initialDelaySeconds: 1
+          periodSeconds: 10
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/redis
+          subPath: 
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+      labels:
+        heritage: Helm
+        release: stable-harbor-1-4-0
+        chart: harbor
+        app: "harbor"
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: "1Gi"

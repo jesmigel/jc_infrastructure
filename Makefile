@@ -77,6 +77,9 @@ status_ng:
 	$(call vm_status, $(_VAGRANT_NG))
 	$(call dns_status, $(_VAGRANT_NG))
 
+login_ng: init-ssh
+	ssh -F $(_VAGRANT_SSH_CONFIG) local.vm
+
 login_1: init-ssh
 	ssh -F $(_VAGRANT_SSH_CONFIG) k8s-1
 login_2: init-ssh

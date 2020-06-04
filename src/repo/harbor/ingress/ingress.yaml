@@ -1,0 +1,80 @@
+---
+# Source: harbor/templates/ingress/ingress.yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: "stable-harbor-1-4-0-harbor-ingress"
+  labels:
+    heritage: Helm
+    release: stable-harbor-1-4-0
+    chart: harbor
+    app: "harbor"
+  annotations:
+    ingress.kubernetes.io/proxy-body-size: "0"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+
+spec:
+  tls:
+  - secretName: "stable-harbor-1-4-0-harbor-ingress"
+    hosts:
+    - cir.gw-cloud.org
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: stable-harbor-1-4-0-harbor-portal
+          servicePort: 80
+      - path: /api/
+        backend:
+          serviceName: stable-harbor-1-4-0-harbor-core
+          servicePort: 80
+      - path: /service/
+        backend:
+          serviceName: stable-harbor-1-4-0-harbor-core
+          servicePort: 80
+      - path: /v2/
+        backend:
+          serviceName: stable-harbor-1-4-0-harbor-core
+          servicePort: 80
+      - path: /chartrepo/
+        backend:
+          serviceName: stable-harbor-1-4-0-harbor-core
+          servicePort: 80
+      - path: /c/
+        backend:
+          serviceName: stable-harbor-1-4-0-harbor-core
+          servicePort: 80
+    host: cir.gw-cloud.org
+---
+# Source: harbor/templates/ingress/ingress.yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: "stable-harbor-1-4-0-harbor-ingress-notary"
+  labels:
+    heritage: Helm
+    release: stable-harbor-1-4-0
+    chart: harbor
+    app: "harbor"
+  annotations:
+    ingress.kubernetes.io/proxy-body-size: "0"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+
+spec:
+  tls:
+  - secretName: "stable-harbor-1-4-0-harbor-ingress"
+    hosts:
+    - notary.harbor.domain
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: stable-harbor-1-4-0-harbor-notary-server
+          servicePort: 4443
+    host: notary.harbor.domain

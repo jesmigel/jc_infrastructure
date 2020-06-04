@@ -10,7 +10,7 @@ https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ## Initialisation
 ```bash
 # Password of argocd
-$PODNAME=$(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2)
+PODNAME=$(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2)
 
 # Execute interactive shell
 kubectl -n argocd exec -it $PODNAME bash
