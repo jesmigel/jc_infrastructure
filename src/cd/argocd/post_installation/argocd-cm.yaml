@@ -1,0 +1,25 @@
+apiVersion: v1
+data:
+  admin.enabled: "true"
+  repositories: |
+    - name: storageos
+      type: helm
+      url: https://charts.storageos.com
+    - name: vault
+      type: helm
+      url: https://helm.releases.hashicorp.com
+    - name: rook-helm
+      type: helm
+      url: https://charts.rook.io/release
+    - name: CNCF
+      type: helm
+      url: https://kubernetes-charts.storage.googleapis.com
+kind: ConfigMap
+metadata:
+  annotations: {}
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+    manager: argocd-server
+  name: argocd-cm
+  namespace: argocd
