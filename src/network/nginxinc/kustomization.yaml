@@ -1,0 +1,9 @@
+resources:
+  - ns-and-sa.yaml
+  - default-server-secret.yaml
+  - nginx-config.yaml
+  - vs-definition.yaml
+  - vsr-definition.yaml
+  - ts-definition.yaml
+  - rbac.yaml
+  - nginx-ingress.yaml
