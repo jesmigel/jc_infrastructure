@@ -38,8 +38,7 @@ Vagrant.configure("2") do |config|
     sshfs_opts_append: "-o nonempty -o cache=no"
 
     node.vm.synced_folder "./data/mnt", "/mnt/", 
-    type: "sshfs", 
-    sshfs_opts_append: "-o nonempty -o cache=no"
+    type: "nfs"
 
     node.vm.provision "shell", inline: <<-SHELL
       apt-get update
