@@ -26,23 +26,23 @@ kubespray_sync:
 
 vagrant: up status
 
-up: up_ng up_k8 init-ssh
+up: up_k8 up_ng
 
 init-ssh:
 	@cd $(_VAGRANT_K8S) && vagrant ssh-config > $(PWD)/$(_VAGRANT_SSH_CONFIG)
 
 down: down_ng down_k8
 
-build: build_ng build_k8
+build: build_ng build_k8 k8_inventory cluster build_dns_k8s build_dns_ng
 
-clean: clean_ng clean_k8
+clean: clean_ng clean_k8 clean_dns_k8s clean_dns_ng
+
+status: status_k8 status_ng status_dns_k8s status_dns_ng
 
 up_k8:
 	$(call vm_up, $(_VAGRANT_K8S))
-	$(call dns_build, $(_VAGRANT_K8S))
 
 down_k8:
-	$(call dns_down, $(_VAGRANT_K8S))
 	$(call vm_down, $(_VAGRANT_K8S))
 
 build_k8:
@@ -51,31 +51,46 @@ build_k8:
 
 clean_k8:
 	$(call vm_clean, $(_VAGRANT_K8S))
-	$(call dns_clean, $(_VAGRANT_K8S))
 
 status_k8:
 	$(call vm_status, $(_VAGRANT_K8S))
+
+build_dns_k8s:
+	$(call dns_build, $(_VAGRANT_K8S))
+up_dns_k8s:
+	$(call dns_up, $(_VAGRANT_K8S))
+down_dns_k8s:
+	$(call dns_down, $(_VAGRANT_K8S))
+status_dns_k8s:
 	$(call dns_status, $(_VAGRANT_K8S))
+clean_dns_k8s:
+	$(call dns_clean, $(_VAGRANT_K8S))
 
 up_ng:
 	$(call vm_up, $(_VAGRANT_NG))
-	$(call dns_build, $(_VAGRANT_NG))
 
 down_ng:
 	$(call dns_down, $(_VAGRANT_NG))
-	$(call vm_down, $(_VAGRANT_NG))
 
 build_ng:
 	$(call vm_build, $(_VAGRANT_NG))
-	$(call dns_build, $(_VAGRANT_NG))
 
 clean_ng:
 	$(call vm_clean, $(_VAGRANT_NG))
-	$(call dns_clean, $(_VAGRANT_NG))
 
 status_ng:
 	$(call vm_status, $(_VAGRANT_NG))
+
+build_dns_ng:
+	$(call dns_build, $(_VAGRANT_NG))
+up_dns_ng:
+	$(call dns_up, $(_VAGRANT_NG))
+down_dns_ng:
+	$(call dns_down, $(_VAGRANT_NG))
+status_dns_ng:
 	$(call dns_status, $(_VAGRANT_NG))
+clean_dns_ng:
+	$(call dns_clean, $(_VAGRANT_NG))
 
 login_ng:
 	$(call login_vagrant, $(_VAGRANT_NG))
@@ -102,13 +117,13 @@ ifneq ($(wildcard $(_K8S_INVENTORY_DST)),"")
 		declare -a IPS=$(_K8S_IPS) && \
 		CONFIG_FILE=$(_K8S_CONFIG) python3 $(_K8S_BUILDER_SCRIPT) $${IPS[@]} \
 	)
-	mv $(_K8S_INVENTORY_SRC)/$(_K8S) $(_K8S_INVENTORY_DST)/
+	rsync -a -v $(_K8S_INVENTORY_SRC)/$(_K8S) $(_K8S_INVENTORY_DST)/
 else
 	@echo "$(_K8S_INVENTORY_DST) exist"
 	@ls -l $(_K8S_INVENTORY_DST)
 endif
 	
-cluster: cluster_venv cluster_configure
+cluster: cluster_venv cluster_configure cluster_init
 
 cluster_venv:
 	$(call venv_init, $(_K8S_VENV), $(_KUBESPRAY))
