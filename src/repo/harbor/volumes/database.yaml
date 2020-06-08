@@ -7,7 +7,6 @@ metadata:
     app: harbor
     chart: harbor
     component: database
-    controller-revision-hash: stable-harbor-1-4-0-harbor-database-6565fbc65d
     heritage: Helm
     release: stable-harbor-1-4-0
     statefulset.kubernetes.io/pod-name: stable-harbor-1-4-0-harbor-database-0
@@ -18,4 +17,4 @@ spec:
     storage: 8Gi
   nfs:
     server: 10.8.41.10
-    path: /mnt/sharedfolder/harbor/chartmuseum
+    path: /mnt/sharedfolder/harbor/database

@@ -7,7 +7,6 @@ metadata:
     app: harbor
     chart: harbor
     component: redis
-    controller-revision-hash: stable-harbor-1-4-0-harbor-redis-7f7fc5d466
     heritage: Helm
     release: stable-harbor-1-4-0
     statefulset.kubernetes.io/pod-name: stable-harbor-1-4-0-harbor-redis-0
