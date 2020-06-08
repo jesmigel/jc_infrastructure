@@ -38,15 +38,18 @@ Vagrant.configure("2") do |config|
     sshfs_opts_append: "-o nonempty -o cache=no"
 
     node.vm.synced_folder "./data/mnt", "/mnt/", 
-    type: "nfs"
+    type: "rsync",
+    owner: "nobody",
+    group: "nogroup"
+    # sshfs_opts_append: "-o nonempty -o cache=no"
 
     node.vm.provision "shell", inline: <<-SHELL
       apt-get update
       apt-get -y install nginx
-      openssl genrsa 2048 > server.key
-      openssl req -new -key server.key -subj "/C=AU/ST=Home/L=Laptop/O=Personal/OU=Local Machine/CN=local-1.vm" > server.csr
-      openssl x509 -days 3650 -req -signkey server.key < server.csr > server.crt
-      mv server.* /etc/letsencrypt/live/
+      # openssl genrsa 2048 > server.key
+      # openssl req -new -key server.key -subj "/C=AU/ST=Home/L=Laptop/O=Personal/OU=Local Machine/CN=local-1.vm" > server.csr
+      # openssl x509 -days 3650 -req -signkey server.key < server.csr > server.crt
+      # mv server.* /etc/letsencrypt/live/
 
       # TEMPORARY NFS
       apt-get install -y nfs-kernel-server

@@ -29,24 +29,24 @@ spec:
       annotations:
         checksum/secret: 86a6228951622362ac4ac43ed8295bf7d9bed9bcb4c48c900ed4017dd5190baf
     spec:
-      # initContainers:
-      # - name: "change-permission-of-directory"
-      #   image: busybox:latest
-      #   imagePullPolicy: IfNotPresent
-      #   command: ["/bin/sh"]
-      #   args: ["-c", "chown -R 999:999 /var/lib/postgresql/data"]
-      #   volumeMounts:
-      #   - name: database-data
-      #     mountPath: /var/lib/postgresql/data
-      #     subPath: ""
-      # - name: "remove-lost-found"
-      #   image: goharbor/harbor-db:v2.0.0
-      #   imagePullPolicy: IfNotPresent
-      #   command: ["rm", "-Rf", "/var/lib/postgresql/data/lost+found"]
-      #   volumeMounts:
-      #   - name: database-data
-      #     mountPath: /var/lib/postgresql/data
-      #     subPath: ""
+      initContainers:
+      - name: "change-permission-of-directory"
+        image: busybox:latest
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh"]
+        args: ["-c", "chown -R 999:999 /var/lib/postgresql/data"]
+        volumeMounts:
+        - name: database-data
+          mountPath: /var/lib/postgresql/data
+          subPath: ""
+      - name: "remove-lost-found"
+        image: goharbor/harbor-db:v2.0.0
+        imagePullPolicy: IfNotPresent
+        command: ["rm", "-Rf", "/var/lib/postgresql/data/lost+found"]
+        volumeMounts:
+        - name: database-data
+          mountPath: /var/lib/postgresql/data
+          subPath: ""
       containers:
       - name: database
         image: goharbor/harbor-db:v2.0.0
