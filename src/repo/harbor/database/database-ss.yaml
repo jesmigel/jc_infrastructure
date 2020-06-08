@@ -69,7 +69,7 @@ spec:
         volumeMounts:
         - name: database-data
           mountPath: /var/lib/postgresql/data
-          subPath: 
+          subPath: ""
   volumeClaimTemplates:
   - metadata:
       name: "database-data"
@@ -78,7 +78,7 @@ spec:
         release: stable-harbor-1-4-0
         chart: harbor
         app: "harbor"
-        component: database
+        component: "database"
     spec:
       accessModes: ["ReadWriteOnce"]
       resources:

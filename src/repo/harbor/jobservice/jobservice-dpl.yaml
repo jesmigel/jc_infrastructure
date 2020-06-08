@@ -30,8 +30,8 @@ spec:
       annotations:
         checksum/configmap: 189621bfcee0e429dffd7fb58cc4e4504ed111d86896d3aff22ad3dd909cfae6
         checksum/configmap-env: 90ce24fbf3678f788df8dcd70b8a1d0e6f22da0b46ea6bab34522401f7df61cb
-        checksum/secret: f580643a8844533b615942daf9ecedb67414c34dc4969c2173552af7fa6dacd7
-        checksum/secret-core: c4ff79e100181a7ac5b8efed0cc7ad75728d57d3fa03f0dbc6ce8f7ff06f63ea
+        checksum/secret: e2a921689ebb5f312f53ac9816de571d2753750d7f4c15c70277cee270103a24
+        checksum/secret-core: 73bb84c9955be25a87181030736ef0cc64f462a8942184dd4da3eaba20bec152
     spec:
       securityContext:
         fsGroup: 10000
@@ -72,7 +72,7 @@ spec:
           subPath: config.yml
         - name: job-logs
           mountPath: /var/log/jobs
-          subPath: 
+          subPath: ""
       volumes:
       - name: jobservice-config
         configMap:

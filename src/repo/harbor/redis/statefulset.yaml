@@ -46,7 +46,7 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /var/lib/redis
-          subPath: 
+          subPath: ""
   volumeClaimTemplates:
   - metadata:
       name: data
@@ -55,6 +55,7 @@ spec:
         release: stable-harbor-1-4-0
         chart: harbor
         app: "harbor"
+        component: redis
     spec:
       accessModes: ["ReadWriteOnce"]
       resources:
