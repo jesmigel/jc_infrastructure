@@ -4,11 +4,13 @@ kind: PersistentVolume
 metadata:
   name: harbor-database
   labels:
+    app: harbor
+    chart: harbor
+    component: database
+    controller-revision-hash: stable-harbor-1-4-0-harbor-database-6565fbc65d
     heritage: Helm
     release: stable-harbor-1-4-0
-    chart: harbor
-    app: "harbor"
-    component: database
+    statefulset.kubernetes.io/pod-name: stable-harbor-1-4-0-harbor-database-0
 spec:
   accessModes:
     - ReadWriteOnce

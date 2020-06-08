@@ -1,8 +1,9 @@
 resources:
   - ns.yaml
   - volumes/chartmuseum.yaml
-  - volumes/registry.yaml
+  - volumes/database.yaml
   - volumes/jobservice.yaml
+  - volumes/registry.yaml
   - database/database-secret.yaml
   - database/database-svc.yaml
   - database/database-ss.yaml
