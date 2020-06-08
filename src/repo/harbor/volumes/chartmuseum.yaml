@@ -11,7 +11,7 @@ metadata:
     component: chartmuseum
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   capacity:
     storage: 8Gi
   nfs:
