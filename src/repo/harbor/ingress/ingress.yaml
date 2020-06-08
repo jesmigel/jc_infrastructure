@@ -10,6 +10,8 @@ metadata:
     chart: harbor
     app: "harbor"
   annotations:
+    # kubernetes.io/tls-acme: "true"
+    # nginx.org/ssl-services: "stable-harbor-1-4-0-harbor-portal"
     ingress.kubernetes.io/proxy-body-size: "0"
     ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
@@ -19,7 +21,7 @@ spec:
   tls:
   - secretName: "stable-harbor-1-4-0-harbor-ingress"
     hosts:
-    - cir.local-1.vm
+    - cir.k8s-1.vm
   rules:
   - http:
       paths:
@@ -47,7 +49,7 @@ spec:
         backend:
           serviceName: stable-harbor-1-4-0-harbor-core
           servicePort: 80
-    host: cir.local-1.vm
+    host: cir.k8s-1.vm
 ---
 # Source: harbor/templates/ingress/ingress.yaml
 apiVersion: extensions/v1beta1
