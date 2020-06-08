@@ -19,7 +19,7 @@ spec:
   tls:
   - secretName: "stable-harbor-1-4-0-harbor-ingress"
     hosts:
-    - cir.gw-cloud.org
+    - cir.local-1.vm
   rules:
   - http:
       paths:
@@ -47,7 +47,7 @@ spec:
         backend:
           serviceName: stable-harbor-1-4-0-harbor-core
           servicePort: 80
-    host: cir.gw-cloud.org
+    host: cir.local-1.vm
 ---
 # Source: harbor/templates/ingress/ingress.yaml
 apiVersion: extensions/v1beta1
