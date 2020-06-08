@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: harbor-database
+  labels:
+    heritage: Helm
+    release: stable-harbor-1-4-0
+    chart: harbor
+    app: "harbor"
+    component: database
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 8Gi
+  nfs:
+    server: 10.8.41.10
+    path: /mnt/sharedfolder/harbor/chartmuseum

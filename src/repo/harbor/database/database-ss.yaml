@@ -78,6 +78,7 @@ spec:
         release: stable-harbor-1-4-0
         chart: harbor
         app: "harbor"
+        component: database
     spec:
       accessModes: ["ReadWriteOnce"]
       resources:
