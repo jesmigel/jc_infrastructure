@@ -3,7 +3,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: elasticsearch-master
+  name: elasticsearch
   labels:
     heritage: "Helm"
     release: "elasticsearch-7-8-0"

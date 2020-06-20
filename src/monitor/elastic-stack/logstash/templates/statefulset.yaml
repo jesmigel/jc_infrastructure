@@ -51,10 +51,6 @@ spec:
         - name: logstashconfig
           configMap:
             name: logstash-7-8-0-logstash-config
-      hostAliases:
-        - hostnames:
-            - elasticsearch
-          ip: elasticsearch-master-headless.elk.svc.cluster.local
       containers:
       - name: "logstash"
         securityContext:
