@@ -10,6 +10,7 @@ metadata:
     heritage: "Helm"
     release: "logstash-7-8-0"
 spec:
+  serviceName: {}
   selector:
     matchLabels:
       app: "logstash-7-8-0-logstash"
@@ -30,7 +31,6 @@ spec:
         
         
     spec:
-      serviceName: {}
       securityContext:
         fsGroup: 1000
         runAsUser: 1000
