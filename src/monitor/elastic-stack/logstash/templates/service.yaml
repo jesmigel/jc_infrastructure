@@ -1,0 +1,22 @@
+---
+# Source: logstash/templates/service.yaml
+kind: Service
+apiVersion: v1
+metadata:
+  name: "logstash-7-8-0-logstash"
+  labels:
+    app: "logstash-7-8-0-logstash"
+    chart: "logstash"
+    heritage: "Helm"
+    release: "logstash-7-8-0"
+  annotations:
+    null
+spec:
+  type: ClusterIP
+  selector:
+    app: "logstash-7-8-0-logstash"
+    chart: "logstash"
+    heritage: "Helm"
+    release: "logstash-7-8-0"
+  ports:
+    null
