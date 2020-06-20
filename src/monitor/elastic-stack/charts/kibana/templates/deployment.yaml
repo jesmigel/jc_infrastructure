@@ -1,0 +1,50 @@
+---
+# Source: elastic-stack/charts/kibana/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kibana
+    chart: "kibana-3.2.4"
+    heritage: Helm
+    release: stable-elk-2-0-1
+  name: stable-elk-2-0-1-kibana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kibana
+      release: stable-elk-2-0-1
+  revisionHistoryLimit: 3
+  template:
+    metadata:
+      annotations:
+        checksum/config: a23ad7211a439f21a52d24c35cfc031a118bef6c930396384de805778aa17687
+      labels:
+        app: kibana
+        release: "stable-elk-2-0-1"
+    spec:
+      serviceAccountName: default
+      containers:
+      - name: kibana
+        image: "docker.elastic.co/kibana/kibana-oss:6.7.0"
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: "ELASTICSEARCH_HOSTS"
+          value: "http://stable-elk-2-0-1-elasticsearch-client:9200"
+        ports:
+        - containerPort: 5601
+          name: kibana
+          protocol: TCP
+        resources:
+          {}
+        volumeMounts:
+        - name: kibana
+          mountPath: "/usr/share/kibana/config/kibana.yml"
+          subPath: kibana.yml
+      tolerations:
+        []
+      volumes:
+        - name: kibana
+          configMap:
+            name: stable-elk-2-0-1-kibana

@@ -1,0 +1,117 @@
+---
+# Source: elastic-stack/charts/logstash/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: stable-elk-2-0-1-logstash
+  labels:
+    app: logstash
+    chart: logstash-2.3.0
+    release: stable-elk-2-0-1
+    heritage: Helm
+spec:
+  serviceName: stable-elk-2-0-1-logstash
+  replicas: 1
+  podManagementPolicy: OrderedReady
+  selector:
+    matchLabels:
+      app: logstash
+      release: stable-elk-2-0-1
+  template:
+    metadata:
+      labels:
+        app: logstash
+        release: stable-elk-2-0-1
+      annotations:
+        checksum/patterns: db7db1e1d41696a77ee2a2ab10ffe5af3abcc58b1ddf220db238864c55ff680b
+        checksum/templates: edd61149d8de5739eea87b3bd9a0ccc35bbf4ff3361ba43fed94f2f0c5d27e11
+        checksum/pipeline: ee5c10a45dfe60866ca9ad8a386b77f6c16e554eb7483d1488a01dca4384d536
+    spec:
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+      initContainers:
+      containers:
+
+        ## logstash
+        - name: logstash
+          image: "docker.elastic.co/logstash/logstash-oss:7.1.1"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: monitor
+              containerPort: 9600
+              protocol: TCP
+            - containerPort: 5044
+              name: beats
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: monitor
+            initialDelaySeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /
+              port: monitor
+            initialDelaySeconds: 20
+          env:
+            ## Logstash monitoring API host and port env vars
+            - name: HTTP_HOST
+              value: "0.0.0.0"
+            - name: HTTP_PORT
+              value: "9600"
+            ## Elasticsearch output
+            - name: ELASTICSEARCH_HOST
+              value: "elasticsearch-client.default.svc.cluster.local"
+            - name: ELASTICSEARCH_PORT
+              value: "9200"
+            # Logstash Java Options
+            - name: LS_JAVA_OPTS
+              value: -Xmx1g -Xms1g
+            ## Additional env vars
+            - name: CONFIG_RELOAD_AUTOMATIC
+              value: "true"
+            - name: PATH_CONFIG
+              value: "/usr/share/logstash/pipeline"
+            - name: PATH_DATA
+              value: "/usr/share/logstash/data"
+            - name: QUEUE_CHECKPOINT_WRITES
+              value: "1"
+            - name: QUEUE_DRAIN
+              value: "true"
+            - name: QUEUE_MAX_BYTES
+              value: "1gb"
+            - name: QUEUE_TYPE
+              value: "persisted"
+          resources:
+            {}
+          volumeMounts:
+            - mountPath: /usr/share/logstash/data
+              name: data
+            - mountPath: /usr/share/logstash/patterns
+              name: patterns
+            - mountPath: /usr/share/logstash/files
+              name: files
+            - mountPath: /usr/share/logstash/pipeline
+              name: pipeline
+      serviceAccountName: stable-elk-2-0-1-logstash
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: patterns
+          configMap:
+            name: stable-elk-2-0-1-logstash-patterns
+        - name: files
+          configMap:
+            name: stable-elk-2-0-1-logstash-files
+        - name: pipeline
+          configMap:
+            name: stable-elk-2-0-1-logstash-pipeline
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "2Gi"
