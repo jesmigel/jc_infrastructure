@@ -1,0 +1,20 @@
+---
+# Source: logstash/templates/role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: "logstash-7-8-0-logstash"
+  labels:
+    app: "logstash-7-8-0-logstash"
+    chart: "logstash"
+    heritage: "Helm"
+    release: "logstash-7-8-0"
+rules:
+  - apiGroups:
+      - extensions
+    resources:
+      - podsecuritypolicies
+    resourceNames:
+      - "logstash-7-8-0-logstash"
+    verbs:
+      - use

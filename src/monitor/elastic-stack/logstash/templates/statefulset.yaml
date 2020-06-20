@@ -33,6 +33,7 @@ spec:
       securityContext:
         fsGroup: 1000
         runAsUser: 1000
+      serviceAccountName: "logstash-7-8-0-logstash"
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
