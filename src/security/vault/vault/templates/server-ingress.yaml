@@ -13,7 +13,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 spec:
   rules:
-    - host: "chart-example.local"
+    - host: "vault.local-1.vm"
       http:
         paths:
           - path: /
