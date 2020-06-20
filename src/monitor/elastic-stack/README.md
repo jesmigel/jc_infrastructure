@@ -11,11 +11,11 @@ helm search repo elastic-stack
 
 ## Initialisation
 ```bash
-helm template stable-elk-2-0-1 stable/elastic-stack \
---set kibana.ingress.enabled=true \
---set kibana.ingress.hosts={elk.local-1.vm}  \
---set logstash.env[2].value=stable-elk-2-0-1.elk.svc.cluster.local \
--n elk --output-dir .
+helm template kibana-7-8-0 elastic/kibana \
+--set namespace=elk \
+--set ingress.enabled=true \
+--set ingress.hosts={elk.local-1.vm} \
+--output-dir .
 ```
 
 ## Custom configmap considerations

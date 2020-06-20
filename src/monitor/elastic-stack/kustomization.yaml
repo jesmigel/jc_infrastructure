@@ -1,0 +1,7 @@
+resources:
+  - ns.yaml
+  - pv.elasticsearch.yaml
+  - pv.logstash.yaml
+  - kibana/templates/deployment.yaml
+  - kibana/templates/ingress.yaml
+  - kibana/templates/service.yaml
