@@ -8,14 +8,14 @@ resources:
   - elasticsearch/templates/service.yaml
   - elasticsearch/templates/poddisruptionbudget.yaml
   - elasticsearch/templates/statefulset.yaml
-  - charts/kube-state-metrics/templates/deployment.yaml
-  - charts/kube-state-metrics/templates/service.yaml
-  - charts/kube-state-metrics/templates/clusterrole.yaml
-  - charts/kube-state-metrics/templates/serviceaccount.yaml
-  - charts/kube-state-metrics/templates/clusterrolebinding.yaml
-  - templates/deployment.yaml
-  - templates/daemonset.yaml
-  - templates/clusterrole.yaml
-  - templates/serviceaccount.yaml
-  - templates/configmap.yaml
-  - templates/clusterrolebinding.yaml
+  - metricbeat/charts/kube-state-metrics/templates/deployment.yaml
+  - metricbeat/charts/kube-state-metrics/templates/service.yaml
+  - metricbeat/charts/kube-state-metrics/templates/clusterrole.yaml
+  - metricbeat/charts/kube-state-metrics/templates/serviceaccount.yaml
+  - metricbeat/charts/kube-state-metrics/templates/clusterrolebinding.yaml
+  - metricbeat/templates/deployment.yaml
+  - metricbeat/templates/daemonset.yaml
+  - metricbeat/templates/clusterrole.yaml
+  - metricbeat/templates/serviceaccount.yaml
+  - metricbeat/templates/configmap.yaml
+  - metricbeat/templates/clusterrolebinding.yaml
