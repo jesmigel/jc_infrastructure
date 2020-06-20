@@ -30,6 +30,10 @@ helm template kibana-7-8-0 elastic/kibana \
 # Metricbeat
 helm template metricbeat-7-8-0 elastic/metricbeat \
 --set namespace=elk \
+--set daemonset.extraEnvs[0].name=ELASTICSEARCH_HOSTS \
+--set daemonset.extraEnvs[0].value=elasticsearch-master-headless.elk.svc.cluster.local \
+--set daemonset.extraEnv[0].name=ELASTICSEARCH_HOSTS \
+--set daemonset.extraEnv[0].value=elasticsearch-master-headless.elk.svc.cluster.local \
 --output-dir .
 ```
 

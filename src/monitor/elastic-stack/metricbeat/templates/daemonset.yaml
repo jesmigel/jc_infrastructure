@@ -103,6 +103,8 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
+        - name: ELASTICSEARCH_HOSTS
+          value: elasticsearch-master-headless.elk.svc.cluster.local
         envFrom: 
           []
         securityContext: 
