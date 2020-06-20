@@ -147,7 +147,7 @@ spec:
             cpu: 1000m
             memory: 512M
           requests:
-            cpu: 100m
+            cpu: 1000m
             memory: 512M
         env:
           - name: node.name
@@ -163,7 +163,7 @@ spec:
           - name: network.host
             value: "0.0.0.0"
           - name: ES_JAVA_OPTS
-            value: "-Xmx128m -Xms128m"
+            value: "-Xmx512m -Xms512m"
           - name: node.data
             value: "true"
           - name: node.ingest
