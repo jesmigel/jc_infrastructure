@@ -42,11 +42,10 @@ kind: PersistentVolume
 metadata:
   name: elasticsearch-master-1
   labels:
-    app: elasticsearch
-    chart: elasticsearch-1.32.0
-    component: "master"
-    heritage: Helm
-    release: stable-elk-2-0-1
+    heritage: "Helm"
+    release: "elasticsearch-7-8-0"
+    chart: "elasticsearch"
+    app: "elasticsearch-master"
 spec:
   accessModes:
     - ReadWriteOnce
@@ -61,11 +60,10 @@ kind: PersistentVolume
 metadata:
   name: elasticsearch-master-2
   labels:
-    app: elasticsearch
-    chart: elasticsearch-1.32.0
-    component: "master"
-    heritage: Helm
-    release: stable-elk-2-0-1
+    heritage: "Helm"
+    release: "elasticsearch-7-8-0"
+    chart: "elasticsearch"
+    app: "elasticsearch-master"
 spec:
   accessModes:
     - ReadWriteOnce
@@ -80,11 +78,10 @@ kind: PersistentVolume
 metadata:
   name: elasticsearch-master-3
   labels:
-    app: elasticsearch
-    chart: elasticsearch-1.32.0
-    component: "master"
-    heritage: Helm
-    release: stable-elk-2-0-1
+    heritage: "Helm"
+    release: "elasticsearch-7-8-0"
+    chart: "elasticsearch"
+    app: "elasticsearch-master"
 spec:
   accessModes:
     - ReadWriteOnce
