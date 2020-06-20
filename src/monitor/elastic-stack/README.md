@@ -20,7 +20,7 @@ helm template kibana-7-8-0 elastic/kibana \
 --set namespace=elk \
 --set ingress.enabled=true \
 --set ingress.hosts={elk.local-1.vm} \
---set elasticsearchHosts=http://elasticsearch-master:9200 \
+--set elasticsearchHosts=http://elasticsearch-master-headless.elk.svc.cluster.local:9200 \
 --output-dir .
 ```
 
