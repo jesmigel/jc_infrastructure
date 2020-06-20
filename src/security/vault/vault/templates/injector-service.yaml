@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: stable-vault-0.6.0-agent-injector-svc
+  name: stable-vault-0-6-0-agent-injector-svc
   namespace: vault
   labels:
     app.kubernetes.io/name: vault-agent-injector
-    app.kubernetes.io/instance: stable-vault-0.6.0
+    app.kubernetes.io/instance: stable-vault-0-6-0
     app.kubernetes.io/managed-by: Helm
 spec:
   ports:
@@ -15,5 +15,5 @@ spec:
     targetPort: 8080
   selector:
     app.kubernetes.io/name: vault-agent-injector
-    app.kubernetes.io/instance: stable-vault-0.6.0
+    app.kubernetes.io/instance: stable-vault-0-6-0
     component: webhook

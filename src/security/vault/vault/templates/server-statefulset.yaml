@@ -4,14 +4,14 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: stable-vault-0.6.0
+  name: stable-vault-0-6-0
   namespace: vault
   labels:
     app.kubernetes.io/name: vault
-    app.kubernetes.io/instance: stable-vault-0.6.0
+    app.kubernetes.io/instance: stable-vault-0-6-0
     app.kubernetes.io/managed-by: Helm
 spec:
-  serviceName: stable-vault-0.6.0-internal
+  serviceName: stable-vault-0-6-0-internal
   podManagementPolicy: Parallel
   replicas: 1
   updateStrategy:
@@ -19,14 +19,14 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: vault
-      app.kubernetes.io/instance: stable-vault-0.6.0
+      app.kubernetes.io/instance: stable-vault-0-6-0
       component: server
   template:
     metadata:
       labels:
         helm.sh/chart: vault-0.6.0
         app.kubernetes.io/name: vault
-        app.kubernetes.io/instance: stable-vault-0.6.0
+        app.kubernetes.io/instance: stable-vault-0-6-0
         component: server
     spec:
       
@@ -36,14 +36,14 @@ spec:
             - labelSelector:
                 matchLabels:
                   app.kubernetes.io/name: vault
-                  app.kubernetes.io/instance: "stable-vault-0.6.0"
+                  app.kubernetes.io/instance: "stable-vault-0-6-0"
                   component: server
               topologyKey: kubernetes.io/hostname
   
       
       
       terminationGracePeriodSeconds: 10
-      serviceAccountName: stable-vault-0.6.0
+      serviceAccountName: stable-vault-0-6-0
       
       securityContext:
         runAsNonRoot: true
@@ -54,7 +54,7 @@ spec:
         
         - name: config
           configMap:
-            name: stable-vault-0.6.0-config
+            name: stable-vault-0-6-0-config
   
         - name: home
           emptyDir: {}
@@ -103,14 +103,24 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: VAULT_CLUSTER_ADDR
-              value: "https://$(HOSTNAME).stable-vault-0.6.0-internal:8201"
+              value: "https://$(HOSTNAME).stable-vault-0-6-0-internal:8201"
             - name: HOME
               value: "/home/vault"
-          volumeMounts:          
+            
+            
+            
+          volumeMounts:
+          
+  
+    
             - name: data
               mountPath: /vault/data
+    
+  
+  
             - name: config
               mountPath: /vault/config
+  
             - name: home
               mountPath: /home/vault
           ports:
@@ -154,11 +164,6 @@ spec:
       spec:
         accessModes:
           - ReadWriteMany
-        selector:
-          matchLabels:
-            app: vault
-            component: server
-            release: vault
         resources:
           requests:
             storage: 10Gi

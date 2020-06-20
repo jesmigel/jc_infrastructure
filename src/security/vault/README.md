@@ -10,7 +10,7 @@ helm repo add hashicorp https://helm.releases.hashicorp.com
 # Confirm 
 helm search repo vault
 
-helm template stable-vault-0.6.0 hashicorp/vault \
+helm template stable-vault-0-6-0 hashicorp/vault \
 --set server.dataStorage.accessMode=ReadWriteMany \
 --set server.ingress.enabled=true \
 --set server.route.host=vault.local-1.vm \
