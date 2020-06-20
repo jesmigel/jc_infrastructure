@@ -62,7 +62,7 @@ spec:
               value: "9600"
             ## Elasticsearch output
             - name: ELASTICSEARCH_HOST
-              value: "elasticsearch-client.default.svc.cluster.local"
+              value: "estable-elk-2-0-1-elasticsearch-client.elk.svc.cluster.local"
             - name: ELASTICSEARCH_PORT
               value: "9200"
             # Logstash Java Options
