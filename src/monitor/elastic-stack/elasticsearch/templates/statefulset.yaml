@@ -16,7 +16,7 @@ spec:
   selector:
     matchLabels:
       app: "elasticsearch-master"
-  replicas: 2
+  replicas: 3
   podManagementPolicy: Parallel
   updateStrategy:
     type: RollingUpdate
@@ -145,17 +145,17 @@ spec:
         resources:
           limits:
             cpu: 1000m
-            memory: 2Gi
+            memory: 512M
           requests:
-            cpu: 1000m
-            memory: 2Gi
+            cpu: 100m
+            memory: 512M
         env:
           - name: node.name
             valueFrom:
               fieldRef:
                 fieldPath: metadata.name
           - name: cluster.initial_master_nodes
-            value: "elasticsearch-master-0,elasticsearch-master-1,"
+            value: "elasticsearch-master-0,elasticsearch-master-1,elasticsearch-master-2,"
           - name: discovery.seed_hosts
             value: "elasticsearch-master-headless"
           - name: cluster.name
@@ -163,7 +163,7 @@ spec:
           - name: network.host
             value: "0.0.0.0"
           - name: ES_JAVA_OPTS
-            value: "-Xmx1g -Xms1g"
+            value: "-Xmx128m -Xms128m"
           - name: node.data
             value: "true"
           - name: node.ingest

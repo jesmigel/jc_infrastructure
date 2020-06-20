@@ -14,6 +14,11 @@ helm search repo elastic-stack
 # Elastic Search
 helm template elasticsearch-7-8-0 elastic/elasticsearch \
 --set namespace=elk \
+--set esJavaOpts="-Xmx128m -Xms128m" \
+--set resources.requests.cpu="100m" \
+--set resources.requests.memory="512M" \
+--set resources.limits.cpu="1000m" \
+--set resources.limits.memory="512M" \
 --output-dir .
 # Kibana
 helm template kibana-7-8-0 elastic/kibana \
