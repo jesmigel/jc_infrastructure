@@ -144,7 +144,7 @@ spec:
           containerPort: 9300
         resources:
           limits:
-            cpu: 2000m
+            cpu: 1000m
             memory: 512M
           requests:
             cpu: 100m
@@ -163,7 +163,7 @@ spec:
           - name: network.host
             value: "0.0.0.0"
           - name: ES_JAVA_OPTS
-            value: "-Xmx512m -Xms128m"
+            value: "-Xmx128m -Xms128m"
           - name: node.data
             value: "true"
           - name: node.ingest
