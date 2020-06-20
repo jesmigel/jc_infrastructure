@@ -2,25 +2,25 @@ resources:
   - ns.yaml
   - pv.elasticsearch.yaml
   - pv.logstash.yaml
-#  - elastic-stack/charts/kibana/templates/deployment.yaml
-#  - elastic-stack/charts/kibana/templates/ingress.yaml
-#  - elastic-stack/charts/kibana/templates/tests/test-configmap.yaml
-#  - elastic-stack/charts/kibana/templates/service.yaml
-#  - elastic-stack/charts/kibana/templates/configmap.yaml
-#  - elastic-stack/charts/logstash/templates/files-config.yaml
-#  - elastic-stack/charts/logstash/templates/service.yaml
-#  - elastic-stack/charts/logstash/templates/poddisruptionbudget.yaml
-#  - elastic-stack/charts/logstash/templates/patterns-config.yaml
-#  - elastic-stack/charts/logstash/templates/serviceaccount.yaml
-#  - elastic-stack/charts/logstash/templates/pipeline-config.yaml
-#  - elastic-stack/charts/logstash/templates/statefulset.yaml
-#  - elastic-stack/charts/elasticsearch/templates/client-serviceaccount.yaml
-#  - elastic-stack/charts/elasticsearch/templates/data-statefulset.yaml
-#  - elastic-stack/charts/elasticsearch/templates/master-svc.yaml
-#  - elastic-stack/charts/elasticsearch/templates/client-svc.yaml
-#  - elastic-stack/charts/elasticsearch/templates/master-statefulset.yaml
-#  - elastic-stack/charts/elasticsearch/templates/client-deployment.yaml
-#  - elastic-stack/charts/elasticsearch/templates/tests/test-configmap.yaml
-#  - elastic-stack/charts/elasticsearch/templates/configmap.yaml
-#  - elastic-stack/charts/elasticsearch/templates/master-serviceaccount.yaml
-#  - elastic-stack/charts/elasticsearch/templates/data-serviceaccount.yaml
+  - elastic-stack/charts/kibana/templates/deployment.yaml
+  - elastic-stack/charts/kibana/templates/ingress.yaml
+  - elastic-stack/charts/kibana/templates/tests/test-configmap.yaml
+  - elastic-stack/charts/kibana/templates/service.yaml
+  - elastic-stack/charts/kibana/templates/configmap.yaml
+  - elastic-stack/charts/logstash/templates/files-config.yaml
+  - elastic-stack/charts/logstash/templates/service.yaml
+  - elastic-stack/charts/logstash/templates/poddisruptionbudget.yaml
+  - elastic-stack/charts/logstash/templates/patterns-config.yaml
+  - elastic-stack/charts/logstash/templates/serviceaccount.yaml
+  - elastic-stack/charts/logstash/templates/pipeline-config.yaml
+  - elastic-stack/charts/logstash/templates/statefulset.yaml
+  - elastic-stack/charts/elasticsearch/templates/client-serviceaccount.yaml
+  - elastic-stack/charts/elasticsearch/templates/data-statefulset.yaml
+  - elastic-stack/charts/elasticsearch/templates/master-svc.yaml
+  - elastic-stack/charts/elasticsearch/templates/client-svc.yaml
+  - elastic-stack/charts/elasticsearch/templates/master-statefulset.yaml
+  - elastic-stack/charts/elasticsearch/templates/client-deployment.yaml
+  - elastic-stack/charts/elasticsearch/templates/tests/test-configmap.yaml
+  - elastic-stack/charts/elasticsearch/templates/configmap.yaml
+  - elastic-stack/charts/elasticsearch/templates/master-serviceaccount.yaml
+  - elastic-stack/charts/elasticsearch/templates/data-serviceaccount.yaml
