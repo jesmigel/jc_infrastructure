@@ -27,6 +27,10 @@ helm template kibana-7-8-0 elastic/kibana \
 --set ingress.hosts={elk.local-1.vm} \
 --set elasticsearchHosts=http://elasticsearch-master-headless.elk.svc.cluster.local:9200 \
 --output-dir .
+# Metricbeat
+helm template metricbeat-7-8-0 elastic/metricbeat \
+--set namespace=elk \
+--output-dir .
 ```
 
 ## Custom configmap considerations
