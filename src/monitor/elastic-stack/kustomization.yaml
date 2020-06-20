@@ -19,5 +19,8 @@ resources:
   - metricbeat/templates/serviceaccount.yaml
   - metricbeat/templates/configmap.yaml
   - metricbeat/templates/clusterrolebinding.yaml
+  - logstash/templates/role.yaml
   - logstash/templates/poddisruptionbudget.yaml
+  - logstash/templates/serviceaccount.yaml
+  - logstash/templates/rolebinding.yaml
   - logstash/templates/statefulset.yaml
