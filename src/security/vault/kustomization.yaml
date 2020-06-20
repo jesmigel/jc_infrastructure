@@ -1,16 +1,16 @@
 resources:
   - ns.yaml
   - pv.yaml
-  - vault/template/injector-clusterrole.yaml
-  - vault/template/injector-clusterrolebinding.yaml
-  - vault/template/injector-deployment.yaml
-  - vault/template/injector-mutating-webhook.yaml
-  - vault/template/injector-service.yaml
-  - vault/template/injector-serviceaccount.yaml
-  - vault/template/server-clusterrolebinding.yaml
-  - vault/template/server-config-configmap.yaml
-  - vault/template/server-headless-service.yaml
-  - vault/template/server-ingress.yaml
-  - vault/template/server-service.yaml
-  - vault/template/server-serviceaccount.yaml
-  - vault/template/server-statefulset.yaml
+  - vault/templates/injector-clusterrole.yaml
+  - vault/templates/injector-clusterrolebinding.yaml
+  - vault/templates/injector-deployment.yaml
+  - vault/templates/injector-mutating-webhook.yaml
+  - vault/templates/injector-service.yaml
+  - vault/templates/injector-serviceaccount.yaml
+  - vault/templates/server-clusterrolebinding.yaml
+  - vault/templates/server-config-configmap.yaml
+  - vault/templates/server-headless-service.yaml
+  - vault/templates/server-ingress.yaml
+  - vault/templates/server-service.yaml
+  - vault/templates/server-serviceaccount.yaml
+  - vault/templates/server-statefulset.yaml
