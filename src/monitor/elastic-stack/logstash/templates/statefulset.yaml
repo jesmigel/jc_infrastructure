@@ -29,7 +29,6 @@ spec:
         release: "logstash-7-8-0"
       annotations:
         
-        configchecksum: b3ea2970f209cf1ae1b76f1ebccf30b4abb6cfef805efc51d34d94c1654e333
         
     spec:
       securityContext:
@@ -48,9 +47,6 @@ spec:
             topologyKey: kubernetes.io/hostname
       terminationGracePeriodSeconds: 120
       volumes:
-        - name: logstashconfig
-          configMap:
-            name: logstash-7-8-0-logstash-config
       containers:
       - name: "logstash"
         securityContext:
@@ -93,6 +89,3 @@ spec:
           - name: LS_JAVA_OPTS
             value: "-Xmx1g -Xms1g"
         volumeMounts:
-          - name: logstashconfig
-            mountPath: /usr/share/logstash/config/data
-            subPath: data
