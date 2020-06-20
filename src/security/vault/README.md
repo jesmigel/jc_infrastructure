@@ -10,12 +10,12 @@ helm repo add hashicorp https://helm.releases.hashicorp.com
 # Confirm 
 helm search repo vault
 
-helm template hashicorp/vault \
+helm template stable-vault-0-6-0 hashicorp/vault \
 --set server.dataStorage.accessMode=ReadWriteMany \
 --set server.ingress.enabled=true \
---set server.ingress.hosts[0].host=test.com \
+--set server.ingress.hosts[0].host="vault.local-1.vm"  \
 -n vault --output-dir .
 
-# Manual Activation
+# Manual Activation - REMEMBER to save the root token and unseal keys!!!
 kubectl exec -ti vault-0 -- vault operator init
 ```
