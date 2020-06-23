@@ -1,0 +1,12 @@
+---
+# Source: elastic-stack/charts/logstash/templates/patterns-config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: elasticstack-0-11-1-logstash-patterns
+  labels:
+    app: logstash
+    chart: logstash-2.3.0
+    release: elasticstack-0-11-1
+    heritage: Helm
+data:

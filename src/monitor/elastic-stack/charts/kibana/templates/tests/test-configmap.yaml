@@ -1,0 +1,32 @@
+---
+# Source: elastic-stack/charts/kibana/templates/tests/test-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: elasticstack-0-11-1-kibana-test
+  labels:
+    app: elasticstack-0-11-1-kibana
+    chart: "kibana-3.2.4"
+    heritage: "Helm"
+    release: "elasticstack-0-11-1"
+data:
+  run.sh: |-
+    @test "Test Status" {
+      url="http://elasticstack-0-11-1-kibana:443/api/status"
+
+      # retry for 1 minute
+      run curl -s -o /dev/null -I -w "%{http_code}" --retry 30 --retry-delay 2 $url
+
+      code=$(curl -s -o /dev/null -I -w "%{http_code}" $url)
+      body=$(curl $url)
+      if [ "$code" == "503" ]
+      then
+        skip "Kibana Unavailable (503), can't get status - see pod logs: $body"
+      fi
+
+      result=$(echo $body | jq -cr '.status.statuses[]')
+      [ "$result" != "" ]
+
+      result=$(echo $body | jq -cr '.status.statuses[] | select(.state != "green")')
+      [ "$result" == "" ]
+    }

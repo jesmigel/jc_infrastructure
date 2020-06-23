@@ -1,0 +1,102 @@
+---
+# Source: elastic-stack/charts/elasticsearch/templates/client-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: elasticsearch
+    chart: elasticsearch-1.32.0
+    component: "client"
+    heritage: Helm
+    release: elasticstack-0-11-1
+  name: elasticstack-0-11-1-elasticsearch-client
+spec:
+  selector:
+    matchLabels:
+      app: elasticsearch
+      component: "client"
+      release: elasticstack-0-11-1
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+        component: "client"
+        release: elasticstack-0-11-1
+      annotations:
+        checksum/config: 0d1117a35946dc9f16886c9b336bd307f9da2f24ed775ad58bba02ad7b27c11d
+    spec:
+      serviceAccountName: elasticstack-0-11-1-elasticsearch-client
+      securityContext:
+        fsGroup: 1000
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  app: "elasticsearch"
+                  release: "elasticstack-0-11-1"
+                  component: "client"
+      initContainers:
+      # see https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html
+      # and https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-configuration-memory.html#mlockall
+      - name: "sysctl"
+        image: "busybox:latest"
+        imagePullPolicy: "Always"
+        resources:
+            {}
+        command: ["sysctl", "-w", "vm.max_map_count=262144"]
+        securityContext:
+          privileged: true
+      containers:
+      - name: elasticsearch
+        env:
+        - name: NODE_DATA
+          value: "false"
+        - name: NODE_MASTER
+          value: "false"
+        - name: DISCOVERY_SERVICE
+          value: elasticstack-0-11-1-elasticsearch-discovery
+        - name: PROCESSORS
+          valueFrom:
+            resourceFieldRef:
+              resource: limits.cpu
+        - name: ES_JAVA_OPTS
+          value: "-Djava.net.preferIPv4Stack=true -Xms512m -Xmx512m  "
+        - name: MINIMUM_MASTER_NODES
+          value: "2"
+        resources:
+            limits:
+              cpu: 1
+              memory: 512M
+            requests:
+              cpu: "0.5"
+              memory: 512M
+        readinessProbe:
+          httpGet:
+            path: /_cluster/health
+            port: 9200
+          initialDelaySeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /_cluster/health?local=true
+            port: 9200
+          initialDelaySeconds: 90
+        image: "docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.2"
+        imagePullPolicy: "IfNotPresent"
+        ports:
+        - containerPort: 9200
+          name: http
+        - containerPort: 9300
+          name: transport
+        volumeMounts:
+        - mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
+          name: config
+          subPath: elasticsearch.yml
+      volumes:
+      - name: config
+        configMap:
+          name: elasticstack-0-11-1-elasticsearch

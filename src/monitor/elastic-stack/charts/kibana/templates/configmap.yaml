@@ -1,0 +1,16 @@
+---
+# Source: elastic-stack/charts/kibana/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: elasticstack-0-11-1-kibana
+  labels:
+    app: kibana
+    chart: "kibana-3.2.4"
+    release: elasticstack-0-11-1
+    heritage: Helm
+data:
+  kibana.yml: |
+    elasticsearch.hosts: http://elasticsearch:9200
+    server.host: "0"
+    server.name: kibana

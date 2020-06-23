@@ -1,0 +1,22 @@
+---
+# Source: elastic-stack/charts/logstash/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticstack-0-11-1-logstash
+  labels:
+    app: logstash
+    chart: logstash-2.3.0
+    release: elasticstack-0-11-1
+    heritage: Helm
+  annotations:
+spec:
+  type: ClusterIP
+  ports:
+    - name: beats
+      port: 5044
+      protocol: TCP
+      targetPort: beats
+  selector:
+    app: logstash
+    release: elasticstack-0-11-1
