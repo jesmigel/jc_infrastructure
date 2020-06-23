@@ -16,7 +16,7 @@ spec:
       app: elasticsearch
       release: elasticstack-0-11-1
   serviceName: elasticstack-0-11-1-elasticsearch-master
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:

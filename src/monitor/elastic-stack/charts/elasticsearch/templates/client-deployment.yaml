@@ -16,7 +16,7 @@ spec:
       app: elasticsearch
       component: "client"
       release: elasticstack-0-11-1
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:

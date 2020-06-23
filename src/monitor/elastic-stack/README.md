@@ -62,6 +62,9 @@ helm template elasticstack-0-11-1 stable/elastic-stack \
 --set elasticsearch.data.resources.requests.memory="512M" \
 --set elasticsearch.data.resources.limits.cpu="1" \
 --set elasticsearch.data.resources.limits.memory="512M" \
+--set elasticsearch.client.replicas=1 \
+--set elasticsearch.master.replicas=1 \
+--set elasticsearch.data.replicas=1 \
 --set kibana.ingress.enabled="true" \
 --set kibana.ingress.hosts={"elk.local-1.vm"} \
 --output-dir .
