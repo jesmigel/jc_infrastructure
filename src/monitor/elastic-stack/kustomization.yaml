@@ -1,5 +1,7 @@
 resources:
   - ns.yaml
+  - pv.elasticsearch.yaml
+  - pv.logstash.yaml
   - elasticsearch/templates/client-serviceaccount.yaml
   - elasticsearch/templates/data-statefulset.yaml
   - elasticsearch/templates/master-svc.yaml
