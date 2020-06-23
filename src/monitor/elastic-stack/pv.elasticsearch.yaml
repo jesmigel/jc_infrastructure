@@ -21,6 +21,25 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
+  name: elasticsearch-master-2
+  labels:
+    app: elasticsearch-master
+    app.kubernetes.io/instance: elk
+    chart: elasticsearch
+    heritage: Helm
+    release: elasticsearch-7-8-0
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 4Gi
+  nfs:
+    server: 10.8.41.10
+    path: /mnt/sharedfolder/elastic-stack/elasticsearch/master/2
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
   name: elasticsearch-data-1
   labels:
     app: elasticsearch
@@ -37,3 +56,43 @@ spec:
   nfs:
     server: 10.8.41.10
     path: /mnt/sharedfolder/elastic-stack/elasticsearch/data/1
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: elasticsearch-data-2
+  labels:
+    app: elasticsearch
+    app.kubernetes.io/instance: elk
+    chart: elasticsearch-1.32.5
+    component: data
+    heritage: Helm
+    release: elasticstack-0-11-1
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 30Gi
+  nfs:
+    server: 10.8.41.10
+    path: /mnt/sharedfolder/elastic-stack/elasticsearch/data/2
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: elasticsearch-data-3
+  labels:
+    app: elasticsearch
+    app.kubernetes.io/instance: elk
+    chart: elasticsearch-1.32.5
+    component: data
+    heritage: Helm
+    release: elasticstack-0-11-1
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 30Gi
+  nfs:
+    server: 10.8.41.10
+    path: /mnt/sharedfolder/elastic-stack/elasticsearch/data/3

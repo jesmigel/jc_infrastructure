@@ -1,4 +1,4 @@
-replicaCount: 1
+replicaCount: 2
 
 podDisruptionBudget:
   maxUnavailable: 1
@@ -226,7 +226,7 @@ exporter:
     port: metrics
 
 elasticsearch:
-  host: elasticstack-0-11-1-elasticsearch-client.elk.svc.cluster.local
+  host: elasticsearch-client.default.svc.cluster.local
   port: 9200
 
 ## ref: https://github.com/elastic/logstash-docker/blob/master/build/logstash/env2yaml/env2yaml.go

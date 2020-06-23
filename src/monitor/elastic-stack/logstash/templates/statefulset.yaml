@@ -11,7 +11,7 @@ metadata:
     heritage: Helm
 spec:
   serviceName: logstash-2-4-0
-  replicas: 1
+  replicas: 2
   podManagementPolicy: OrderedReady
   selector:
     matchLabels:
@@ -61,7 +61,7 @@ spec:
               value: "9600"
             ## Elasticsearch output
             - name: ELASTICSEARCH_HOST
-              value: "elasticstack-0-11-1-elasticsearch-client.elk.svc.cluster.local"
+              value: "elasticsearch-client.default.svc.cluster.local"
             - name: ELASTICSEARCH_PORT
               value: "9200"
             # Logstash Java Options

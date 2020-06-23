@@ -109,7 +109,7 @@ cluster:
 
 client:
   name: client
-  replicas: 1
+  replicas: 2
   serviceType: ClusterIP
   ## If coupled with serviceType = "NodePort", this will set a specific nodePort to the client HTTP port
   # httpNodePort: 30920
@@ -171,7 +171,7 @@ client:
 master:
   name: master
   exposeHttp: false
-  replicas: 1
+  replicas: 2
   heapSize: "512m"
   # additionalJavaOpts: "-XX:MaxRAM=512m"
   persistence:
@@ -225,7 +225,7 @@ master:
 data:
   name: data
   exposeHttp: false
-  replicas: 1
+  replicas: 3
   heapSize: "512m"
   # additionalJavaOpts: "-XX:MaxRAM=1536m"
   persistence:
