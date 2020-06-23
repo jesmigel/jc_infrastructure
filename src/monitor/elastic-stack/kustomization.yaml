@@ -17,8 +17,6 @@ resources:
   - charts/elasticsearch/templates/client-svc.yaml
   - charts/elasticsearch/templates/master-statefulset.yaml
   - charts/elasticsearch/templates/client-deployment.yaml
-  - charts/elasticsearch/templates/tests
-  - charts/elasticsearch/templates/tests/test-configmap.yaml
   - charts/elasticsearch/templates/configmap.yaml
   - charts/elasticsearch/templates/master-serviceaccount.yaml
   - charts/elasticsearch/templates/data-serviceaccount.yaml
