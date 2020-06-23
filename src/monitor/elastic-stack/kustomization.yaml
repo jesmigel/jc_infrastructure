@@ -1,5 +1,14 @@
 resources:
   - ns.yaml
+  - elasticsearch/templates/client-serviceaccount.yaml
+  - elasticsearch/templates/data-statefulset.yaml
+  - elasticsearch/templates/master-svc.yaml
+  - elasticsearch/templates/client-svc.yaml
+  - elasticsearch/templates/master-statefulset.yaml
+  - elasticsearch/templates/client-deployment.yaml
+  - elasticsearch/templates/configmap.yaml
+  - elasticsearch/templates/master-serviceaccount.yaml
+  - elasticsearch/templates/data-serviceaccount.yaml
   - logstash/templates/files-config.yaml
   - logstash/templates/service.yaml
   - logstash/templates/poddisruptionbudget.yaml
