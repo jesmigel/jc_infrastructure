@@ -18,7 +18,7 @@ spec:
       release: elasticstack-0-11-1
       role: data
   serviceName: elasticstack-0-11-1-elasticsearch-data
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
