@@ -1,11 +1,11 @@
 ---
-# Source: elastic-stack/charts/elasticsearch/templates/client-deployment.yaml
+# Source: elasticsearch/templates/client-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     app: elasticsearch
-    chart: elasticsearch-1.32.0
+    chart: elasticsearch-1.32.5
     component: "client"
     heritage: Helm
     release: elasticstack-0-11-1
@@ -16,7 +16,7 @@ spec:
       app: elasticsearch
       component: "client"
       release: elasticstack-0-11-1
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -24,7 +24,7 @@ spec:
         component: "client"
         release: elasticstack-0-11-1
       annotations:
-        checksum/config: 0d1117a35946dc9f16886c9b336bd307f9da2f24ed775ad58bba02ad7b27c11d
+        checksum/config: 5096d402216a4e2f7a9c2a9e9cb4a22d635be5dc4d518bf0685ec22585d14a6f
     spec:
       serviceAccountName: elasticstack-0-11-1-elasticsearch-client
       securityContext:
@@ -47,7 +47,12 @@ spec:
         image: "busybox:latest"
         imagePullPolicy: "Always"
         resources:
-            {}
+            limits:
+              cpu: 25m
+              memory: 128Mi
+            requests:
+              cpu: 25m
+              memory: 128Mi
         command: ["sysctl", "-w", "vm.max_map_count=262144"]
         securityContext:
           privileged: true
@@ -67,14 +72,14 @@ spec:
         - name: ES_JAVA_OPTS
           value: "-Djava.net.preferIPv4Stack=true -Xms512m -Xmx512m  "
         - name: MINIMUM_MASTER_NODES
-          value: "2"
+          value: "1"
         resources:
             limits:
-              cpu: 1
-              memory: 512M
+              cpu: "1"
+              memory: 1024Mi
             requests:
-              cpu: "0.5"
-              memory: 512M
+              cpu: 25m
+              memory: 512Mi
         readinessProbe:
           httpGet:
             path: /_cluster/health
@@ -85,7 +90,7 @@ spec:
             path: /_cluster/health?local=true
             port: 9200
           initialDelaySeconds: 90
-        image: "docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.2"
+        image: "docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.6"
         imagePullPolicy: "IfNotPresent"
         ports:
         - containerPort: 9200

@@ -47,28 +47,21 @@ helm template logstash-7-8-0 elastic/logstash \
 
 ## Initialisation - CNCF
 ```bash
-# Elastic stack
-helm template elasticstack-0-11-1 stable/elastic-stack \
+# Get Sources - Update as needed
+curl -L https://raw.githubusercontent.com/helm/charts/master/stable/elasticsearch/values.yaml > values/elasticsearch.yaml
+curl -L https://raw.githubusercontent.com/helm/charts/master/stable/logstash/values.yaml > values/logstash.yaml
+
+# Elastic search
+helm template elasticstack-0-11-1 stable/elasticsearch \
 --set namespace=elk \
---set elasticsearch.client.resources.requests.cpu="0.5" \
---set elasticsearch.client.resources.requests.memory="512M" \
---set elasticsearch.client.resources.limits.cpu="1" \
---set elasticsearch.client.resources.limits.memory="512M" \
---set elasticsearch.client.resources.requests.cpu="0.5" \
---set elasticsearch.master.resources.requests.memory="512M" \
---set elasticsearch.master.resources.limits.cpu="1" \
---set elasticsearch.master.resources.limits.memory="512M" \
---set elasticsearch.master.resources.requests.cpu="0.5" \
---set elasticsearch.data.resources.requests.memory="512M" \
---set elasticsearch.data.resources.limits.cpu="1" \
---set elasticsearch.data.resources.limits.memory="512M" \
---set elasticsearch.client.replicas=1 \
---set elasticsearch.master.replicas=1 \
---set elasticsearch.data.replicas=1 \
---set kibana.ingress.enabled="true" \
---set kibana.ingress.hosts={"elk.local-1.vm"} \
+-f values/elasticsearch.yaml \
 --output-dir .
 
+# Logstash
+helm template logstash-2-4-0 stable/logstash \
+--set namespace=elk \
+-f values/logstash.yaml \
+--output-dir .
 ```
 
 

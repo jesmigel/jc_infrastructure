@@ -1,13 +1,13 @@
 ---
-# Source: elastic-stack/charts/logstash/templates/pipeline-config.yaml
+# Source: logstash/templates/pipeline-config.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: elasticstack-0-11-1-logstash-pipeline
+  name: logstash-2-4-0-pipeline
   labels:
     app: logstash
-    chart: logstash-2.3.0
-    release: elasticstack-0-11-1
+    chart: logstash-2.4.0
+    release: logstash-2-4-0
     heritage: Helm
 data:
   input_main.conf: |-

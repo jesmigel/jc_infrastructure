@@ -1,11 +1,11 @@
 ---
-# Source: elastic-stack/charts/elasticsearch/templates/master-statefulset.yaml
+# Source: elasticsearch/templates/master-statefulset.yaml
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
     app: elasticsearch
-    chart: elasticsearch-1.32.0
+    chart: elasticsearch-1.32.5
     component: "master"
     heritage: Helm
     release: elasticstack-0-11-1
@@ -14,9 +14,11 @@ spec:
   selector:
     matchLabels:
       app: elasticsearch
+      component: "master"
       release: elasticstack-0-11-1
+      role: master
   serviceName: elasticstack-0-11-1-elasticsearch-master
-  replicas: 1
+  replicas: 3
   template:
     metadata:
       labels:
@@ -46,15 +48,25 @@ spec:
         image: "busybox:latest"
         imagePullPolicy: "Always"
         resources:
-            {}
+            limits:
+              cpu: 25m
+              memory: 128Mi
+            requests:
+              cpu: 25m
+              memory: 128Mi
         command: ["sysctl", "-w", "vm.max_map_count=262144"]
         securityContext:
           privileged: true
       - name: "chown"
-        image: "docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.2"
+        image: "docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.6"
         imagePullPolicy: "IfNotPresent"
         resources:
-            {}
+            limits:
+              cpu: 25m
+              memory: 128Mi
+            requests:
+              cpu: 25m
+              memory: 128Mi
         command:
         - /bin/bash
         - -c
@@ -88,20 +100,20 @@ spec:
         - name: ES_JAVA_OPTS
           value: "-Djava.net.preferIPv4Stack=true -Xms512m -Xmx512m  "
         - name: MINIMUM_MASTER_NODES
-          value: "2"
+          value: "1"
         resources:
             limits:
-              cpu: 1
-              memory: 512M
+              cpu: "1"
+              memory: 1024Mi
             requests:
-              cpu: "0.5"
-              memory: 512M
+              cpu: 25m
+              memory: 512Mi
         readinessProbe:
           httpGet:
             path: /_cluster/health?local=true
             port: 9200
           initialDelaySeconds: 5
-        image: "docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.2"
+        image: "docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.6"
         imagePullPolicy: "IfNotPresent"
         ports:
         - containerPort: 9300
