@@ -19,6 +19,3 @@ spec:
             backend:
               serviceName: bitnami-wordpress-9-3-15
               servicePort: http
-  tls:
-    - hosts:
-      - wpblog.local-1.vm
