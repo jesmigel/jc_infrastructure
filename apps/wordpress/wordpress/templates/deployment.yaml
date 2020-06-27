@@ -3,7 +3,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wp1.local-1.vm
+  name: bitnami-wordpress-9-3-15
   labels:
     app.kubernetes.io/name: wordpress
     helm.sh/chart: wordpress-9.3.15
@@ -57,7 +57,7 @@ spec:
             - name: WORDPRESS_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: wp1.local-1.vm
+                  name: bitnami-wordpress-9-3-15
                   key: wordpress-password
             - name: WORDPRESS_EMAIL
               value: "user@example.com"
@@ -112,4 +112,4 @@ spec:
       volumes:
         - name: wordpress-data
           persistentVolumeClaim:
-            claimName: wp1.local-1.vm
+            claimName: bitnami-wordpress-9-3-15
