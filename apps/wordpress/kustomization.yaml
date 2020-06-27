@@ -1,6 +1,5 @@
 resources:
   - ns.yaml
-  - kustomization.yaml
   - pv.wordpress.yaml
   - pv.mariadb.yaml
   - wordpress/charts/mariadb/templates/tests.yaml
