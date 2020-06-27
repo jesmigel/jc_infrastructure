@@ -1,0 +1,20 @@
+---
+# Source: harbor/templates/jobservice/jobservice-cm-env.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "stable-harbor-1-4-0-harbor-jobservice-env"
+  labels:
+    heritage: Helm
+    release: stable-harbor-1-4-0
+    chart: harbor
+    app: "harbor"
+data:
+  CORE_URL: "http://stable-harbor-1-4-0-harbor-core:80"
+  TOKEN_SERVICE_URL: "http://stable-harbor-1-4-0-harbor-core:80/service/token"
+  REGISTRY_URL: "http://stable-harbor-1-4-0-harbor-registry:5000"
+  REGISTRY_CONTROLLER_URL: "http://stable-harbor-1-4-0-harbor-registry:8080"
+  REGISTRY_CREDENTIAL_USERNAME: "harbor_registry_user"
+  HTTP_PROXY: ""
+  HTTPS_PROXY: ""
+  NO_PROXY: "stable-harbor-1-4-0-harbor-core,stable-harbor-1-4-0-harbor-jobservice,stable-harbor-1-4-0-harbor-database,stable-harbor-1-4-0-harbor-chartmuseum,stable-harbor-1-4-0-harbor-clair,stable-harbor-1-4-0-harbor-notary-server,stable-harbor-1-4-0-harbor-notary-signer,stable-harbor-1-4-0-harbor-registry,stable-harbor-1-4-0-harbor-portal,127.0.0.1,localhost,.local,.internal"

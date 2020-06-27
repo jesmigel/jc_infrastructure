@@ -1,0 +1,75 @@
+---
+# Source: harbor/templates/chartmuseum/chartmuseum-dpl.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "stable-harbor-1-4-0-harbor-chartmuseum"
+  labels:
+    heritage: Helm
+    release: stable-harbor-1-4-0
+    chart: harbor
+    app: "harbor"
+    component: chartmuseum
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      release: stable-harbor-1-4-0
+      app: "harbor"
+      component: chartmuseum
+  template:
+    metadata:
+      labels:
+        heritage: Helm
+        release: stable-harbor-1-4-0
+        chart: harbor
+        app: "harbor"
+        component: chartmuseum
+      annotations:
+        checksum/configmap: f1ee4da2d49335b3fd0fda581a0c7038a4e348d91986e69f1a3e6755157540bc
+        checksum/secret: d4159d303e7540d91b820cfe2274fbe2258cb3e492b31204cf5f02c990d6c110
+        checksum/secret-core: f078202db6f4002c423989a7e73926d693f7564ac76beea81449909b62211185
+    spec:
+      securityContext:
+        fsGroup: 10000
+      containers:
+      - name: chartmuseum
+        image: goharbor/chartmuseum-photon:v2.0.0
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /health
+            scheme: HTTP
+            port: 9999
+          initialDelaySeconds: 300
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            scheme: HTTP
+            port: 9999
+          initialDelaySeconds: 1
+          periodSeconds: 10
+        envFrom:
+        - configMapRef:
+            name: "stable-harbor-1-4-0-harbor-chartmuseum"
+        - secretRef:
+            name: "stable-harbor-1-4-0-harbor-chartmuseum"
+        env:
+          - name: BASIC_AUTH_PASS
+            valueFrom:
+              secretKeyRef:
+                name: stable-harbor-1-4-0-harbor-core
+                key: secret
+        ports:
+        - containerPort: 9999
+        volumeMounts:
+        - name: chartmuseum-data
+          mountPath: /chart_storage
+          subPath: 
+      volumes:
+      - name: chartmuseum-data
+        persistentVolumeClaim:
+          claimName: stable-harbor-1-4-0-harbor-chartmuseum

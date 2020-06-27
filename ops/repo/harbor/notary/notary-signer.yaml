@@ -1,0 +1,60 @@
+---
+# Source: harbor/templates/notary/notary-signer.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stable-harbor-1-4-0-harbor-notary-signer
+  labels:
+    heritage: Helm
+    release: stable-harbor-1-4-0
+    chart: harbor
+    app: "harbor"
+    component: notary-signer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      release: stable-harbor-1-4-0
+      app: "harbor"
+      component: notary-signer
+  template:
+    metadata:
+      labels:
+        heritage: Helm
+        release: stable-harbor-1-4-0
+        chart: harbor
+        app: "harbor"
+        component: notary-signer
+      annotations:
+        checksum/secret: a742444522a3c85c42633d5bee943a631362fe1db6ec7e4d42d15636bf136757
+    spec:
+      securityContext:
+        fsGroup: 10000
+      containers:
+      - name: notary-signer
+        image: goharbor/notary-signer-photon:v2.0.0
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MIGRATIONS_PATH
+          value: migrations/signer/postgresql
+        - name: DB_URL
+          value: postgres://postgres:changeit@stable-harbor-1-4-0-harbor-database:5432/notarysigner?sslmode=disable
+        - name: NOTARY_SIGNER_DEFAULTALIAS
+          value: defaultalias
+        volumeMounts:
+        - name: config
+          mountPath: /etc/notary/signer-config.postgres.json
+          subPath: signer.json
+        - name: signer-certificate
+          mountPath: /etc/ssl/notary/tls.crt
+          subPath: tls.crt
+        - name: signer-certificate
+          mountPath: /etc/ssl/notary/tls.key
+          subPath: tls.key
+      volumes:
+      - name: config
+        secret:
+          secretName: "stable-harbor-1-4-0-harbor-notary-server"
+      - name: signer-certificate
+        secret:
+          secretName: stable-harbor-1-4-0-harbor-notary-server

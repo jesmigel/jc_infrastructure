@@ -1,0 +1,13 @@
+---
+# Source: logstash/templates/files-config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-2-4-0-files
+  labels:
+    app: logstash
+    chart: logstash-2.4.0
+    release: logstash-2-4-0
+    heritage: Helm
+data:
+binaryData:

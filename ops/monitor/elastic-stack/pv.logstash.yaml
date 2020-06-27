@@ -1,0 +1,36 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: logstash-data-1
+  labels:
+    app: "logstash-7-8-0-logstash"
+    chart: "logstash"
+    heritage: "Helm"
+    release: "logstash-7-8-0"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 2Gi
+  nfs:
+    server: 10.8.41.10
+    path: /mnt/sharedfolder/elastic-stack/logstash/data/1
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: logstash-data-2
+  labels:
+    app: "logstash-7-8-0-logstash"
+    chart: "logstash"
+    heritage: "Helm"
+    release: "logstash-7-8-0"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 2Gi
+  nfs:
+    server: 10.8.41.10
+    path: /mnt/sharedfolder/elastic-stack/logstash/data/2

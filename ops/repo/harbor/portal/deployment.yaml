@@ -1,0 +1,55 @@
+---
+# Source: harbor/templates/portal/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "stable-harbor-1-4-0-harbor-portal"
+  labels:
+    heritage: Helm
+    release: stable-harbor-1-4-0
+    chart: harbor
+    app: "harbor"
+    component: portal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      release: stable-harbor-1-4-0
+      app: "harbor"
+      component: portal
+  template:
+    metadata:
+      labels:
+        release: stable-harbor-1-4-0
+        app: "harbor"
+        component: portal
+      annotations:
+    spec:
+      containers:
+      - name: portal
+        image: goharbor/harbor-portal:v2.0.0
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /
+            scheme: HTTP
+            port: 8080
+          initialDelaySeconds: 300
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            scheme: HTTP
+            port: 8080
+          initialDelaySeconds: 1
+          periodSeconds: 10
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: portal-config
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+      volumes:
+      - name: portal-config
+        configMap:
+          name: "stable-harbor-1-4-0-harbor-portal"
