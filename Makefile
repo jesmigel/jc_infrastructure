@@ -26,7 +26,8 @@ kubespray_sync:
 
 vagrant: up status
 
-up: up_k8 up_ng
+up: up_k8 up_ng up_dns
+up_dns: build_dns_ng build_dns_ng
 
 init-ssh:
 	@cd $(_VAGRANT_K8S) && vagrant ssh-config > $(PWD)/$(_VAGRANT_SSH_CONFIG)
@@ -35,8 +36,8 @@ down: down_ng down_k8
 
 build: build_ng build_k8 k8_inventory cluster build_dns_k8s build_dns_ng
 
-clean: clean_ng clean_k8 clean_dns_k8s clean_dns_ng
-
+clean: clean_ng clean_k8 clean_dns
+clean_dns: clean_dns_k8s clean_dns_ng
 status: status_k8 status_ng status_dns_k8s status_dns_ng
 
 up_k8:
