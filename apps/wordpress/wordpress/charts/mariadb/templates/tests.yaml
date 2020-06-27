@@ -1,0 +1,11 @@
+---
+# Source: wordpress/charts/mariadb/templates/tests.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bitnami-wordpress-9-3-15-mariadb-tests
+data:
+  run.sh: |-
+    @test "Testing MariaDB is accessible" {
+      mysql -h bitnami-wordpress-9-3-15-mariadb -uroot -p$MARIADB_ROOT_PASSWORD -e 'show databases;'
+    }

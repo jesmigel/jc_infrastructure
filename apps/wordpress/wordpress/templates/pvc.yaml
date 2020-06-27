@@ -1,0 +1,17 @@
+---
+# Source: wordpress/templates/pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: wp1.local-1.vm
+  labels:
+    app.kubernetes.io/name: wordpress
+    helm.sh/chart: wordpress-9.3.15
+    app.kubernetes.io/instance: bitnami-wordpress-9-3-15
+    app.kubernetes.io/managed-by: Helm
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "10Gi"

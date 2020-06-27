@@ -21,5 +21,5 @@ helm template stable-vault-0-6-0 hashicorp/vault \
 -n vault --output-dir .
 
 # Manual Activation - REMEMBER to save the root token and unseal keys!!!
-kubectl exec -ti vault-0 -- vault operator init
+kubectl -n vault exec -ti vault-0 -- vault operator init
 ```
