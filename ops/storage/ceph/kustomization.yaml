@@ -1,6 +1,7 @@
 resources:
-  - ceph-clusterrole.yaml
-  - ceph-clusterrolebinding.yaml
-  - ceph-role.yaml
-  - ceph-rolebinding.yaml
-  - ceph-deployment.yaml
+  - ceph-provisioner.yaml
+#  - ceph-clusterrole.yaml
+#  - ceph-clusterrolebinding.yaml
+#  - ceph-role.yaml
+#  - ceph-rolebinding.yaml
+#  - ceph-deployment.yaml
