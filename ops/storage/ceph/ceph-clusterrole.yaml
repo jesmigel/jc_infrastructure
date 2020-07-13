@@ -2,8 +2,8 @@
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: rbd-provisioner
-  namespace: kube-system
+  name: cephfs-provisioner
+  namespace: cephfs
 rules:
   - apiGroups: [""]
     resources: ["persistentvolumes"]
@@ -21,6 +21,3 @@ rules:
     resources: ["services"]
     resourceNames: ["kube-dns","coredns"]
     verbs: ["list", "get"]
-  - apiGroups: [""]
-    resources: ["endpoints"]
-    verbs: ["get", "list", "watch", "create", "update", "patch"]

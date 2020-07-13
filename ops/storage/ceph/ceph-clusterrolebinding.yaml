@@ -1,14 +1,13 @@
 ---
-kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
 metadata:
-  name: rbd-provisioner
-  namespace: kube-system
-subjects:
-  - kind: ServiceAccount
-    name: rbd-provisioner
-    namespace: kube-system
-roleRef:
-  kind: ClusterRole
-  name: rbd-provisioner
-  apiGroup: rbac.authorization.k8s.io
+  name: cephfs-provisioner
+  namespace: cephfs
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["create", "get", "delete"]
+  - apiGroups: [""]
+    resources: ["endpoints"]
+    verbs: ["get", "list", "watch", "create", "update", "patch"]
