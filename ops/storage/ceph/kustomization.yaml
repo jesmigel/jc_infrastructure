@@ -1,5 +1,4 @@
 resources:
-  - ns.yaml
   - ceph-clusterrole.yaml
   - ceph-clusterrolebinding.yaml
   - ceph-role.yaml
