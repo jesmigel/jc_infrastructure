@@ -11,11 +11,6 @@ data:
     - type: git
       url: https://github.com/jesmigel/jc_infrastructure.git
   resource.customizations: |
-    networking.k8s.io/v1beta1:
-      health.lua: |
-        hs = {}
-        hs.status = "Healthy"
-        return hs
     extensions/Ingress:
       health.lua: |
         hs = {}
