@@ -624,46 +624,53 @@ aggregationRule:
   clusterRoleSelectors:
   - matchLabels:
       rbac.ceph.rook.io/aggregate-to-rbd-csi-nodeplugin: "true"
-rules:	
-  - apiGroups:	
-      - ''	
-    resources:	
-      - nodes	
-    verbs:	
-      - get	
-      - list	
-      - update	
-  - apiGroups:	
-      - ''	
-    resources:	
-      - namespaces	
-    verbs:	
-      - get	
-      - list	
-  - apiGroups:	
-      - ''	
-    resources:	
-      - persistentvolumes	
-    verbs:	
-      - get	
-      - list	
-      - watch	
-      - update	
-  - apiGroups:	
-      - storage.k8s.io	
-    resources:	
-      - volumeattachments	
-    verbs:	
-      - get	
-      - list	
-      - watch	
-      - update	
-  - apiGroups:	
-      - ''	
-    resources:	
-      - configmaps	
-    verbs:	
-      - get	
+rules:
+  - apiGroups:
+      - ''
+    resources:
+      - secrets
+    verbs:
+      - get
+      - list
+  - apiGroups:
+      - ''
+    resources:
+      - nodes
+    verbs:
+      - get
+      - list
+      - update
+  - apiGroups:
+      - ''
+    resources:
+      - namespaces
+    verbs:
+      - get
+      - list
+  - apiGroups:
+      - ''
+    resources:
+      - persistentvolumes
+    verbs:
+      - get
+      - list
+      - watch
+      - update
+  - apiGroups:
+      - storage.k8s.io
+    resources:
+      - volumeattachments
+    verbs:
+      - get
+      - list
+      - watch
+      - update
+  - apiGroups:
+      - ''
+    resources:
+      - configmaps
+    verbs:
+      - get
       - list
 ---
 # Source: rook-ceph/templates/clusterrole.yaml
