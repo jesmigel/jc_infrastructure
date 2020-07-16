@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: operations
+  namespace: argocd
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - namespace: '*'
+    server: '*'
+  orphanedResources:
+    warn: false
+  roles:
+  - name: deployer
+    policies:
+    - p, proj:operations:deployer, applications, *, operations/*, allow

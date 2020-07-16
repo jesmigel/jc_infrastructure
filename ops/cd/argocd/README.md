@@ -16,7 +16,7 @@ PODNAME=$(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o 
 kubectl -n argocd exec -it $PODNAME bash
 
 # Login
-argocd login argocd-server --name admin --password $PODNAME
+argocd login argocd-server --name admin --password `hostname`
 
 # Reset Password
 argocd account update-password
