@@ -264,47 +264,48 @@ aggregationRule:
   clusterRoleSelectors:
   - matchLabels:
       rbac.ceph.rook.io/aggregate-to-rook-ceph-mgr-cluster: "true"
-rules:	
-  - apiGroups:	
-      - ''	
-    resources:	
-      - nodes	
-    verbs:	
-      - get	
-      - list	
-      - update	
-  - apiGroups:	
-      - ''	
-    resources:	
-      - namespaces	
-    verbs:	
-      - get	
-      - list	
-  - apiGroups:	
-      - ''	
-    resources:	
-      - persistentvolumes	
-    verbs:	
-      - get	
-      - list	
-      - watch	
-      - update	
-  - apiGroups:	
-      - storage.k8s.io	
-    resources:	
-      - volumeattachments	
-    verbs:	
-      - get	
-      - list	
-      - watch	
-      - update	
-  - apiGroups:	
-      - ''	
-    resources:	
-      - configmaps	
-    verbs:	
-      - get	
+rules:
+  - apiGroups:
+      - ''
+    resources:
+      - configmaps
+      - nodes
+      - nodes/proxy
+    verbs:
+      - get
       - list
+      - watch
+  - apiGroups:
+      - ''
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+      - list
+      - get
+      - watch
+  - apiGroups:
+      - ''
+    resources:
+      - secrets
+      - configmaps
+    verbs:
+      - '*'
+  - apiGroups:
+      - storage.k8s.io
+    resources:
+      - storageclasses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - objectbucket.io
+    resources:
+      - '*'
+    verbs:
+      - '*'
 ---
 # Source: rook-ceph/templates/clusterrole.yaml
 kind: ClusterRole
@@ -347,47 +348,15 @@ aggregationRule:
   clusterRoleSelectors:
   - matchLabels:
       rbac.ceph.rook.io/aggregate-to-rook-ceph-mgr-system: "true"
-rules:	
-  - apiGroups:	
-      - ''	
-    resources:	
-      - nodes	
-    verbs:	
-      - get	
-      - list	
-      - update	
-  - apiGroups:	
-      - ''	
-    resources:	
-      - namespaces	
-    verbs:	
-      - get	
-      - list	
-  - apiGroups:	
-      - ''	
-    resources:	
-      - persistentvolumes	
-    verbs:	
-      - get	
-      - list	
-      - watch	
-      - update	
-  - apiGroups:	
-      - storage.k8s.io	
-    resources:	
-      - volumeattachments	
-    verbs:	
-      - get	
-      - list	
-      - watch	
-      - update	
-  - apiGroups:	
-      - ''	
-    resources:	
-      - configmaps	
-    verbs:	
-      - get	
+rules:
+  - apiGroups:
+      - ''
+    resources:
+      - configmaps
+    verbs:
+      - get
       - list
+      - watch
 ---
 # Source: rook-ceph/templates/clusterrole.yaml
 kind: ClusterRole
@@ -801,47 +770,15 @@ aggregationRule:
   clusterRoleSelectors:
   - matchLabels:
       rbac.ceph.rook.io/aggregate-to-rook-ceph-system-psp-user: "true"
-rules:	
-  - apiGroups:	
-      - ''	
-    resources:	
-      - nodes	
-    verbs:	
-      - get	
-      - list	
-      - update	
-  - apiGroups:	
-      - ''	
-    resources:	
-      - namespaces	
-    verbs:	
-      - get	
-      - list	
-  - apiGroups:	
-      - ''	
-    resources:	
-      - persistentvolumes	
-    verbs:	
-      - get	
-      - list	
-      - watch	
-      - update	
-  - apiGroups:	
-      - storage.k8s.io	
-    resources:	
-      - volumeattachments	
-    verbs:	
-      - get	
-      - list	
-      - watch	
-      - update	
-  - apiGroups:	
-      - ''	
-    resources:	
-      - configmaps	
-    verbs:	
-      - get	
-      - list
+rules:
+  - apiGroups:
+      - policy
+    resourceNames:
+      - 00-rook-ceph-operator
+    resources:
+      - podsecuritypolicies
+    verbs:
+      - use
 ---
 # Source: rook-ceph/templates/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
