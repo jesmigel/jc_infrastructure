@@ -8,6 +8,6 @@ resources:
   - rook-ceph/templates/psp.yaml
   - rook-ceph/templates/clusterrolebinding.yaml
   - rook-ceph/templates/rolebinding.yaml
-  - ceph/common.yaml
-  - ceph/operator.yaml
+#  - ceph/common.yaml
+#  - ceph/operator.yaml
   - ceph/cluster.yaml
