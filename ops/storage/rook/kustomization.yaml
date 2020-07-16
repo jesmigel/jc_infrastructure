@@ -1,0 +1,13 @@
+resources:
+  - rook-ceph-ns.yaml
+  - rook-ceph/templates/deployment.yaml
+  - rook-ceph/templates/role.yaml
+  - rook-ceph/templates/resources.yaml
+  - rook-ceph/templates/clusterrole.yaml
+  - rook-ceph/templates/serviceaccount.yaml
+  - rook-ceph/templates/psp.yaml
+  - rook-ceph/templates/clusterrolebinding.yaml
+  - rook-ceph/templates/rolebinding.yaml
+  - ceph/common.yaml
+  - ceph/operator.yaml
+  - ceph/cluster.yaml
