@@ -11,3 +11,4 @@ resources:
 #  - ceph/common.yaml
 #  - ceph/operator.yaml
   - ceph/cluster.yaml
+  - ing.yaml
