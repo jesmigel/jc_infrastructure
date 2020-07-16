@@ -14,5 +14,5 @@ spec:
   capacity:
     storage: 10Gi
   nfs:
-    server: 10.8.41.10
+    server: 10.8.41.11
     path: /mnt/sharedfolder/vault/data

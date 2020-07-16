@@ -2,26 +2,6 @@
 # vi: set ft=ruby :
 
 require 'yaml'
-script = {}
-script['kubernetes'] = <<-SCRIPT
-# SWAP off
-swapoff -a
-# Set Timezone
-timedatectl set-timezone Australia/Melbourne
-# Prepare package manager
-apt-get update
-SCRIPT
-
-script['proxy'] = <<-SCRIPT
-# Set Timezone
-timedatectl set-timezone Australia/Melbourne
-# Prepare package manager
-apt-get update
-# NGINX
-/mnt/init/nginx.sh
-# NFS - host(Laptop) guest(Vagrant virtualbox vm)
-/mnt/init/nfs.sh
-SCRIPT
 
 # IMPORT VAGRANT VARIABLES
 config_file=File.expand_path(File.join(File.dirname(__FILE__), 'vagrant_variables.yaml'))

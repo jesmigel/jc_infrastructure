@@ -18,6 +18,8 @@ nodes:
       timedatectl set-timezone Australia/Melbourne
       # Prepare package manager
       apt-get update
+      # NFS client
+      apt-get -y install nfs-client
     disks:
       size: 60
       instances: 1
