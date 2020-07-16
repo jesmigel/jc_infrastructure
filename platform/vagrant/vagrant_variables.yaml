@@ -1,0 +1,60 @@
+# GLOBAL VAGRANT SETTINGS
+global:
+  api_version: 2
+  network:
+    subnet: 10.8.41
+  plugins:
+    - dns
+    - vagrant-disksize
+
+nodes:  
+# KUBERNETES
+  kubernetes:
+    cpu: 4
+    bootstrap: |
+      # SWAP off
+      swapoff -a
+      # Set Timezone
+      timedatectl set-timezone Australia/Melbourne
+      # Prepare package manager
+      apt-get update
+    disks:
+      size: 60
+      instances: 1
+    gui: false
+    instances: 3
+    memory: 6144
+    mounts: []
+    network: 100
+    node_prefix: k8s
+    os: ubuntu/bionic64
+
+  # PROXY
+  proxy:
+    cpu: 1
+    bootstrap: |
+      # Set Timezone
+      timedatectl set-timezone Australia/Melbourne
+      # Prepare package manager
+      apt-get update
+      # NGINX
+      /mnt/init/nginx.sh
+      # NFS - host(Laptop) guest(Vagrant virtualbox vm)
+      /mnt/init/nfs.sh
+    disks: {}
+    gui: false
+    instances: 1
+    memory: 256
+    mounts:
+      - host: ./data/conf.d
+        guest: /etc/nginx/conf.d/
+      - host: ./data/certs
+        guest: /etc/letsencrypt/live/
+      - host: ./data/mnt/sharedfolder
+        guest: /mnt/sharedfolder
+      - host: ./init
+        guest: /mnt/init/
+    network: 10
+    node_prefix: local
+    os: ubuntu/bionic64
+

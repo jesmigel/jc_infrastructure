@@ -1,0 +1,101 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+require 'yaml'
+script = {}
+script['kubernetes'] = <<-SCRIPT
+# SWAP off
+swapoff -a
+# Set Timezone
+timedatectl set-timezone Australia/Melbourne
+# Prepare package manager
+apt-get update
+SCRIPT
+
+script['proxy'] = <<-SCRIPT
+# Set Timezone
+timedatectl set-timezone Australia/Melbourne
+# Prepare package manager
+apt-get update
+# NGINX
+/mnt/init/nginx.sh
+# NFS - host(Laptop) guest(Vagrant virtualbox vm)
+/mnt/init/nfs.sh
+SCRIPT
+
+# IMPORT VAGRANT VARIABLES
+config_file=File.expand_path(File.join(File.dirname(__FILE__), 'vagrant_variables.yaml'))
+settings=YAML.load_file(config_file)
+
+# SETTINGS BREAKDOWN
+global=settings['global']
+nodes=settings['nodes']
+# k8s=settings['k8s']
+# proxy=settings['proxy']
+
+Vagrant.configure(global['api_version']) do |config|
+    # install external plugins
+    config.vagrant.plugins = global['plugins']
+
+    # always use Vagrants insecure key
+    config.ssh.insert_key = false
+
+    config.dns.tld = "vm"
+
+    nodes.each do | group_name, group_config |
+        (1..group_config['instances']).each do | i |
+            config.vm.define vm_name = "%s-%01d" % [group_config['node_prefix'], i] do | node |
+                node.vm.box = group_config['os']
+                node.vm.hostname = vm_name
+                node.dns.patterns = [/^(\w+\.)*#{vm_name}\.vm$/]
+    
+                ip = "#{global['network']['subnet']}.#{i+group_config['network']}"
+                node.vm.network :private_network, ip: ip
+    
+                node.vm.provider :virtualbox do | vb |
+                    vb.memory = group_config['memory']
+                    vb.cpus = group_config['cpu']
+                    vb.gui = group_config['gui']
+                    vb.linked_clone = true
+                    vb.customize ["modifyvm", :id, "--vram", "8"] # ubuntu defaults to 256 MB which is a waste of precious RAM
+
+                    # ADDITIONAL DISKS
+                    driverletters = ('c'..'z').to_a
+                    if group_config['disks'].include? 'instances'
+                        (1..group_config['disks']['instances']).each do | disk_index |
+                            # Create our own controller for consistency and to remove VM dependency
+                            # unless File.exist?("data/disks/disk-#{disk_index}.vdi")
+                            #     # Adding OSD Controller;
+                            #     # once the first disk is there assuming we don't need to do this
+                            #     vb.customize ['storagectl', :id,
+                            #     '--name', 'OSD',
+                            #     '--add', 'scsi']
+                            # end
+                            disk = "data/disks/disk-#{i}-#{disk_index}"
+                            vb.customize ['createhd',
+                                        '--filename', disk,
+                                        '--size', group_config['disks']['size'] * 1024 ] unless File.exist?("#{disk}.vdi")
+                            
+                            vb.customize ['storageattach', :id,
+                                            '--storagectl', 'SCSI',
+                                            '--port', 2 + disk_index,
+                                            '--device', 0,
+                                            '--type', 'hdd',
+                                            '--medium', "#{disk}.vdi"]
+                        end
+                    end
+                end
+
+                # MOUNT FILES
+                group_config['mounts'].each do | mount |
+                    node.vm.synced_folder mount['host'], mount['guest'],
+                        type: "sshfs", 
+                        sshfs_opts_append: "-o nonempty -o cache=no"
+                end
+
+                # BOOTSTRAP NODE
+                node.vm.provision "shell", inline: group_config['bootstrap']
+            end
+        end
+    end
+end

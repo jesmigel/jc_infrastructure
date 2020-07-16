@@ -37,28 +37,23 @@ Vagrant.configure("2") do |config|
     type: "sshfs", 
     sshfs_opts_append: "-o nonempty -o cache=no"
 
-    node.vm.synced_folder "./data/mnt", "/mnt/", 
-    type: "rsync",
-    owner: "nobody",
-    group: "nogroup"
-    # sshfs_opts_append: "-o nonempty -o cache=no"
+    node.vm.synced_folder "./data/mnt/sharedfolder", "/mnt/sharedfolder", 
+    type: "sshfs", 
+    sshfs_opts_append: "-o nonempty -o cache=no"
+
+    node.vm.synced_folder "./init", "/mnt/init/", 
+    type: "sshfs", 
+    sshfs_opts_append: "-o nonempty -o cache=no"
 
     node.vm.provision "shell", inline: <<-SHELL
       apt-get update
-      apt-get -y install nginx
-      # openssl genrsa 2048 > server.key
-      # openssl req -new -key server.key -subj "/C=AU/ST=Home/L=Laptop/O=Personal/OU=Local Machine/CN=local-1.vm" > server.csr
-      # openssl x509 -days 3650 -req -signkey server.key < server.csr > server.crt
-      # mv server.* /etc/letsencrypt/live/
 
-      # TEMPORARY NFS
-      apt-get install -y nfs-kernel-server
-      mkdir -p /mnt/sharedfolder
-      # chown nobody:nogroup /mnt/sharedfolder
-      chmod 777 /mnt/sharedfolder
-      echo '/mnt/sharedfolder *(rw,fsid=1,sync,no_subtree_check,no_root_squash,insecure)' > /etc/exports
-      exportfs -vfa
-      systemctl restart nfs-server
+      # NGINX
+      /mnt/init/nginx.sh
+
+      # NFS - host(Laptop) guest(Vagrant virtualbox vm)
+      /mnt/init/nfs.sh
+      
     SHELL
   end
 end
