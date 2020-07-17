@@ -1,8 +1,0 @@
-resources:
-  - ns.yaml
-  - ceph-clusterrole.yaml
-  - ceph-clusterrolebinding.yaml
-  - ceph-role.yaml
-  - ceph-rolebinding.yaml
-  - ceph-sa.yaml
-  - ceph-deployment.yaml
