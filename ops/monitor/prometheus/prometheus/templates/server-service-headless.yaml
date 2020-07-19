@@ -1,0 +1,25 @@
+---
+# Source: prometheus/templates/server-service-headless.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    component: "server"
+    app: prometheus
+    release: prometheus-11-6-0
+    chart: prometheus-11.6.0
+    heritage: Helm
+  name: prometheus-11-6-0-server-headless
+  namespace: prometheus
+spec:
+  clusterIP: None
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 9090
+
+  selector:
+    component: "server"
+    app: prometheus
+    release: prometheus-11-6-0

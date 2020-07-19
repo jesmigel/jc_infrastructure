@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: grafana
+  labels:
+    component: "server"
+    app: prometheus
+    release: grafana-11-6-0
+    chart: prometheus-11.6.0
+    heritage: Helm
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  nfs:
+    server: 10.8.41.11
+    path: /mnt/sharedfolder/prometheus

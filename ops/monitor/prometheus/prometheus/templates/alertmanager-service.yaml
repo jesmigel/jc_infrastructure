@@ -1,0 +1,25 @@
+---
+# Source: prometheus/templates/alertmanager-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    component: "alertmanager"
+    app: prometheus
+    release: prometheus-11-6-0
+    chart: prometheus-11.6.0
+    heritage: Helm
+  name: prometheus-11-6-0-alertmanager
+  namespace: prometheus
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 9093
+  selector:
+    component: "alertmanager"
+    app: prometheus
+    release: prometheus-11-6-0
+  sessionAffinity: None
+  type: "ClusterIP"

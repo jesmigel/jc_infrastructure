@@ -1,0 +1,26 @@
+---
+# Source: prometheus/templates/pushgateway-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/probe: pushgateway
+  labels:
+    component: "pushgateway"
+    app: prometheus
+    release: prometheus-11-6-0
+    chart: prometheus-11.6.0
+    heritage: Helm
+  name: prometheus-11-6-0-pushgateway
+  namespace: prometheus
+spec:
+  ports:
+    - name: http
+      port: 9091
+      protocol: TCP
+      targetPort: 9091
+  selector:
+    component: "pushgateway"
+    app: prometheus
+    release: prometheus-11-6-0
+  type: "ClusterIP"
