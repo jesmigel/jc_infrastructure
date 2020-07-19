@@ -47,15 +47,15 @@ spec:
         command: ["bash"]
         resources:
           {}
-        #livenessProbe:
-        #  exec:
-        #    command:
-        #    - kubectl
-        #    - apply 
-        #    - -f
-        #    - /vault/secrets/
-        #  initialDelaySeconds: 5
-        #  periodSeconds: 5
+        livenessProbe:
+          exec:
+            command:
+            - kubectl
+            - apply 
+            - -f
+            - /vault/secrets/
+          initialDelaySeconds: 5
+          periodSeconds: 5
         tty: true
       #   volumeMounts:
       #     - mountPath: /.kube
