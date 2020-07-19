@@ -4,7 +4,7 @@ resources:
   - grafana/templates/clusterrole.yaml
   - grafana/templates/clusterrolebinding.yaml
   - grafana/templates/serviceaccount.yaml
-#  - vault-kubernetes-integrator.yaml
+  - vault-kubernetes-integrator.yaml
 #  - grafana/templates/podsecuritypolicy.yaml
 #  - grafana/templates/role.yaml
 #  - grafana/templates/ingress.yaml
