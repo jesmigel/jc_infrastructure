@@ -5,13 +5,33 @@ metadata:
   name: prometheus
   labels:
     app: prometheus
+    app.kubernetes.io/instance: prometheus
+    chart: prometheus-11.6.0
+    component: server
+    heritage: Helm
+    release: grafana-11-6-0
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 2Gi
+  nfs:
+    server: 10.8.41.11
+    path: /mnt/sharedfolder/prometheus/alertmanager
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: prometheus
+  labels:
+    app: prometheus
     component: server
     release: prometheus-11-6-0
 spec:
   accessModes:
     - ReadWriteOnce
   capacity:
-    storage: 10Gi
+    storage: 8Gi
   nfs:
     server: 10.8.41.11
-    path: /mnt/sharedfolder/prometheus
+    path: /mnt/sharedfolder/prometheus/server
