@@ -6,10 +6,8 @@ resources:
   - prometheus/charts/kube-state-metrics/templates/clusterrole.yaml
   - prometheus/charts/kube-state-metrics/templates/serviceaccount.yaml
   - prometheus/charts/kube-state-metrics/templates/clusterrolebinding.yaml
-  - prometheus/templates/server-deployment.yaml
   - prometheus/templates/pushgateway-clusterrolebinding.yaml
   - prometheus/templates/alertmanager-clusterrolebinding.yaml
-  - prometheus/templates/server-pvc.yaml
   - prometheus/templates/alertmanager-clusterrole.yaml
   - prometheus/templates/alertmanager-configmap.yaml
   - prometheus/templates/server-service.yaml
@@ -17,6 +15,8 @@ resources:
   - prometheus/templates/alertmanager-pvc.yaml
   - prometheus/templates/pushgateway-clusterrole.yaml
   - prometheus/templates/pushgateway-service.yaml
+  - prometheus/templates/server-service-headless.yaml
+  - prometheus/templates/server-statefulset.yaml
   - prometheus/templates/server-configmap.yaml
   - prometheus/templates/alertmanager-serviceaccount.yaml
   - prometheus/templates/server-serviceaccount.yaml
