@@ -4,11 +4,9 @@ kind: PersistentVolume
 metadata:
   name: prometheus
   labels:
-    component: "server"
     app: prometheus
-    release: grafana-11-6-0
-    chart: prometheus-11.6.0
-    heritage: Helm
+    component: server
+    release: prometheus-11-6-0
 spec:
   accessModes:
     - ReadWriteOnce
