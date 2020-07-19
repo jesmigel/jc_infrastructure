@@ -35,18 +35,18 @@ spec:
         fsGroup: 472
         runAsGroup: 472
         runAsUser: 472
-      initContainers:
-        - name: init-chown-data
-          image: "busybox:1.31.1"
-          imagePullPolicy: IfNotPresent
-          securityContext:
-            runAsUser: 0
-          command: ["chown", "-R", "472:472", "/var/lib/grafana"]
-          resources:
-            {}
-          volumeMounts:
-            - name: storage
-              mountPath: "/var/lib/grafana"
+      #initContainers:
+      #  - name: init-chown-data
+      #    image: "busybox:1.31.1"
+      #    imagePullPolicy: IfNotPresent
+      #    securityContext:
+      #      runAsUser: 0
+      #    command: ["chown", "-R", "472:472", "/var/lib/grafana"]
+      #    resources:
+      #      {}
+      #    volumeMounts:
+      #      - name: storage
+      #        mountPath: "/var/lib/grafana"
       containers:
         - name: grafana
           image: "grafana/grafana:7.0.3"
@@ -98,7 +98,6 @@ spec:
       name: storage
     spec:
       accessModes: [ReadWriteOnce]
-      storageClassName: 
       resources:
         requests:
           storage: 10Gi
