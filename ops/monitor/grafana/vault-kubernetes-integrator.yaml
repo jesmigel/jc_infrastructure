@@ -57,14 +57,14 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 5
         tty: true
-        volumeMounts:
-          - mountPath: /.kube
-            name: secrets
-      nodeSelector:
-        dedicated: master
-      volumes:
-        - name: secrets
-          hostPath:
-            path: /home/ubuntu/.kube
-            type: Directory
+      #   volumeMounts:
+      #     - mountPath: /.kube
+      #       name: secrets
+      # nodeSelector:
+      #   dedicated: master
+      # volumes:
+      #   - name: secrets
+      #     hostPath:
+      #       path: /home/ubuntu/.kube
+      #       type: Directory
 ...
