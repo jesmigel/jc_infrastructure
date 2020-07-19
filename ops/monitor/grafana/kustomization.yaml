@@ -4,17 +4,17 @@ resources:
   - grafana/templates/clusterrole.yaml
   - grafana/templates/clusterrolebinding.yaml
   - grafana/templates/serviceaccount.yaml
-  - vault-kubernetes-integrator.yaml
-  - grafana/templates/podsecuritypolicy.yaml
-  - grafana/templates/role.yaml
-  - grafana/templates/ingress.yaml
+#  - vault-kubernetes-integrator.yaml
+#  - grafana/templates/podsecuritypolicy.yaml
+#  - grafana/templates/role.yaml
+#  - grafana/templates/ingress.yaml
 #  - grafana/templates/tests/test-configmap.yaml
 #  - grafana/templates/tests/test-serviceaccount.yaml
 #  - grafana/templates/tests/test-rolebinding.yaml
 #  - grafana/templates/tests/test-podsecuritypolicy.yaml
 #  - grafana/templates/tests/test-role.yaml
-  - grafana/templates/service.yaml
-  - grafana/templates/headless-service.yaml
-  - grafana/templates/configmap.yaml
-  - grafana/templates/rolebinding.yaml
-  - grafana/templates/statefulset.yaml
+#  - grafana/templates/service.yaml
+#  - grafana/templates/headless-service.yaml
+#  - grafana/templates/configmap.yaml
+#  - grafana/templates/rolebinding.yaml
+#  - grafana/templates/statefulset.yaml
