@@ -18,20 +18,3 @@ spec:
   nfs:
     server: 10.8.41.11
     path: /mnt/sharedfolder/prometheus/alertmanager
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: prometheus
-  labels:
-    app: prometheus
-    component: server
-    release: prometheus-11-6-0
-spec:
-  accessModes:
-    - ReadWriteOnce
-  capacity:
-    storage: 8Gi
-  nfs:
-    server: 10.8.41.11
-    path: /mnt/sharedfolder/prometheus/server
