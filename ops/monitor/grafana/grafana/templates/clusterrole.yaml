@@ -10,4 +10,10 @@ metadata:
     app.kubernetes.io/version: "7.0.3"
     app.kubernetes.io/managed-by: Helm
   name: grafana-5-3-0-clusterrole
-rules: []
+rules:
+- apiGroups: [""]
+  #
+  # at the HTTP level, the name of the resource for accessing Secret
+  # objects is "secrets"
+  resources: ["secrets"]
+  verbs: ["get", "watch", "list", "update"]
