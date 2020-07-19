@@ -1,6 +1,6 @@
 ---
 # Source: grafana/templates/ingress.yaml
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: grafana-5-3-0
