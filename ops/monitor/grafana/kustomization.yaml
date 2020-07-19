@@ -15,6 +15,6 @@ resources:
 #  - grafana/templates/tests/test-role.yaml
   - grafana/templates/service.yaml
   - grafana/templates/headless-service.yaml
-  - grafana/templates/configmap.yaml
-  - grafana/templates/rolebinding.yaml
-  - grafana/templates/statefulset.yaml
+#  - grafana/templates/configmap.yaml
+#  - grafana/templates/rolebinding.yaml
+#  - grafana/templates/statefulset.yaml
