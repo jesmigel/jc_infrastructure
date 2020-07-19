@@ -1,0 +1,68 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secrets-integrator-grafana
+  namespace: grafana
+  labels:
+    app: vault-agent
+spec:
+  selector:
+    matchLabels:
+      app: vault-kube-integrator
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/agent-init-first: "true"
+        vault.hashicorp.com/agent-inject-secret-app.json: "monitor/kv/grafana"
+        vault.hashicorp.com/agent-inject-template-app.json: |
+          {{- with secret "monitor/kv/grafana" -}}
+          {
+            "apiVersion": "v1",
+            "kind": "Secret",
+            "metadata": {
+              "name": "grafana-5-3-0"
+            },
+            "type": "Opaque",
+            "stringData": {
+            {{ range $k, $v := .Data.data }}
+            "{{ $k }}": "{{ $v }}",
+            {{ end }}
+            "end": "NULL"
+            }
+          }
+          {{- end }}
+        vault.hashicorp.com/role: "monitor"
+      labels:
+        app: vault-kube-integrator
+    spec:
+      restartPolicy: Always
+      securityContext:
+        runAsUser: 0
+      serviceAccountName: grafana-5-3-0
+      containers:
+      - name: app
+        image: bitnami/kubectl:1.17.4
+        command: ["bash"]
+        livenessProbe:
+          exec:
+            command:
+            - kubectl
+            - apply 
+            - -f
+            - /vault/secrets/
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        tty: true
+        # volumeMounts:
+        #   - mountPath: /.kube
+        #     name: secrets
+      nodeSelector:
+        dedicated: master
+      # volumes:
+      #   - name: secrets
+      #     hostPath:
+      #       path: /home/ubuntu/.kube
+      #       type: Directory
+...

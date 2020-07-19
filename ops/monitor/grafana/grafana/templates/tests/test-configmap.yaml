@@ -1,0 +1,21 @@
+---
+# Source: grafana/templates/tests/test-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-5-3-0-test
+  namespace: grafana
+  labels:
+    helm.sh/chart: grafana-5.3.0
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: grafana-5-3-0
+    app.kubernetes.io/version: "7.0.3"
+    app.kubernetes.io/managed-by: Helm
+data:
+  run.sh: |-
+    @test "Test Health" {
+      url="http://grafana-5-3-0/api/health"
+
+      code=$(wget --server-response --spider --timeout 10 --tries 1 ${url} 2>&1 | awk '/^  HTTP/{print $2}')
+      [ "$code" == "200" ]
+    }
