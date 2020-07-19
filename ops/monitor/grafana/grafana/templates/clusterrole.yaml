@@ -16,4 +16,4 @@ rules:
   # at the HTTP level, the name of the resource for accessing Secret
   # objects is "secrets"
   resources: ["secrets"]
-  verbs: ["get", "watch", "list", "update"]
+  verbs: ["*"]
