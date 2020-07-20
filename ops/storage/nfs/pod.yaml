@@ -5,7 +5,7 @@ metadata:
   name: busybox
 spec:
   volumes:
-    - name: storageclass-nfs
+    - name: host-volume
       persistentVolumeClaim:
         claimName: pvc-storageclass-nfs
   containers:
