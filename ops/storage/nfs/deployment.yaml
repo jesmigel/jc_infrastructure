@@ -3,10 +3,10 @@ apiVersion: apps/v1
 metadata:
   name: nfs-client-provisioner
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: nfs-client-provisioner
-  replicas: 1
   strategy:
     type: Recreate
   template:
@@ -18,10 +18,10 @@ spec:
       containers:
         - name: nfs-client-provisioner
           image: quay.io/external_storage/nfs-client-provisioner:latest
-          resources: {}
           volumeMounts:
             - name: nfs-client-root
               mountPath: /persistentvolumes
+          resources: {}
           env:
             - name: PROVISIONER_NAME
               value: gw-cloud-cluster/nfs
