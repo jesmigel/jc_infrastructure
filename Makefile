@@ -130,7 +130,7 @@ kubespray_post:
 
 kubespray_admin:
 	rsync  -az -e "ssh -F $(_VAGRANT_SSH_CONFIG)" k8s-1:/home/vagrant/.kube/config .vagrant.kube.config
-	@echo "export KUBECONFIG=.vagrant.kube.config"
+	@echo "export KUBECONFIG=`pwd`/.vagrant.kube.config"
 
 
 # FUNCTIONS
