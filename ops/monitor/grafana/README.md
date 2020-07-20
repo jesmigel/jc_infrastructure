@@ -24,3 +24,9 @@ helm template grafana-5-3-0 stable/grafana \
 --set persistence.type=statefulset \
 --output-dir .
 ```
+
+# DASHBOARD TEMPLATES
+9797 Kube Cluster
+1860 Kube Node Exporter
+22 Single Node Exporter
+
