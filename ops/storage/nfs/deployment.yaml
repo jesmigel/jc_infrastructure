@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nfs
+  name: nfs
+  namespace: nfs
+spec:
+  selector:
+    matchLabels:
+      app: nfs
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nfs
+    spec:
+      containers:
+        - name: nfs
+          image: "busybox"
+          imagePullPolicy: "IfNotPresent"
+          resources: {}
+          volumeMounts:
+            - name: storage-volume
+              mountPath: "/data"
+      volumes:
+        - name: storage-volume
+          persistentVolumeClaim:
+            claimName: nfs
