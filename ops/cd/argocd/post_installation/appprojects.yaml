@@ -16,3 +16,5 @@ spec:
   - name: deployer
     policies:
     - p, proj:operations:deployer, applications, *, operations/*, allow
+  sourceRepos:
+  - https://github.com/jesmigel/jc_infrastructure.git
