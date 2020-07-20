@@ -1,0 +1,7 @@
+resources:
+  - ns.yaml
+  - rbac.yaml
+  - pod.yaml
+  - pvc.yaml
+  - storageclass.yaml
+  - deployment.yaml
