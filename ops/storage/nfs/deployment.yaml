@@ -21,7 +21,7 @@ spec:
           resources: {}
           volumeMounts:
             - name: nfs-client-root
-              mountPath: /persistentvolumes/sharedfolder
+              mountPath: /persistentvolumes
           env:
             - name: PROVISIONER_NAME
               value: gw-cloud-cluster/nfs
