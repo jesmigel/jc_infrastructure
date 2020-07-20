@@ -15,5 +15,4 @@ spec:
           mountPath: /mnt/sharedfolder/storageclass-nfs
   volumes:
     - name: host-volume
-      persistentVolumeClaim:
-        claimName: pvc-storageclass-nfs
+      mountPath: /mnt/sharedfolder/storageclass-nfs
