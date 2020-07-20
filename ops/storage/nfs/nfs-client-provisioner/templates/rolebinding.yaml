@@ -12,7 +12,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: stable-nfs-client-provisioner-1-2-8
-    namespace: nfs
+    namespace: default
 roleRef:
   kind: Role
   name: leader-locking-stable-nfs-client-provisioner-1-2-8

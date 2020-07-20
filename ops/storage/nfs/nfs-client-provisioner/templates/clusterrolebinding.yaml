@@ -12,7 +12,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: stable-nfs-client-provisioner-1-2-8
-    namespace: nfs
+    namespace: default
 roleRef:
   kind: ClusterRole
   name: stable-nfs-client-provisioner-1-2-8-runner

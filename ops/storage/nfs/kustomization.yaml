@@ -1,5 +1,5 @@
 resources:
-  - ns.yaml
+  # - ns.yaml
   - nfs-client-provisioner/templates/deployment.yaml
   - nfs-client-provisioner/templates/role.yaml
   - nfs-client-provisioner/templates/storageclass.yaml
