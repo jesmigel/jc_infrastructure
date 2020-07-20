@@ -4,6 +4,7 @@ kind: PersistentVolumeClaim
 metadata:
   labels:
     app: nfs
+  nsme: nfs
   namespace: nfs
 spec:
   accessModes:
