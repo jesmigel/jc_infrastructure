@@ -1,0 +1,36 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nfs-client-provisioner
+spec:
+  selector:
+    matchLabels:
+      app: nfs-client-provisioner
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nfs-client-provisioner
+    spec:
+      serviceAccountName: nfs-client-provisioner
+      containers:
+        - name: nfs-client-provisioner
+          image: quay.io/external_storage/nfs-client-provisioner:latest
+          resources: {}
+          volumeMounts:
+            - name: nfs-client-root
+              mountPath: /persistentvolumes
+          env:
+            - name: PROVISIONER_NAME
+              value: gw-cloud-cluster/nfs
+            - name: NFS_SERVER
+              value: 10.8.41.11
+            - name: NFS_PATH
+              value: /mnt/sharedfolder/storageclass-nfs
+      volumes:
+        - name: nfs-client-root
+          nfs:
+            server: 10.8.41.11
+            path: /mnt/sharedfolder/storageclass-nfs
