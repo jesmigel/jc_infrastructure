@@ -9,7 +9,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   capacity:
-    storage: 10Gi
+    storage: 20Gi
   nfs:
     server: 10.8.41.11
     path: /mnt/sharedfolder/nfs
