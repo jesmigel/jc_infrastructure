@@ -36,11 +36,11 @@ spec:
             - name: PROVISIONER_NAME
               value: cluster.local/stable-nfs-client-provisioner-1-2-8
             - name: NFS_SERVER
-              value: 10.8.41.11
+              value: nfs-1.vm
             - name: NFS_PATH
               value: /mnt/sharedfolder/storageclass-nfs
       volumes:
         - name: nfs-client-root
           nfs:
-            server: 10.8.41.11
+            server: nfs-1.vm
             path: /mnt/sharedfolder/storageclass-nfs
