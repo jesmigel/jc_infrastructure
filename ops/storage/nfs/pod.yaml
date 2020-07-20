@@ -11,8 +11,9 @@ spec:
       command: ["/bin/sh"]
       args: ["-c", "sleep 600"]
       volumeMounts:
-        - name: storageclass-nfs
+        - name: host-volume
           mountPath: /mnt/sharedfolder/storageclass-nfs
   volumes:
-    - name: host-volume
-      mountPath: /mnt/sharedfolder/storageclass-nfs
+    - name: storageclass-nfs
+      persistentVolumeClaim:
+        claimName: pvc-storageclass-nfs
