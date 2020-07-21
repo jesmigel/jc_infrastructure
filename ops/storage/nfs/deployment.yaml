@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: nfs
-          image: "ubuntu"
+          image: "busybox"
           imagePullPolicy: "IfNotPresent"
           resources: {}
           #volumeMounts:
