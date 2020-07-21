@@ -23,7 +23,7 @@ spec:
           resources: {}
           volumeMounts:
             - name: storage-volume
-              mountPath: "/data"
+              mountPath: "/mnt"
       volumes:
         - name: storage-volume
           persistentVolumeClaim:
