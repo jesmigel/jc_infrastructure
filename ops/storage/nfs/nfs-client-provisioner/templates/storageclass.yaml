@@ -9,6 +9,8 @@ metadata:
     heritage: Helm
     release: stable-nfs-client-provisioner-1-2-8
   name: nfs-client
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
 provisioner: cluster.local/stable-nfs-client-provisioner-1-2-8
 allowVolumeExpansion: true
 reclaimPolicy: Delete
