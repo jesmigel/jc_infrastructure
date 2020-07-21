@@ -47,6 +47,7 @@ spec:
       containers:
       - image: busybox
         name: busybox
+        command: ["sleep", "60000"]
         volumeMounts:
         - name: busybox-persistent-storage
           mountPath: /mnt/nfs
