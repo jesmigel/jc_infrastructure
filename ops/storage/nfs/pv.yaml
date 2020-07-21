@@ -1,15 +1,13 @@
----
+  
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: nfs
-  labels:
-    app.kubernetes.io/name: nfs
 spec:
-  accessModes:
-    - ReadWriteOnce
   capacity:
-    storage: 20Gi
+    storage: 1Mi
+  accessModes:
+    - ReadWriteMany
   nfs:
     server: 10.8.41.11
-    path: /mnt/sharedfolder/nfs
+    path: "/mnt/sharedfolder/nfs"
