@@ -10,6 +10,8 @@ spec:
   selector:
     matchLabels:
       app: nfs
+  strategy:
+    type: Recreate
   replicas: 1
   template:
     metadata:
@@ -21,9 +23,9 @@ spec:
           image: "ubuntu"
           imagePullPolicy: "IfNotPresent"
           resources: {}
-          volumeMounts:
-            - name: storage-volume
-              mountPath: "/mnt"
+          #volumeMounts:
+          #  - name: storage-volume
+          #    mountPath: "/mnt"
       volumes:
         - name: storage-volume
           persistentVolumeClaim:
