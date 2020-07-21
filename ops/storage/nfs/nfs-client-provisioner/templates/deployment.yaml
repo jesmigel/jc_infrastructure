@@ -25,6 +25,8 @@ spec:
         release: stable-nfs-client-provisioner-1-2-8
     spec:
       serviceAccountName: stable-nfs-client-provisioner-1-2-8
+      nodeSelector:
+        node3
       containers:
         - name: nfs-client-provisioner
           image: "quay.io/external_storage/nfs-client-provisioner:v3.1.0-k8s1.11"
