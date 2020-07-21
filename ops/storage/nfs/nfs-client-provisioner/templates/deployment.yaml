@@ -1,0 +1,46 @@
+---
+# Source: nfs-client-provisioner/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stable-nfs-client-provisioner-1-2-8
+  labels:
+    app: nfs-client-provisioner
+    chart: nfs-client-provisioner-1.2.8
+    heritage: Helm
+    release: stable-nfs-client-provisioner-1-2-8
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nfs-client-provisioner
+      release: stable-nfs-client-provisioner-1-2-8
+  template:
+    metadata:
+      annotations:
+      labels:
+        app: nfs-client-provisioner
+        release: stable-nfs-client-provisioner-1-2-8
+    spec:
+      serviceAccountName: stable-nfs-client-provisioner-1-2-8
+      containers:
+        - name: nfs-client-provisioner
+          image: "quay.io/external_storage/nfs-client-provisioner:v3.1.0-k8s1.11"
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: nfs-client-root
+              mountPath: /persistentvolumes
+          env:
+            - name: PROVISIONER_NAME
+              value: cluster.local/stable-nfs-client-provisioner-1-2-8
+            - name: NFS_SERVER
+              value: 10.8.41.11
+            - name: NFS_PATH
+              value: /mnt/sharedfolder/nfs
+      volumes:
+        - name: nfs-client-root
+          nfs:
+            server: 10.8.41.11
+            path: /mnt/sharedfolder/nfs

@@ -1,7 +1,7 @@
 helm  template stable-nfs-client-provisioner-1-2-8 stable/nfs-client-provisioner \
---set nfs.server=nfs-1.vm \
---set nfs.path=/mnt/sharedfolder/storageclass-nfs
--n nfs --output-dir .
+--set nfs.server=10.8.41.11 \
+--set nfs.path=/mnt/sharedfolder/nfs \
+--output-dir .
 
 helm template stable-rook-1-3-7 rook-release/rook-ceph \
 --set csi.enableRbdDriver=true \

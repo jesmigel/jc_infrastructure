@@ -1,5 +1,9 @@
 resources:
   - ns.yaml
-  - pv.yaml
-  - pvc.yaml
-  - deployment.yaml
+  - ops/storage/nfs/nfs-client-provisioner/templates/deployment.yaml
+  - ops/storage/nfs/nfs-client-provisioner/templates/role.yaml
+  - ops/storage/nfs/nfs-client-provisioner/templates/storageclass.yaml
+  - ops/storage/nfs/nfs-client-provisioner/templates/clusterrole.yaml
+  - ops/storage/nfs/nfs-client-provisioner/templates/serviceaccount.yaml
+  - ops/storage/nfs/nfs-client-provisioner/templates/clusterrolebinding.yaml
+  - ops/storage/nfs/nfs-client-provisioner/templates/rolebinding.yaml
