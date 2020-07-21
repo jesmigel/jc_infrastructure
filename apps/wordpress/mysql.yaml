@@ -25,11 +25,6 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Recycle
-  storageClassName: slow
-  mountOptions:
-    - hard
-    - nfsvers=4.1
   nfs:
     path: /mnt/sharedfolder/wordpress/db
     server: 10.8.41.11
