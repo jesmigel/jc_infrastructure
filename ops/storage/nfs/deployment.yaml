@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: nfs
-          image: "busybox"
+          image: "ubuntu"
           imagePullPolicy: "IfNotPresent"
           resources: {}
           volumeMounts:
