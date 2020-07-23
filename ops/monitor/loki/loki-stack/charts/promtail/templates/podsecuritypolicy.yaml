@@ -1,0 +1,35 @@
+---
+# Source: loki-stack/charts/promtail/templates/podsecuritypolicy.yaml
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: loki-stack-0-38-2-promtail
+  labels:
+    app: promtail
+    chart: promtail-0.23.4
+    heritage: Helm
+    release: loki-stack-0-38-2
+spec:
+  privileged: false
+  allowPrivilegeEscalation: false
+  volumes:
+    - 'secret'
+    - 'configMap'
+    - 'hostPath'
+    - 'projected'
+    - 'downwardAPI'
+    - 'emptyDir'
+  hostNetwork: false
+  hostIPC: false
+  hostPID: false
+  runAsUser:
+    rule: 'RunAsAny'
+  seLinux:
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'RunAsAny'
+  fsGroup:
+    rule: 'RunAsAny'
+  readOnlyRootFilesystem: true
+  requiredDropCapabilities:
+    - ALL

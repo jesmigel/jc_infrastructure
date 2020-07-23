@@ -1,0 +1,19 @@
+---
+# Source: loki-stack/charts/promtail/templates/clusterrolebinding.yaml
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: loki-stack-0-38-2-promtail-clusterrolebinding
+  labels:
+    app: promtail
+    chart: promtail-0.23.4
+    release: loki-stack-0-38-2
+    heritage: Helm
+subjects:
+  - kind: ServiceAccount
+    name: loki-stack-0-38-2-promtail
+    namespace: loki-stack
+roleRef:
+  kind: ClusterRole
+  name: loki-stack-0-38-2-promtail-clusterrole
+  apiGroup: rbac.authorization.k8s.io

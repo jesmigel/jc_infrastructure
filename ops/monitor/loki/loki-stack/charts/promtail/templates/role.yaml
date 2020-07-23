@@ -1,0 +1,17 @@
+---
+# Source: loki-stack/charts/promtail/templates/role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: loki-stack-0-38-2-promtail
+  namespace: loki-stack
+  labels:
+    app: promtail
+    chart: promtail-0.23.4
+    heritage: Helm
+    release: loki-stack-0-38-2
+rules:
+- apiGroups:      ['extensions']
+  resources:      ['podsecuritypolicies']
+  verbs:          ['use']
+  resourceNames:  [loki-stack-0-38-2-promtail]

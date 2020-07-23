@@ -1,0 +1,94 @@
+---
+# Source: loki-stack/charts/promtail/templates/daemonset.yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: loki-stack-0-38-2-promtail
+  namespace: loki-stack
+  labels:
+    app: promtail
+    chart: promtail-0.23.4
+    release: loki-stack-0-38-2
+    heritage: Helm
+  annotations:
+    {}
+spec:
+  selector:
+    matchLabels:
+      app: promtail
+      release: loki-stack-0-38-2
+  updateStrategy:
+    {}
+  template:
+    metadata:
+      labels:
+        app: promtail
+        release: loki-stack-0-38-2
+      annotations:
+        checksum/config: 560da517cf0de3dbfe424073cabfbd801a773e2cd4511b2f67f6f7109500fe38
+        prometheus.io/port: http-metrics
+        prometheus.io/scrape: "true"
+    spec:
+      serviceAccountName: loki-stack-0-38-2-promtail
+      containers:
+        - name: promtail
+          image: "grafana/promtail:1.5.0"
+          imagePullPolicy: IfNotPresent
+          args:
+            - "-config.file=/etc/promtail/promtail.yaml"
+            - "-client.url=http://loki:3100/loki/api/v1/push"
+          volumeMounts:
+            - name: config
+              mountPath: /etc/promtail
+            - name: run
+              mountPath: /run/promtail
+            - mountPath: /var/lib/docker/containers
+              name: docker
+              readOnly: true
+            - mountPath: /var/log/pods
+              name: pods
+              readOnly: true
+          env:
+            - name: HOSTNAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          ports:
+            - containerPort: 3101
+              name: http-metrics
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsGroup: 0
+            runAsUser: 0
+          readinessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /ready
+              port: http-metrics
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            {}
+      nodeSelector:
+        {}
+      affinity:
+        {}
+      tolerations:
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/master
+          operator: Exists
+      volumes:
+        - name: config
+          configMap:
+            name: loki-stack-0-38-2-promtail
+        - name: run
+          hostPath:
+            path: /run/promtail
+        - hostPath:
+            path: /var/lib/docker/containers
+          name: docker
+        - hostPath:
+            path: /var/log/pods
+          name: pods

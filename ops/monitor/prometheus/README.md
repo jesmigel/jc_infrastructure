@@ -1,4 +1,4 @@
-# [PROMETHEUS](https://grafana.com/)
+# [PROMETHEUS](https://prometheus.io/)
 =================================
 - [Prometheus Helm](https://github.com/helm/charts/tree/master/stable/prometheus)
 
@@ -11,7 +11,7 @@ helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 helm search repo prometheus
 ```
 
-## Initialisation - Elastic
+## Initialisation - Prometheus
 ```bash
 # Prometheus
 helm template prometheus-11-6-0 stable/prometheus \
