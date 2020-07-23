@@ -18,8 +18,10 @@ up: up_vm build_dns
 up_vm:
 	$(call vm_up, $(_VAGRANT))
 
-down: clean_dns
-	$(call vm_down, $(_VAGRANT))
+down: down_cluster clean_dns
+
+down_cluster:
+	$(call vm_down, $(_VAGRANT), k8s-1 k8s-2 k8s-3 local-1)
 
 build:
 	$(call vm_build, $(_VAGRANT))
@@ -27,11 +29,19 @@ build:
 clean:
 	$(call vm_clean, $(_VAGRANT))
 
+clean_cluster:
+	$(call vm_clean, $(_VAGRANT), k8s-1 k8s-2 k8s-3 local-1)
+
 status: status_vm status_dns
 
 status_vm:
 	$(call vm_status, $(_VAGRANT))
 
+provision_vm:
+	$(call vm_provision, $(_VAGRANT))
+
+reload_vm:
+	$(call vm_reload, $(_VAGRANT))
 
 # DNS COMMANDS
 # ============
@@ -173,8 +183,8 @@ define vm_up
 endef
 
 define vm_down
-	@echo "Suspending Vagrant VM: $(1)"
-	cd $(1) && vagrant suspend
+	@echo "Suspending Vagrant VM: $(1) $(2)"
+	cd $(1) && vagrant suspend $(2)
 endef
 
 define vm_build
@@ -183,8 +193,18 @@ define vm_build
 endef
 
 define vm_clean
-	@echo "Destroying Vagrant VM: $(1)"
-	cd $(1) && vagrant destroy
+	@echo "Destroying Vagrant VM: $(1) $(2)"
+	cd $(1) && vagrant destroy $(2)
+endef
+
+define vm_provision
+	@echo "Provisioning Vagrant VM: $(1)"
+	cd $(1) && vagrant provision
+endef
+
+define vm_reload
+	@echo "Provisioning Vagrant VM: $(1)"
+	cd $(1) && vagrant reload
 endef
 
 define vm_status
