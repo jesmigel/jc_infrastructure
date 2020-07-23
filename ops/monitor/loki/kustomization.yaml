@@ -1,4 +1,5 @@
 resources:
+  - ns.yaml
   - loki-stack/charts/loki/templates/podsecuritypolicy.yaml
   - loki-stack/charts/loki/templates/role.yaml
   - loki-stack/charts/loki/templates/service.yaml
