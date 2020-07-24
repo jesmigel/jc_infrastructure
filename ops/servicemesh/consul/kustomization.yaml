@@ -8,16 +8,27 @@ resources:
   - consul/templates/ui-service.yaml
   - consul/templates/server-config-configmap.yaml
   - consul/templates/server-service.yaml
+  - consul/templates/server-acl-init-clusterrolebinding.yaml
+  - consul/templates/server-acl-init-cleanup-clusterrole.yaml
+  - consul/templates/server-podsecuritypolicy.yaml
+  - consul/templates/server-acl-init-cleanup-podsecuritypolicy.yaml
   - consul/templates/client-daemonset.yaml
   - consul/templates/server-statefulset.yaml
   - consul/templates/connect-inject-service.yaml
+  - consul/templates/server-acl-init-cleanup-clusterrolebinding.yaml
   - consul/templates/client-clusterrole.yaml
   - consul/templates/connect-inject-deployment.yaml
   - consul/templates/server-serviceaccount.yaml
   - consul/templates/dns-service.yaml
   - consul/templates/server-clusterrolebinding.yaml
   - consul/templates/client-config-configmap.yaml
+  - consul/templates/server-acl-init-serviceaccount.yaml
+  - consul/templates/server-acl-init-job.yaml
+  - consul/templates/client-podsecuritypolicy.yaml
   - consul/templates/connect-inject-clusterrole.yaml
+  - consul/templates/server-acl-init-clusterrole.yaml
+  - consul/templates/server-acl-init-podsecuritypolicy.yaml
+  - consul/templates/server-acl-init-cleanup-serviceaccount.yaml
   - consul/templates/client-clusterrolebinding.yaml
   - consul/templates/server-disruptionbudget.yaml
   - consul/templates/sync-catalog-deployment.yaml
