@@ -1,5 +1,6 @@
 resources:
   - ns.yaml
+  - pv.yaml
   - consul/templates/connect-inject-mutatingwebhook.yaml
   - consul/templates/client-serviceaccount.yaml
   - consul/templates/tls-init-job.yaml

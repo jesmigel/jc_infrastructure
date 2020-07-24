@@ -1,0 +1,57 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: consul-1
+  labels:
+    app: consul
+    chart: consul-helm
+    component: server
+    hasDNS: 'true'
+    release: stable-consul-0-21-0
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  nfs:
+    server: 10.8.41.11
+    path: /mnt/sharedfolder/consul/1
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: consul-2
+  labels:
+    app: consul
+    chart: consul-helm
+    component: server
+    hasDNS: 'true'
+    release: stable-consul-0-21-0
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  nfs:
+    server: 10.8.41.11
+    path: /mnt/sharedfolder/consul/2
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: consul-1
+  labels:
+    app: consul
+    chart: consul-helm
+    component: server
+    hasDNS: 'true'
+    release: stable-consul-0-21-0
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  nfs:
+    server: 10.8.41.11
+    path: /mnt/sharedfolder/consul/3

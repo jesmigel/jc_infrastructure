@@ -38,6 +38,9 @@ GF_AUTH_GITHUB_ENABLED = true
 GF_AUTH_GITHUB_ALLOW_SIGNUP = true
 GF_AUTH_GITHUB_CLIENT_ID = YOUR_GITHUB_APP_CLIENT_ID
 GF_AUTH_GITHUB_CLIENT_SECRET = YOUR_GITHUB_APP_CLIENT_SECRET
+GF_AUTH_GITHUB_AUTH_URL = https://github.com/login/oauth/authorize
+GF_AUTH_GITHUB_TOKEN_URL = https://github.com/login/oauth/access_token
+GF_AUTH_GITHUB_API_URL = https://api.github.com/user
 
 References:
 [Configmap](https://grafana.com/docs/grafana/latest/auth/github/#enable-github-in-grafana)
