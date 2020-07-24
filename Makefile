@@ -98,6 +98,13 @@ k8_inventory_init:
 	cd $(_K8S_INVENTORY_SRC) && cp -r sample $(_K8S)
 
 k8_inventory_build: k8_inventory_init
+
+
+# KUBE COMMANDS
+# =============
+kube_dns:
+	kubectl run -it --rm --restart=Never --image=infoblox/dnstools:latest dnstools
+
 ifneq ($(wildcard $(_K8S_INVENTORY_DST)),"")
 	$(call venv_exec, $(_K8S_VENV), \
 		cd $(_KUBESPRAY) && \
