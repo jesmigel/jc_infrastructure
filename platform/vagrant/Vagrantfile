@@ -38,7 +38,7 @@ Vagrant.configure(global['api_version']) do |config|
                     vb.gui = group_config['gui']
                     vb.linked_clone = true
                     vb.customize ["modifyvm", :id, "--vram", "8"] # ubuntu defaults to 256 MB which is a waste of precious RAM
-
+                    vb.customize [ "guestproperty", "set", :id, "--timesync-threshold", 10000 ] # Time Sync
                     # ADDITIONAL DISKS
                     driverletters = ('c'..'z').to_a
                     if group_config['disks'].include? 'instances'
