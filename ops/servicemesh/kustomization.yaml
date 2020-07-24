@@ -1,0 +1,23 @@
+resources:
+  - ns.yaml
+  - consul/templates/connect-inject-mutatingwebhook.yaml
+  - consul/templates/client-serviceaccount.yaml
+  - consul/templates/tls-init-job.yaml
+  - consul/templates/ui-service.yaml
+  - consul/templates/server-config-configmap.yaml
+  - consul/templates/server-service.yaml
+  - consul/templates/client-daemonset.yaml
+  - consul/templates/server-statefulset.yaml
+  - consul/templates/connect-inject-service.yaml
+  - consul/templates/client-clusterrole.yaml
+  - consul/templates/connect-inject-deployment.yaml
+  - consul/templates/server-serviceaccount.yaml
+  - consul/templates/dns-service.yaml
+  - consul/templates/server-clusterrolebinding.yaml
+  - consul/templates/client-config-configmap.yaml
+  - consul/templates/connect-inject-clusterrole.yaml
+  - consul/templates/client-clusterrolebinding.yaml
+  - consul/templates/server-disruptionbudget.yaml
+  - consul/templates/sync-catalog-deployment.yaml
+  - consul/templates/server-clusterrole.yaml
+  - consul/templates/tls-init-cleanup-job.yaml

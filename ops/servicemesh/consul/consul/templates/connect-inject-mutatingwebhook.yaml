@@ -1,0 +1,3 @@
+---
+# Source: consul/templates/connect-inject-mutatingwebhook.yaml
+# The MutatingWebhookConfiguration to enable the Connect injector.

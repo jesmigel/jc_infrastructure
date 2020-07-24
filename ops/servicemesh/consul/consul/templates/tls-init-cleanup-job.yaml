@@ -1,0 +1,3 @@
+---
+# Source: consul/templates/tls-init-cleanup-job.yaml
+# tls-init-cleanup job deletes Kubernetes secrets created by tls-init

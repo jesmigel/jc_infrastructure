@@ -1,0 +1,3 @@
+---
+# Source: consul/templates/connect-inject-deployment.yaml
+# The deployment for running the Connect sidecar injector

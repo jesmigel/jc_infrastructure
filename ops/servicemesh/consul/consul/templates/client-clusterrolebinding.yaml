@@ -1,0 +1,19 @@
+---
+# Source: consul/templates/client-clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: stable-consul-0-21-0-consul-client
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: stable-consul-0-21-0
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: stable-consul-0-21-0-consul-client
+subjects:
+  - kind: ServiceAccount
+    name: stable-consul-0-21-0-consul-client
+    namespace: consul

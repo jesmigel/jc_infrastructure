@@ -1,0 +1,4 @@
+---
+# Source: consul/templates/tls-init-job.yaml
+# tls-init job generate Consul cluster CA and certificates for the Consul servers
+# and creates Kubernetes secrets for them.

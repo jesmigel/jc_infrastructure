@@ -1,0 +1,17 @@
+---
+# Source: consul/templates/client-config-configmap.yaml
+# ConfigMap with extra configuration specified directly to the chart
+# for client agents only.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: stable-consul-0-21-0-consul-client-config
+  namespace: consul
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: stable-consul-0-21-0
+data:
+  extra-from-values.json: |-
+    {}

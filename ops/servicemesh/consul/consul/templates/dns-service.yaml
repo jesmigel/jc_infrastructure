@@ -1,0 +1,27 @@
+---
+# Source: consul/templates/dns-service.yaml
+# Service for Consul DNS.
+apiVersion: v1
+kind: Service
+metadata:
+  name: stable-consul-0-21-0-consul-dns
+  namespace: consul
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: stable-consul-0-21-0
+spec:
+  ports:
+    - name: dns-tcp
+      port: 53
+      protocol: "TCP"
+      targetPort: dns-tcp
+    - name: dns-udp
+      port: 53
+      protocol: "UDP"
+      targetPort: dns-udp
+  selector:
+    app: consul
+    release: "stable-consul-0-21-0"
+    hasDNS: "true"

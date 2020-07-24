@@ -1,0 +1,16 @@
+---
+# Source: consul/templates/server-config-configmap.yaml
+# StatefulSet to run the actual Consul server cluster.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: stable-consul-0-21-0-consul-server-config
+  namespace: consul
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: stable-consul-0-21-0
+data:
+  extra-from-values.json: |-
+    {}

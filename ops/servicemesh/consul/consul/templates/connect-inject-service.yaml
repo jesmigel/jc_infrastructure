@@ -1,0 +1,3 @@
+---
+# Source: consul/templates/connect-inject-service.yaml
+# The service for the Connect sidecar injector
