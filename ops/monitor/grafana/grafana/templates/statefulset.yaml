@@ -64,17 +64,9 @@ spec:
             - name: grafana
               containerPort: 3000
               protocol: TCP
-          env:
-            - name: GF_SECURITY_ADMIN_USER
-              valueFrom:
-                secretKeyRef:
-                  name: grafana-5-3-0
-                  key: admin-user
-            - name: GF_SECURITY_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: grafana-5-3-0
-                  key: admin-password
+          envFrom:
+            - secretRef:
+                name: grafana-5-3-0
           livenessProbe:
             failureThreshold: 10
             httpGet:
