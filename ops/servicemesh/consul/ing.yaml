@@ -1,0 +1,23 @@
+---
+# Source: vault/templates/server-ingress.yaml
+apiVersion: extensions/v1beta1
+
+kind: Ingress
+metadata:
+  name: stable-consul-0-21-0-ui
+  namespace: consul
+  labels:
+    app: consul
+    app.kubernetes.io/instance: consul
+    chart: consul-helm
+    heritage: Helm
+    release: stable-consul-0-21-0
+spec:
+  rules:
+    - host: "consul.local-1.vm"
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: stable-consul-0-21-0-ui
+              servicePort: 80
