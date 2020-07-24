@@ -19,5 +19,5 @@ spec:
         paths:
           - path: /
             backend:
-              serviceName: stable-consul-0-21-0-ui
+              serviceName: stable-consul-0-21-0-consul-ui
               servicePort: 80
