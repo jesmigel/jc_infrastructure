@@ -16,7 +16,9 @@ helm search repo consul
 ## Initialisation
 ```bash
 helm template stable-consul-0-21-0 hashicorp/consul \
---set ingressGateways.enabled=true \
+--set client.enabled={} \
+--set global.enablePodSecurityPolicies=true \
+--set global.acls.manageSystemACLs=true \
 -n consul --output-dir .
 ```
 

@@ -1,0 +1,21 @@
+---
+# Source: consul/templates/server-acl-init-cleanup-clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: stable-consul-0-21-0-consul-server-acl-init-cleanup
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: stable-consul-0-21-0
+rules:
+  - apiGroups: ["batch"]
+    resources: ["jobs"]
+    verbs: ["get", "delete"]
+  - apiGroups: ["policy"]
+    resources: ["podsecuritypolicies"]
+    resourceNames:
+      - stable-consul-0-21-0-consul-server-acl-init-cleanup
+    verbs:
+      - use

@@ -9,4 +9,10 @@ metadata:
     chart: consul-helm
     heritage: Helm
     release: stable-consul-0-21-0
-rules: []
+rules:
+- apiGroups: ["policy"]
+  resources: ["podsecuritypolicies"]
+  resourceNames:
+  - stable-consul-0-21-0-consul-server
+  verbs:
+  - use

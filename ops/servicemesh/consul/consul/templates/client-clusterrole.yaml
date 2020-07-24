@@ -9,4 +9,17 @@ metadata:
     chart: consul-helm
     heritage: Helm
     release: stable-consul-0-21-0
-rules: []
+rules:
+  - apiGroups: ["policy"]
+    resources: ["podsecuritypolicies"]
+    resourceNames:
+    - stable-consul-0-21-0-consul-client
+    verbs:
+    - use
+  - apiGroups: [""]
+    resources:
+      - secrets
+    resourceNames:
+      - stable-consul-0-21-0-consul-client-acl-token
+    verbs:
+      - get

@@ -1,0 +1,48 @@
+---
+# Source: consul/templates/server-acl-init-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: stable-consul-0-21-0-consul-server-acl-init
+  namespace: consul
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: stable-consul-0-21-0
+spec:
+  template:
+    metadata:
+      name: stable-consul-0-21-0-consul-server-acl-init
+      labels:
+        app: consul
+        chart: consul-helm
+        release: stable-consul-0-21-0
+        component: server-acl-init
+      annotations:
+        "consul.hashicorp.com/connect-inject": "false"
+    spec:
+      restartPolicy: Never
+      serviceAccountName: stable-consul-0-21-0-consul-server-acl-init
+      containers:
+        - name: post-install-job
+          image: hashicorp/consul-k8s:0.15.0
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          command:
+            - "/bin/sh"
+            - "-ec"
+            - |
+              CONSUL_FULLNAME="stable-consul-0-21-0-consul"
+
+              consul-k8s server-acl-init \
+                -server-address="${CONSUL_FULLNAME}-server-0.${CONSUL_FULLNAME}-server.${NAMESPACE}.svc" \
+                -server-address="${CONSUL_FULLNAME}-server-1.${CONSUL_FULLNAME}-server.${NAMESPACE}.svc" \
+                -server-address="${CONSUL_FULLNAME}-server-2.${CONSUL_FULLNAME}-server.${NAMESPACE}.svc" \
+                -resource-prefix=${CONSUL_FULLNAME} \
+                -k8s-namespace=consul \
+                -allow-dns=true \
+                -acl-binding-rule-selector=serviceaccount.name!=default \

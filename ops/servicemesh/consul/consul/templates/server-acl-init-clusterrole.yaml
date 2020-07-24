@@ -1,0 +1,24 @@
+---
+# Source: consul/templates/server-acl-init-clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: stable-consul-0-21-0-consul-server-acl-init
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: stable-consul-0-21-0
+rules:
+  - apiGroups: [""]
+    resources:
+      - secrets
+    verbs:
+      - create
+      - get
+  - apiGroups: ["policy"]
+    resources: ["podsecuritypolicies"]
+    resourceNames:
+      - stable-consul-0-21-0-consul-server-acl-init
+    verbs:
+      - use

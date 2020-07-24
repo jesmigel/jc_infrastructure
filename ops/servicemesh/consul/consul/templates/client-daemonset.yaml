@@ -39,6 +39,8 @@ spec:
         - name: config
           configMap:
             name: stable-consul-0-21-0-consul-client-config
+        - name: aclconfig
+          emptyDir: {}
       containers:
         - name: consul
           image: "consul:1.7.3"
@@ -75,6 +77,7 @@ spec:
                 -hcl='leave_on_terminate = true' \
                 -hcl='ports { grpc = 8502 }' \
                 -config-dir=/consul/config \
+                -config-dir=/consul/aclconfig \
                 -datacenter=dc1 \
                 -data-dir=/consul/data \
                 -retry-join="${CONSUL_FULLNAME}-server-0.${CONSUL_FULLNAME}-server.${NAMESPACE}.svc" \
@@ -86,6 +89,8 @@ spec:
               mountPath: /consul/data
             - name: config
               mountPath: /consul/config
+            - name: aclconfig
+              mountPath: /consul/aclconfig
           ports:
             - containerPort: 8500
               hostPort: 8500
@@ -119,3 +124,17 @@ spec:
                 - |
                   curl http://127.0.0.1:8500/v1/status/leader \
                   2>/dev/null | grep -E '".+"'
+      initContainers:
+      - name: client-acl-init
+        image: hashicorp/consul-k8s:0.15.0
+        command:
+          - "/bin/sh"
+          - "-ec"
+          - |
+            consul-k8s acl-init \
+              -secret-name="stable-consul-0-21-0-consul-client-acl-token" \
+              -k8s-namespace=consul \
+              -init-type="client"
+        volumeMounts:
+          - name: aclconfig
+            mountPath: /consul/aclconfig
