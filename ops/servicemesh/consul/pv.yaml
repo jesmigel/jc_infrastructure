@@ -40,7 +40,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: consul-1
+  name: consul-3
   labels:
     app: consul
     chart: consul-helm
