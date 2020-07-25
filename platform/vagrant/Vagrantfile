@@ -20,14 +20,14 @@ Vagrant.configure(global['api_version']) do |config|
     # always use Vagrants insecure key
     config.ssh.insert_key = false
 
-    config.dns.tld = "vm"
+    # config.dns.tld = "vm"
 
     nodes.each do | group_name, group_config |
         (1..group_config['instances']).each do | i |
             config.vm.define vm_name = "%s-%01d" % [group_config['node_prefix'], i] do | node |
                 node.vm.box = group_config['os']
                 node.vm.hostname = vm_name
-                node.dns.patterns = [/^(\w+\.)*#{vm_name}\.vm$/]
+                # node.dns.patterns = [/^(\w+\.)*#{vm_name}\.vm$/]
     
                 ip = "#{global['network']['subnet']}.#{i+group_config['network']}"
                 node.vm.network :private_network, ip: ip
@@ -69,7 +69,7 @@ Vagrant.configure(global['api_version']) do |config|
                 # MOUNT FILES
                 group_config['mounts'].each do | mount |
                     node.vm.synced_folder mount['host'], mount['guest'],
-                        type: "sshfs", 
+                        type: "sshfs", disabled: false,
                         sshfs_opts_append: "-o nonempty -o cache=no"
                 end
 

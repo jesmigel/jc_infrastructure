@@ -4,7 +4,7 @@ global:
   network:
     subnet: 10.8.41
   plugins:
-    - dns
+    # - dns
     - vagrant-disksize
 
 nodes:  
@@ -48,34 +48,34 @@ nodes:
     instances: 1
     memory: 256
     mounts:
-      - host: ./data/conf.d
+      - host: ./data/nfs/mnt/nginx/conf.d
         guest: /etc/nginx/conf.d/
-      - host: ./data/certs
+      - host: ./data/nfs/mnt/nginx/certs
         guest: /etc/letsencrypt/live/
-      - host: ./data/mnt/sharedfolder
-        guest: /mnt/sharedfolder
-      - host: ./init
+      - host: ./data/nfs/mnt/sharedfolder
+        guest: /mnt/sharedfolder/
+      - host: ./data/nfs/init
         guest: /mnt/init/
     network: 10
     node_prefix: local
     os: ubuntu/bionic64
 
   # PiHOLE
-  pihole:
-    cpu: 1
-    bootstrap: |
-      # Set Timezone
-      timedatectl set-timezone Australia/Melbourne
-      # Prepare package manager
-      apt-get update
-      # PiHole https://github.com/pi-hole/pi-hole#one-step-automated-install
-      wget -O basic-install.sh https://install.pi-hole.net
-      chown vagrant:vagrant basic-install.sh
-    disks: {}
-    gui: false
-    instances: 1
-    memory: 256
-    mounts: []
-    network: 11
-    node_prefix: pi-hole
-    os: ubuntu/xenial64
+  # pihole:
+  #   cpu: 1
+  #   bootstrap: |
+  #     # Set Timezone
+  #     timedatectl set-timezone Australia/Melbourne
+  #     # Prepare package manager
+  #     apt-get update
+  #     # PiHole https://github.com/pi-hole/pi-hole#one-step-automated-install
+  #     wget -O basic-install.sh https://install.pi-hole.net
+  #     chown vagrant:vagrant basic-install.sh
+  #   disks: {}
+  #   gui: false
+  #   instances: 1
+  #   memory: 256
+  #   mounts: []
+  #   network: 11
+  #   node_prefix: pi-hole
+  #   os: ubuntu/xenial64
