@@ -108,7 +108,7 @@ execute 'source .init.kube.config.sh' to set KUBECONFIG
 
 
 # Following the instruction...
-source .init.kube.config.sh && printenv 
+$ source .init.kube.config.sh && printenv 
 
 # Interacting with the provisioned kubernetes cluster
 $ kubectl get nodes -o wide
