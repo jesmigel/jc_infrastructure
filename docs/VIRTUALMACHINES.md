@@ -35,7 +35,7 @@ Contains details specific to a node or group of nodes
 | node_prefix | Prefix of the name allocated to the VM |
 | os | Vagrantbox image to be used for the VM group |
 
-## Deployment
+## Vagrant input validation
 ```bash
 # Validate Vagrant configuration
 make validate_vm
@@ -59,37 +59,28 @@ project directory. Please run the requested command again.
 make: *** [validate_vm] Error 255 'Vagrant exits with 255'
 
 # As instructed, re-execute the validation
-```
-
-
-
-
+make validate_vm
 Validate Vagrant Specification(s):  ./platform/vagrant/vagrant_variables.yaml
-Vagrant has detected project local plugins configured for this
-project which are not installed.
+There are errors in the configuration of this machine. Please fix
+the following errors and try again:
 
-  vagrant-disksize, vagrant-sshfs
-Install local plugins (Y/N) [N]: Y
-Installing the 'vagrant-disksize' plugin. This can take a few minutes...
-Fetching vagrant-disksize-0.1.3.gem
-Installed the plugin 'vagrant-disksize (0.1.3)'!
-Installing the 'vagrant-sshfs' plugin. This can take a few minutes...
-Fetching win32-process-0.8.3.gem
-Fetching vagrant-sshfs-1.3.5.gem
-Installed the plugin 'vagrant-sshfs (1.3.5)'!
+vm:
+* The host path of the shared folder is missing: ./data/nginx/certs
+* The host path of the shared folder is missing: ./data/sharedfolder
 
+# The error above is caused by specified folders added 
+#   to .gitignore. They are excluded due to contents 
+#   being unwanted to be pushed upstream
 
-Vagrant has completed installing local plugins for the current Vagrant
-project directory. Please run the requested command again.
-make: *** [validate_vm] Error 255
-
-# The following path related activities are executed by validate_vm
-Initialising path:./platform/vagrant/./mnt/proxy/init
-Updating Permission as SSHFS from Host to Guests:./platform/vagrant/./mnt/proxy/init
+# The error is fixed by executing the below
+make bootstrap_mounts
 Initialising path:./platform/vagrant/./data/sharedfolder
 Updating Permission as SSHFS from Host to Guests:./platform/vagrant/./data/sharedfolder
-Initialising path:./platform/vagrant/./mnt/nginx/conf.d
-Updating Permission as SSHFS from Host to Guests:./platform/vagrant/./mnt/nginx/conf.d
 Initialising path:./platform/vagrant/./data/nginx/certs
 Updating Permission as SSHFS from Host to Guests:./platform/vagrant/./data/nginx/certs
+
+# Now that the path requirements are met, reexecute the vagrant validation
+make validate_vm
 Validate Vagrant Specification(s):  ./platform/vagrant/vagrant_variables.yaml
+Vagrantfile validated successfully.
+```
