@@ -1,3 +1,7 @@
+# NODES
+* Only proceed if [requirements](./REQUIREMENTS.md) has been met.
+* Unique VM's are to be deployed consisting of a kubernetes cluster and a proxy node
+
 ```bash
 # Initialise submodules. This cleans up if submodules already.
 make submodules
