@@ -1,36 +1,75 @@
 .PHONY: init \
-vagrant up init-ssh down build clean status \
-kubespray kubespray_clean kubespray_init kubespray_sync \
+vagrant up init-ssh down build clean status help \
+kubespray_deploy kubespray_prereq kubespray_install kube_config \
 login_1 login_2 login_3 \
-dns dns_up dns_init dns_down dns_clean dns_status \
-k8_inventory k8_inventory_init k8_inventory_venv k8_inventory_init k8_inventory_build
-
 
 include .makefile.env
 
 vagrant: up status
 
+# TOOLTIP
+# =======
+help: h_common h_vm_commands h_kubespray
+
+h_common:
+	@echo "# COMMON"
+	@echo "# ======="
+	@echo "    up: Brings up a 3 node VM cluster, 1 proxy VM and a dns container"
+	@echo "  down: Halts (Shutdowns) the 3 node vm cluster"
+	@echo "status: Shows the VM and DNS status"
+	@echo " clean: Destroys all VMs"
+	@echo ""
+	@echo ""
+
+h_vm_commands: 
+	@echo "# VM COMMANDS"
+	@echo "# ==========="
+	@echo " login_1: SSH to the node 1 of the VM cluster"
+	@echo " login_2: SSH to the node 2 of the VM cluster"
+	@echo " login_3: SSH to the node 3 of the VM cluster"
+	@echo "login_ng: SSH to the proxy node of the VM cluster"
+	@echo ""
+	@echo ""
+
+h_kubespray:
+	@echo "# KUBERNETES (KUBESPRAY)"
+	@echo "# ======================"
+	@echo "kubespray_deploy: Executes kubespray_prereq and kubespray_install"
+	@echo "# KUBERNETES (KUBESPRAY) - PREREQUISITES"
+	@echo "         kubespray_prereq: Executes kubespray_venv kubespray_inventory_init kubespray_inventory_build"
+	@echo "           kubespray_venv: Initialises a kubespray dedicated virtualenv directory"
+	@echo ""
+	@echo ""
+	@echo " kubespray_inventory_init: Initialises a kubespray (ansible) inventory"
+	@echo "kubespray_inventory_build: Configures the kubespray inventory based on parameter present in .makefile.env"
+	@echo "                         : _K8S_IPS in .makefile.env must match subnet and I.P. stated in"
+	@echo "                         : platform/vagrant/vagrant_variables.yaml"
+	@echo ""
+	@echo ""
+	@echo "# KUBERNETES (KUBESPRAY) - INSTALLATION"
+	@echo "kubespray_install: Executes kubespray_exec and kubespray_post"
+	@echo "kubespray_exec: Executes the kubespray ansible-playbook using the generated inventory"
+	@echo "kubespray_post: Places the admin kubernetes configuration to the vagrant home directory inside master nodes"
+	@echo "kube_config: initialises a shell script to source the admin config that allows the host to interact with the kubecluster in the guest VMs"
+	@echo ""
+	@echo "# END"
+
 # VM COMMANDS
 # ===========
-up: up_vm build_dns
+up: up_vm up_dns
 	@cd $(_VAGRANT) && vagrant ssh-config > $(PWD)/$(_VAGRANT_SSH_CONFIG)
 
 up_vm:
 	$(call vm_up, $(_VAGRANT))
 
-down: down_cluster clean_dns
-
-down_cluster:
-	$(call vm_down, $(_VAGRANT), k8s-1 k8s-2 k8s-3 local-1)
+down:
+	$(call vm_down, $(_VAGRANT))
 
 build:
 	$(call vm_build, $(_VAGRANT))
 
 clean:
 	$(call vm_clean, $(_VAGRANT))
-
-clean_cluster:
-	$(call vm_clean, $(_VAGRANT), k8s-1 k8s-2 k8s-3 local-1)
 
 status: status_vm status_dns
 
@@ -46,19 +85,19 @@ reload_vm:
 # DNS COMMANDS
 # ============
 up_dns:
-	$(call dns_up, $(_VAGRANT))
+	$(call compose_up, $(_COMPOSE))
 
 build_dns:
-	$(call dns_build, $(_VAGRANT))
+	$(call compose_build, $(_COMPOSE))
 
 status_dns:
-	$(call dns_status, $(_VAGRANT))
+	$(call compose_ps, $(_COMPOSE))
 
 down_dns:
-	$(call dns_down, $(_VAGRANT))
+	$(call compose_down, $(_COMPOSE))
 
-clean_dns:
-	$(call dns_clean, $(_VAGRANT))
+logs_dns:
+	$(call compose_logs, $(_COMPOSE))
 
 # LOGIN
 # =====
@@ -73,7 +112,7 @@ login_3: init-ssh
 
 # SUBMODULES
 # ==========
-kubespray_install: kubespray_clean kubespray_init kubespray_sync
+kubespray_prereq: kubespray_clean kubespray_init kubespray_sync
 
 kubespray_clean:
 	@echo "Clean directory:$(_KUBESPRAY)"
@@ -87,24 +126,18 @@ kubespray_sync:
 	git submodule update --force --init --recursive
 
 
-# INVENTORIES
-# ===========
-k8_inventory: k8_inventory_venv k8_inventory_build
+# KUBESPRAY
+# =========
+kubespray_deploy: kubespray_prereq kubespray_install
 
-k8_inventory_venv:
-	$(call venv_init, $(_K8S_VENV), $(_KUBESPRAY)/$(_K8S_BUILDER))
+kubespray_prereq: kubespray_venv kubespray_inventory_init kubespray_inventory_build
+kubespray_venv:
+	$(call venv_init, $(_K8S_VENV), $(_KUBESPRAY))
 
-k8_inventory_init:
+kubespray_inventory_init:
 	cd $(_K8S_INVENTORY_SRC) && cp -r sample $(_K8S)
 
-k8_inventory_build: k8_inventory_init
-
-
-# KUBE COMMANDS
-# =============
-kube_dns:
-	kubectl run -it --rm --restart=Never --image=infoblox/dnstools:latest dnstools
-
+kubespray_inventory_build:
 ifneq ($(wildcard $(_K8S_INVENTORY_DST)),"")
 	$(call venv_exec, $(_K8S_VENV), \
 		cd $(_KUBESPRAY) && \
@@ -117,13 +150,7 @@ else
 	@ls -l $(_K8S_INVENTORY_DST)
 endif
 
-# KUBESPRAY
-# =========
-kubespray_init: kubespray_venv kubespray_exec kubespray_post kubespray_admin
-
-kubespray_venv:
-	$(call venv_init, $(_K8S_VENV), $(_KUBESPRAY))
-
+kubespray_install: kubespray_exec kubespray_post
 kubespray_exec:
 	$(call venv_exec, \
 		$(_K8S_VENV), \
@@ -144,11 +171,18 @@ kubespray_post:
 		k8s-2,\
 		mkdir -p $(_KUBE_DIR) && sudo cp -rf $(_KUBE_SRC) $(_KUBE_CFG) && sudo chown $$(id -u):$$(id -g) $(_KUBE_CFG) \
 	)
-
-kubespray_admin:
 	rsync  -az -e "ssh -F $(_VAGRANT_SSH_CONFIG)" k8s-1:/home/vagrant/.kube/config .vagrant.kube.config
-	@echo "export KUBECONFIG=`pwd`/.vagrant.kube.config"
 
+kube_config:
+	@echo "#!/bin/bash" > .init.kube.config.sh
+	@echo export KUBECONFIG=\`pwd\`/.vagrant.kube.config >> .init.kube.config.sh
+	@echo "execute 'source .init.kube.config.sh' to set KUBECONFIG"
+
+
+# KUBE COMMANDS
+# =============
+kube_dns:
+	kubectl run -it --rm --restart=Never --image=infoblox/dnstools:latest dnstools
 
 # FUNCTIONS
 # =========
@@ -191,7 +225,7 @@ endef
 
 define vm_down
 	@echo "Suspending Vagrant VM: $(1) $(2)"
-	cd $(1) && vagrant suspend $(2)
+	cd $(1) && vagrant halt $(2)
 endef
 
 define vm_build
@@ -219,24 +253,23 @@ define vm_status
 	cd $(1) && vagrant status
 endef
 
-# DNS FUNCTIONS
-define dns_up
-    cd $(1) && vagrant dns --restart
+# COMPOSE FUNCTIONS
+define compose_up
+    cd $(1) && docker-compose up -d
 endef
 
-define dns_down
-    cd $(1) && vagrant dns --stop
+define compose_down
+    cd $(1) && docker-compose down
 endef
 
-define dns_build
-    cd $(1) && vagrant dns --install
+define compose_build
+    cd $(1) && docker-compose build
 endef
 
-define dns_status
-	@cd $(1) && vagrant dns --status
-	@cd $(1) && vagrant dns --list
+define compose_ps
+	cd $(1) && docker-compose ps
 endef
 
-define dns_clean
-	@cd $(1) && vagrant dns --uninstall
+define compose_logs
+	cd $(1) && docker-compose logs $(2)
 endef
