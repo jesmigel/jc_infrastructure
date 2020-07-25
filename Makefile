@@ -11,7 +11,7 @@ help: h_common h_bootstrap h_vm_commands h_submodules h_kubespray
 
 h_common:
 	@echo "# COMMON"
-	@echo "# ======="
+	@echo "# ======"
 	@echo "      up: Brings up a 3 node VM cluster, 1 proxy VM and a dns container"
 	@echo "    down: Halts (Shutdowns) the 3 node vm cluster"
 	@echo "  status: Shows the VM and DNS status"

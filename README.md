@@ -3,13 +3,13 @@
 ## Motivation
 To enable the capability of provisioning a kubernetes based infrastructure replicating key aspects of an onprem environment. This includes the following:
 * A kubernetes cluster in a "private" subnet
-* A proxy connected to the private and public subnet
+* A proxy connected to the "private" and "public" subnet
 * A DNS Server/Sinkhole moderating traffic between the internet and the emulated "onprem" environment
 
 ## Documentation
 * [Host Requirements](./docs/REQUIREMENTS.md)
 * [Infrastructure Overview](./docs/INFRASTRUCTURE.md)
-* [NODE Provisioning](./docs/NODES.md)
+* [VM Provisioning](./docs/NODES.md)
 * [Kubernetes Installation](./docs/KUBERNETES.md)
 
 ## Makefile help
@@ -48,6 +48,8 @@ submodules_clean: Cleans up submodules
 # KUBERNETES (KUBESPRAY)
 # ======================
 kubespray_deploy: Executes kubespray_prereq and kubespray_install
+
+
 # KUBERNETES (KUBESPRAY) - PREREQUISITES
          kubespray_prereq: Executes kubespray_venv kubespray_inventory_init kubespray_inventory_build
            kubespray_venv: Initialises a kubespray dedicated virtualenv directory
@@ -65,5 +67,5 @@ kubespray_exec: Executes the kubespray ansible-playbook using the generated inve
 kubespray_post: Places the admin kubernetes configuration to the vagrant home directory inside master nodes
 kube_config: initialises a shell script to source the admin config that allows the host to interact with the kubecluster in the guest VMs
 
-# END
+
 ```
