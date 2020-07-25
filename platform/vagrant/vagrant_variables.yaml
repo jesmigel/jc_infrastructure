@@ -6,9 +6,10 @@ global:
   plugins:
     # - dns
     - vagrant-disksize
+    - vagrant-sshfs
 
 nodes:  
-# KUBERNETES
+  # KUBERNETES
   kubernetes:
     cpu: 4
     bootstrap: |
@@ -21,8 +22,8 @@ nodes:
       # NFS client
       apt-get -y install nfs-client
     disks:
-      size: 60
       instances: 1
+      size: 60
     gui: false
     instances: 3
     memory: 6144
@@ -48,13 +49,13 @@ nodes:
     instances: 1
     memory: 256
     mounts:
-      - host: ./data/nfs/mnt/nginx/conf.d
+      - host: ./mnt/nginx/conf.d
         guest: /etc/nginx/conf.d/
-      - host: ./data/nfs/mnt/nginx/certs
+      - host: ./data/nginx/certs
         guest: /etc/letsencrypt/live/
-      - host: ./data/nfs/mnt/sharedfolder
+      - host: ./data/sharedfolder
         guest: /mnt/sharedfolder/
-      - host: ./data/nfs/init
+      - host: ./mnt/proxy/init
         guest: /mnt/init/
     network: 10
     node_prefix: local
