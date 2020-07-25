@@ -64,16 +64,14 @@ h_kubespray:
 
 # VM COMMANDS
 # ===========
-up: up_vm up_dns
+up: up_vm up_dns status_dns
 	@cd $(_VAGRANT) && vagrant ssh-config > $(PWD)/$(_VAGRANT_SSH_CONFIG)
 
 validate_vm:
 	$(call vm_validate, $(_VAGRANT),$(_VAGRANT_CFG))
 
 bootstrap_mounts:
-	$(call bootstrap_mount,$(_VAGRANT)/$(_INIT))
 	$(call bootstrap_mount,$(_VAGRANT)/$(_SHAREDFOLDER))
-	$(call bootstrap_mount,$(_VAGRANT)/$(_NGINX_CONFD))
 	$(call bootstrap_mount,$(_VAGRANT)/$(_NGINX_CERTS))
 
 up_vm:
@@ -102,6 +100,7 @@ reload_vm:
 # DNS COMMANDS
 # ============
 up_dns:
+	$(call bootstrap_mount, $(_PIHOLE))
 	$(call compose_up, $(_COMPOSE))
 
 build_dns:
@@ -215,7 +214,7 @@ define bootstrap_mount
 	@if [ ! -a $(1) ]; then \
 		echo "Initialising path:$(1)" && \
 		mkdir -p $(1) && \
-		echo "Updating Permission as SSHFS from Host to Guests:$(1)" && \
+		echo "Updating Permission of SSHFS mount:$(1)" && \
 		chmod 777 $(1); fi;
 endef
 
@@ -308,7 +307,7 @@ define vm_reload
 endef
 
 define vm_status
-	@echo "Destroying Vagrant VM: $(1)"
+	@echo "Vagrant Status in: $(1)"
 	cd $(1) && vagrant status
 endef
 
