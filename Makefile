@@ -7,25 +7,34 @@ include .makefile.env
 
 # TOOLTIP
 # =======
-help: h_common h_vm_commands h_submodules h_kubespray
+help: h_common h_bootstrap h_vm_commands h_submodules h_kubespray
 
 h_common:
 	@echo "# COMMON"
 	@echo "# ======="
-	@echo "    up: Brings up a 3 node VM cluster, 1 proxy VM and a dns container"
-	@echo "  down: Halts (Shutdowns) the 3 node vm cluster"
-	@echo "status: Shows the VM and DNS status"
-	@echo " clean: Destroys all VMs"
+	@echo "      up: Brings up a 3 node VM cluster, 1 proxy VM and a dns container"
+	@echo "    down: Halts (Shutdowns) the 3 node vm cluster"
+	@echo "  status: Shows the VM and DNS status"
+	@echo "   clean: Destroys all VMs"
+	@echo " login_1: SSH to the node 1 of the VM cluster"
+	@echo " login_2: SSH to the node 2 of the VM cluster"
+	@echo " login_3: SSH to the node 3 of the VM cluster"
+	@echo "login_ng: SSH to the proxy node of the VM cluster"
+	@echo ""
+	@echo ""
+
+h_bootstrap:
+	@echo "# BOOTSTRAP COMMANDS"
+	@echo "# =================="
+	@echo "bootstrap_mounts: Prepares mounts required prior to building the VM(s)"
+	@echo "                : and containers"
 	@echo ""
 	@echo ""
 
 h_vm_commands: 
 	@echo "# VM COMMANDS"
 	@echo "# ==========="
-	@echo " login_1: SSH to the node 1 of the VM cluster"
-	@echo " login_2: SSH to the node 2 of the VM cluster"
-	@echo " login_3: SSH to the node 3 of the VM cluster"
-	@echo "login_ng: SSH to the proxy node of the VM cluster"
+	@echo "validate_vm: Validates the vm node specifications"
 	@echo ""
 	@echo ""
 
