@@ -1,15 +1,13 @@
 .PHONY: init \
-vagrant up init-ssh down build clean status help \
+up init-ssh down build clean status help \
 kubespray_deploy kubespray_prereq kubespray_install kube_config \
 login_1 login_2 login_3 \
 
 include .makefile.env
 
-vagrant: up status
-
 # TOOLTIP
 # =======
-help: h_common h_vm_commands h_kubespray
+help: h_common h_vm_commands h_submodules h_kubespray
 
 h_common:
 	@echo "# COMMON"
@@ -28,6 +26,16 @@ h_vm_commands:
 	@echo " login_2: SSH to the node 2 of the VM cluster"
 	@echo " login_3: SSH to the node 3 of the VM cluster"
 	@echo "login_ng: SSH to the proxy node of the VM cluster"
+	@echo ""
+	@echo ""
+
+h_submodules:
+	@echo "# SUBMODULES"
+	@echo "# =========="
+	@echo "      submodules: Executes submodules_clean submodules_init submodules_sync"
+	@echo "submodules_clean: Cleans up submodules"
+	@echo " submodules_init: Initialises submodules"
+	@echo " submodules_sync: Syncs up upstream submodules"
 	@echo ""
 	@echo ""
 
@@ -58,6 +66,15 @@ h_kubespray:
 # ===========
 up: up_vm up_dns
 	@cd $(_VAGRANT) && vagrant ssh-config > $(PWD)/$(_VAGRANT_SSH_CONFIG)
+
+validate_vm:
+	$(call vm_validate, $(_VAGRANT),$(_VAGRANT_CFG))
+
+bootstrap_mounts:
+	$(call bootstrap_mount,$(_VAGRANT)/$(_INIT))
+	$(call bootstrap_mount,$(_VAGRANT)/$(_SHAREDFOLDER))
+	$(call bootstrap_mount,$(_VAGRANT)/$(_NGINX_CONFD))
+	$(call bootstrap_mount,$(_VAGRANT)/$(_NGINX_CERTS))
 
 up_vm:
 	$(call vm_up, $(_VAGRANT))
@@ -112,18 +129,25 @@ login_3: init-ssh
 
 # SUBMODULES
 # ==========
-kubespray_prereq: kubespray_clean kubespray_init kubespray_sync
+submodules: submodules_clean submodules_init submodules_sync submodules_status
 
-kubespray_clean:
-	@echo "Clean directory:$(_KUBESPRAY)"
-	# rm -rf $(_KUBESPRAY)
+submodules_clean:
+	$(call clean_submodule,$(_KUBESPRAY_PATH))
+	@echo ""
+	
 
-kubespray_init:
-	@echo "Update kubespray submodule"
-	git submodule add $(_KUBESPRAY_GIT) $(_KUBESPRAY)
+submodules_init:
+	$(call add_submodule,$(_KUBESPRAY_REPO), $(_KUBESPRAY_PATH))
+	@echo ""
+	
 
-kubespray_sync:
+submodules_sync:
 	git submodule update --force --init --recursive
+	@echo ""
+
+submodules_status:
+	@git submodule status
+	@echo ""
 
 
 # KUBESPRAY
@@ -132,7 +156,7 @@ kubespray_deploy: kubespray_prereq kubespray_install
 
 kubespray_prereq: kubespray_venv kubespray_inventory_init kubespray_inventory_build
 kubespray_venv:
-	$(call venv_init, $(_K8S_VENV), $(_KUBESPRAY))
+	$(call venv_init, $(_K8S_VENV), $(_KUBESPRAY_PATH))
 
 kubespray_inventory_init:
 	cd $(_K8S_INVENTORY_SRC) && cp -r sample $(_K8S)
@@ -140,7 +164,7 @@ kubespray_inventory_init:
 kubespray_inventory_build:
 ifneq ($(wildcard $(_K8S_INVENTORY_DST)),"")
 	$(call venv_exec, $(_K8S_VENV), \
-		cd $(_KUBESPRAY) && \
+		cd $(_KUBESPRAY_PATH) && \
 		declare -a IPS=$(_K8S_IPS) && \
 		CONFIG_FILE=$(_K8S_CONFIG) python3 $(_K8S_BUILDER_SCRIPT) $${IPS[@]} \
 	)
@@ -156,7 +180,7 @@ kubespray_exec:
 		$(_K8S_VENV), \
 		pip install ansible; \
 		ansible-playbook -i $(_K8S_INVENTORY_DST)/hosts.yaml \
-		$(_KUBESPRAY)/cluster.yml -u vagrant -b -v --private-key=$(_VAGRANT_KEY) \
+		$(_KUBESPRAY_PATH)/cluster.yml -u vagrant -b -v --private-key=$(_VAGRANT_KEY) \
 	)
 
 kubespray_post:
@@ -186,6 +210,36 @@ kube_dns:
 
 # FUNCTIONS
 # =========
+# BOOTSTRAPS
+define bootstrap_mount
+	@if [ ! -a $(1) ]; then \
+		echo "Initialising path:$(1)" && \
+		mkdir -p $(1) && \
+		echo "Updating Permission as SSHFS from Host to Guests:$(1)" && \
+		chmod 777 $(1); fi;
+endef
+
+# SUBMODULES
+define clean_submodule
+	@if [ -a $(1) ]; then \
+		echo "Clean submodules:$(1)" && \
+		git submodule deinit -f $(1) && \
+		git rm -f -r $(1); fi;
+endef
+
+define add_submodule
+	@echo "Add Submodule $(1) stored to $(2)"
+	git submodule add -f $(1) $(2)
+endef
+
+define sync_submodule
+	git submodule update --force --init --recursive
+endef
+
+define status_submodule
+	git submodule status
+endef
+
 # VAGRANT SSH to Node
 define login_vagrant
 	cd $(1) && vagrant ssh
@@ -218,6 +272,11 @@ define venv_exec
 endef
 
 # VAGRANT FUNCTIONS
+define vm_validate
+	@echo "Validate Vagrant Specification(s): $(1)/$(2)"
+	@cd $(1) && vagrant validate
+endef
+
 define vm_up
 	@echo "Provisioning Vagrant VM: $(1)"
 	cd $(1) && vagrant up
