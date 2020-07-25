@@ -5,7 +5,7 @@
 ## Prepare Submodules
 ```bash
 # Initialise submodules. This cleans up if submodules already.
-make submodules
+$ make submodules
 Clean submodules:./submodule/kubespray
 Cleared directory 'submodule/kubespray'
 Submodule 'submodule/kubespray' (https://github.com/kubernetes-sigs/kubespray.git) unregistered for path 'submodule/kubespray'
@@ -21,7 +21,7 @@ Submodule path 'submodule/kubespray': checked out 'aa21edeb535486f4909274486fc59
  aa21edeb535486f4909274486fc598cceccff368 submodule/kubespray (v2.1.0-3964-gaa21edeb)
 
 # Confirm Submodule status
-make submodules_status
+$ make submodules_status
  aa21edeb535486f4909274486fc598cceccff368 submodule/kubespray (v2.1.0-3964-gaa21edeb)
 ```
 
@@ -29,7 +29,7 @@ make submodules_status
 NOTE: values of $(_K8S_IPS) in [.makefile.env](../makefile.env) must match the kubernetes ip subnet present in [vagrant_variables.yaml](../platform/vagrant/vagrant_variables.yaml)
 ```bash
 # This command initialises virtualenv, installs requirements and generates the kubespray inventory
-make kubespray_prereq
+$ make kubespray_prereq
 virtualenv -p python3  ./venv/k8s
 ...
 ...
@@ -55,19 +55,19 @@ total size is 40,991  speedup is 0.95
 ```bash
 # Kubespray is triggered by virtualenv ansible-playbook with the generated inventory as its payload
 # Sanity Check: Login into the nodes using the auto generated ssh config
-make login_1
+$ make login_1
 ssh -F  .vagrant.ssh.config  k8s-1
 Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-112-generic x86_64)
 ...
 ...
 vagrant@k8s-1:~$ exit
-make login_2
+$ make login_2
 ssh -F  .vagrant.ssh.config  k8s-2
 Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-112-generic x86_64)
 ...
 ...
 vagrant@k8s-2:~$ exit
-make login_3
+$ make login_3
 ssh -F  .vagrant.ssh.config  k8s-3
 Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-112-generic x86_64)
 ...
@@ -77,7 +77,7 @@ vagrant@k8s-3:~$ exit
 # Successful ssh logon ensures that ansible wouldnt encounter connectivity issues against the target nodes
 # NOTE: Errors may still occur due to the strict host checking by kubespray.
 #    Immediate solution is to clean up ~/.ssh/known_host
-make kubespray_install
+$ make kubespray_install
 ...
 ...
 # SSH Prompts are encountered, 'yes' responses must provided the same number as the node instances.
@@ -101,9 +101,9 @@ Connection to 127.0.0.1 closed.
 
 
 # If kubectl is installed in host direct kubernetes interaction can be configured
-kubectl get nodes
+$ kubectl get nodes
 The connection to the server kubernetes.docker.internal:6443 was refused - did you specify the right host or port?
-make kube_config
+$ make kube_config
 execute 'source .init.kube.config.sh' to set KUBECONFIG
 
 
@@ -111,7 +111,7 @@ execute 'source .init.kube.config.sh' to set KUBECONFIG
 source .init.kube.config.sh && printenv 
 
 # Interacting with the provisioned kubernetes cluster
-kubectl get nodes -o wide
+$ kubectl get nodes -o wide
 NAME    STATUS   ROLES    AGE     VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION       CONTAINER-RUNTIME
 node1   Ready    master   10m     v1.18.3   10.8.41.101   <none>        Ubuntu 18.04.4 LTS   4.15.0-112-generic   docker://19.3.12
 node2   Ready    master   9m42s   v1.18.3   10.8.41.102   <none>        Ubuntu 18.04.4 LTS   4.15.0-112-generic   docker://19.3.12
