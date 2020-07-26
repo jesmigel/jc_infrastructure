@@ -7,6 +7,7 @@ require 'yaml'
 payload="configuration/#{ENV['_VAGRANT_CFG']}"
 config_file=File.expand_path(File.join(File.dirname(__FILE__), payload))
 settings=YAML.load_file(config_file)
+vagrant_provider=ENV['_VAGRANT_PROVIDER']
 
 # SETTINGS BREAKDOWN
 global=settings['global']
@@ -25,7 +26,7 @@ Vagrant.configure(global['api_version']) do |config|
                 node.vm.box = group_config['os']
                 node.vm.hostname = vm_name
     
-                node.vm.provider ENV['_VAGRANT_PROVIDER'] do | vb |
+                (node.vm.provider vagrant_provider do | vb |
                     vb.memory = group_config['memory']
                     vb.cpus = group_config['cpu']
                     vb.gui = group_config['gui']
@@ -58,7 +59,7 @@ Vagrant.configure(global['api_version']) do |config|
                                             '--medium', "#{disk}.vdi"]
                         end
                     end                   
-                end
+                end) if vagrant_provider == "virtualbox"
 
                 # NETWORK
                 group_config['address'].each do | address |
