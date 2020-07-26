@@ -4,7 +4,8 @@
 require 'yaml'
 
 # IMPORT VAGRANT VARIABLES
-config_file=File.expand_path(File.join(File.dirname(__FILE__), 'vagrant_variables.yaml'))
+payload=ENV['_VAGRANT_CFG']
+config_file=File.expand_path(File.join(File.dirname(__FILE__), payload))
 settings=YAML.load_file(config_file)
 
 # SETTINGS BREAKDOWN
