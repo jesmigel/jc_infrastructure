@@ -34,7 +34,7 @@ before_install:
     sudo make validate_vm _ENVIRONMENT=travis
 install:
   - |
-    sudo make up_vm _ENVIRONMENT=travis
+    sudo make up_vm kubespray_deploy _ENVIRONMENT=travis ANSIBLE_HOST_KEY_CHECKING=False
 script:
   - |
     sudo make clean _ENVIRONMENT=travis
