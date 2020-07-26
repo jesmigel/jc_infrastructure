@@ -38,17 +38,9 @@ before_install:
     make submodules
 install:
   - |
-    export ROLE=$(echo $TRAVIS_REPO_SLUG | sed 's/^.*\/ansible-role-/\//g')
-    mkdir -p $HOME/.ansible/roles
-    ln -s $TRAVIS_BUILD_DIR $HOME/.ansible/roles/$ROLE
+    make up
 script:
   - |
-    source ./scripts/run-tests.sh \
-      && sudo -E molecule dependency -s $MOLECULE_SCENARIO_NAME \
-      && sudo -E molecule lint -s $MOLECULE_SCENARIO_NAME \
-      && sudo -E molecule syntax -s $MOLECULE_SCENARIO_NAME \
-      && sudo -E molecule converge -s $MOLECULE_SCENARIO_NAME \
-      && travis_wait 120 sudo -E molecule idempotence -s $MOLECULE_SCENARIO_NAME \
-      && sudo -E molecule verify -s $MOLECULE_SCENARIO_NAME
+    make clean down_dns
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
