@@ -313,7 +313,7 @@ endef
 
 define vm_clean
 	@echo "Destroying Vagrant VM: $(1) $(2)"
-	@export $$(grep 'VAGRANT' $(_PAYLOAD) | xargs) && cd $(1) && vagrant destroy $(2)
+	@export $$(grep 'VAGRANT' $(_PAYLOAD) | xargs) && cd $(1) && vagrant destroy --force $(2)
 endef
 
 define vm_provision
