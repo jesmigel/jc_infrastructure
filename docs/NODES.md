@@ -164,11 +164,11 @@ pihole    |   [✓] New password set
 
 ## Browser Output
 ### NGINX
-![](../img/NODES.NGINX.png)
+![](../img/screenshots/NODES.NGINX.png)
 
 ### PiHole (DNS Server/Sinkhole) - Unauthenticated
-![](../img/NODES.PIHOLE.UNAUTH.png)
+![](../img/screenshots/NODES.PIHOLE.UNAUTH.png)
 
 
 ### PiHole (DNS Server/Sinkhole) - Authenticated
-![](../img/NODES.PIHOLE.AUTH.png)
+![](../img/screenshots/NODES.PIHOLE.AUTH.png)
