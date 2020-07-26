@@ -23,7 +23,7 @@ nodes:
     memory: 512
     mounts: []
     node_prefix: k8s
-    os: generic/ubuntu1804
+    os: debian/buster64
 
   # PROXY
   proxy:
@@ -45,4 +45,4 @@ nodes:
     mounts: []
     network: 10
     node_prefix: local
-    os: generic/ubuntu1804
+    os: debian/buster64
