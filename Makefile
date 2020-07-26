@@ -3,7 +3,11 @@ up init-ssh down build clean status help \
 kubespray_deploy kubespray_prereq kubespray_install kube_config \
 login_1 login_2 login_3 \
 
-include .makefile.env
+include env/common.env
+
+_ENVIRONMENT=local
+_PAYLOAD=$(_PATH_ENVIRONMENT)/$(_ENVIRONMENT).env
+include $(_PAYLOAD)
 
 # TOOLTIP
 # =======
@@ -63,9 +67,9 @@ h_kubespray:
 	@echo "# KUBERNETES (KUBESPRAY) - INVENTORY"
 	@echo "# =================================="
 	@echo " kubespray_inventory_init: Initialises a kubespray (ansible) inventory"
-	@echo "kubespray_inventory_build: Configures the kubespray inventory based on the parameter _K8S_IPS in .makefile.env"
-	@echo "                         : _K8S_IPS in .makefile.env must match subnet and I.P. stated in"
-	@echo "                         :      platform/vagrant/vagrant_variables.yaml"
+	@echo "kubespray_inventory_build: Configures the kubespray inventory based on the parameter _K8S_IPS in env/common.env"
+	@echo "                         : _K8S_IPS in env/common.env must match subnet and I.P. stated in"
+	@echo "                         :      platform/vagrant/*.vagrant_variables.yaml"
 	@echo ""
 	@echo ""
 	@echo "# KUBERNETES (KUBESPRAY) - INSTALLATION"
@@ -287,44 +291,44 @@ endef
 
 # VAGRANT FUNCTIONS
 define vm_validate
-	@echo "Validate Vagrant Specification(s): $(1)/$(2)"
-	@export $$(grep 'VAGRANT' .makefile.env | xargs) && cd $(1) && vagrant validate
+	@echo "Validate Vagrant Specification(s): $(2)"
+	@export $$(grep 'VAGRANT' $(_PAYLOAD) | xargs) && cd $(1) && vagrant validate
 	
 endef
 
 define vm_up
 	@echo "Provisioning Vagrant VM: $(1)"
-	@export $$(grep 'VAGRANT' .makefile.env | xargs) && cd $(1) && vagrant up
+	@export $$(grep 'VAGRANT' $(_PAYLOAD) | xargs) && cd $(1) && && vagrant up
 endef
 
 define vm_down
 	@echo "Suspending Vagrant VM: $(1) $(2)"
-	@export $$(grep 'VAGRANT' .makefile.env | xargs) && cd $(1) && vagrant halt $(2)
+	@export $$(grep 'VAGRANT' $(_PAYLOAD) | xargs) && cd $(1) && vagrant halt $(2)
 endef
 
 define vm_build
 	@echo "Building Vagrant VM: $(1)"
-	@export $$(grep 'VAGRANT' .makefile.env | xargs) && cd $(1) && vagrant provision
+	@export $$(grep 'VAGRANT' $(_PAYLOAD) | xargs) && cd $(1) && vagrant provision
 endef
 
 define vm_clean
 	@echo "Destroying Vagrant VM: $(1) $(2)"
-	@export $$(grep 'VAGRANT' .makefile.env | xargs) && cd $(1) && vagrant destroy $(2)
+	@export $$(grep 'VAGRANT' $(_PAYLOAD) | xargs) && cd $(1) && vagrant destroy $(2)
 endef
 
 define vm_provision
 	@echo "Provisioning Vagrant VM: $(1)"
-	@export $$(grep 'VAGRANT' .makefile.env | xargs) && cd $(1) && vagrant provision
+	@export $$(grep 'VAGRANT' $(_PAYLOAD) | xargs) && cd $(1) && vagrant provision
 endef
 
 define vm_reload
 	@echo "Provisioning Vagrant VM: $(1)"
-	@export $$(grep 'VAGRANT' .makefile.env | xargs) && cd $(1) && vagrant reload
+	@export $$(grep 'VAGRANT' $(_PAYLOAD) | xargs) && cd $(1) && vagrant reload
 endef
 
 define vm_status
 	@echo "Vagrant Status in: $(1)"
-	@export $$(grep 'VAGRANT' .makefile.env | xargs) && cd $(1) && vagrant status
+	@export $$(grep 'VAGRANT' $(_PAYLOAD) | xargs) && cd $(1) && vagrant status
 endef
 
 # COMPOSE FUNCTIONS
