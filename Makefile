@@ -298,7 +298,7 @@ endef
 
 define vm_up
 	@echo "Provisioning Vagrant VM: $(1)"
-	@export $$(grep 'VAGRANT' $(_PAYLOAD) | xargs) && cd $(1) && && vagrant up
+	@export $$(grep 'VAGRANT' $(_PAYLOAD) | xargs) && cd $(1) && vagrant up
 endef
 
 define vm_down
