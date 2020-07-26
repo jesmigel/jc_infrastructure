@@ -12,14 +12,16 @@ This block contains details propagated to all managed virtual machines
 | Field | Description |
 | ----- | ----------: |
 | api_version | Api version used by vagrant |
-| network | Contains network rules intended to be propagated across all VM's |
-| network.subnet | Subnet of all the VM's |
 | plugins | Global plugin list |
 
 #### nodes
 Contains details specific to a node or group of nodes
 | Field | Description |
 | ----- | ----------: |
+| address | Contains NIC list attached to VM(s) |
+| address.network | Contains the network (first 3) part of the ip address |
+| address.host | ontains the host (last) part of the ip address |
+| address | Contains NIC list attached to VM(s) |
 | cpu| number of cores allocated to vm(s) |
 | bootstrap | shell commands to be executed post VM deployment |
 | disk | Unformatted disk(s) block to be attached against VM(s) |
@@ -31,7 +33,6 @@ Contains details specific to a node or group of nodes
 | mounts | Physical host machine path to be mounted on guest (VM) |
 | mounts[ 0..n ].host | Host path |
 | mounts[ 0..n ].guest | Guest path |
-| network | Host part (last 3 digits) with a rang of [1-254] of a subnet |
 | node_prefix | Prefix of the name allocated to the VM |
 | os | Vagrantbox image to be used for the VM group |
 
