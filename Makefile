@@ -288,42 +288,43 @@ endef
 # VAGRANT FUNCTIONS
 define vm_validate
 	@echo "Validate Vagrant Specification(s): $(1)/$(2)"
-	@cd $(1) && vagrant validate
+	@export $$(grep 'VAGRANT' .makefile.env | xargs) && cd $(1) && vagrant validate
+	
 endef
 
 define vm_up
 	@echo "Provisioning Vagrant VM: $(1)"
-	cd $(1) && vagrant up
+	@export $$(grep 'VAGRANT' .makefile.env | xargs) && cd $(1) && vagrant up
 endef
 
 define vm_down
 	@echo "Suspending Vagrant VM: $(1) $(2)"
-	cd $(1) && vagrant halt $(2)
+	@export $$(grep 'VAGRANT' .makefile.env | xargs) && cd $(1) && vagrant halt $(2)
 endef
 
 define vm_build
 	@echo "Building Vagrant VM: $(1)"
-	cd $(1) && vagrant provision
+	@export $$(grep 'VAGRANT' .makefile.env | xargs) && cd $(1) && vagrant provision
 endef
 
 define vm_clean
 	@echo "Destroying Vagrant VM: $(1) $(2)"
-	cd $(1) && vagrant destroy --force $(2)
+	@export $$(grep 'VAGRANT' .makefile.env | xargs) && cd $(1) && vagrant destroy $(2)
 endef
 
 define vm_provision
 	@echo "Provisioning Vagrant VM: $(1)"
-	cd $(1) && vagrant provision
+	@export $$(grep 'VAGRANT' .makefile.env | xargs) && cd $(1) && vagrant provision
 endef
 
 define vm_reload
 	@echo "Provisioning Vagrant VM: $(1)"
-	cd $(1) && vagrant reload
+	@export $$(grep 'VAGRANT' .makefile.env | xargs) && cd $(1) && vagrant reload
 endef
 
 define vm_status
 	@echo "Vagrant Status in: $(1)"
-	cd $(1) && vagrant status
+	@export $$(grep 'VAGRANT' .makefile.env | xargs) && cd $(1) && vagrant status
 endef
 
 # COMPOSE FUNCTIONS
