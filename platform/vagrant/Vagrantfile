@@ -77,11 +77,11 @@ Vagrant.configure(global['api_version']) do |config|
                 end
 
                 # MOUNT FILES
-                group_config['mounts'].each do | mount |
-                    node.vm.synced_folder mount['host'], mount['guest'],
-                        type: "sshfs", disabled: false,
-                        sshfs_opts_append: "-o nonempty -o cache=no"
-                end
+                # group_config['mounts'].each do | mount |
+                #     node.vm.synced_folder mount['host'], mount['guest'],
+                #         type: "sshfs", disabled: false,
+                #         sshfs_opts_append: "-o nonempty -o cache=no"
+                # end
 
                 # BOOTSTRAP NODE
                 node.vm.provision "shell", inline: group_config['bootstrap']
