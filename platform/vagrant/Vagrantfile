@@ -41,18 +41,6 @@ Vagrant.configure(global['api_version']) do |config|
                     driverletters = ('c'..'z').to_a
                     
                     (1..group_config['disks']['instances']).each do | disk_index |
-
-                        disk = "data/disks/disk-#{i}-#{disk_index}"
-                        vb.customize ['createhd',
-                                        '--filename', disk,                                    
-                                        '--size', group_config['disks']['size'].to_i * 1024 ] unless File.exist?("#{disk}.vdi")
-                        vb.customize ['storageattach', :id,
-                                        '--storagectl', 'SCSI',
-                                        '--port', 2 + disk_index,
-                                        '--device', 0,
-                                        '--type', 'hdd',
-                                        '--medium', "#{disk}.vdi"]
-
                         # VirtualBox
                         ( \
                             # Create our own controller for consistency and to remove VM dependency
