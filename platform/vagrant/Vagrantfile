@@ -26,18 +26,35 @@ Vagrant.configure(global['api_version']) do |config|
                 node.vm.box = group_config['os']
                 node.vm.hostname = vm_name
     
-                (node.vm.provider vagrant_provider do | vb |
-                    vb.memory = group_config['memory']
+                node.vm.provider vagrant_provider do | vb |
                     vb.cpus = group_config['cpu']
-                    vb.gui = group_config['gui']
-                    vb.linked_clone = true
-                    vb.customize ["modifyvm", :id, "--vram", "8"] # ubuntu defaults to 256 MB which is a waste of precious RAM
-                    vb.customize [ "guestproperty", "set", :id, "--timesync-threshold", 10000 ] # Time Sync
+                    vb.memory = group_config['memory']
+
+                    ( \
+                        vb.gui = group_config['gui']
+                        vb.linked_clone = true
+                        vb.customize ["modifyvm", :id, "--vram", "8"] # ubuntu defaults to 256 MB which is a waste of precious RAM
+                        vb.customize [ "guestproperty", "set", :id, "--timesync-threshold", 10000 ] # Time Sync
+                    ) if vagrant_provider == "virtualbox"
 
                     # ADDITIONAL DISKS
                     driverletters = ('c'..'z').to_a
-                    if group_config['disks'].include? 'instances'
-                        (1..group_config['disks']['instances']).each do | disk_index |
+                    
+                    (1..group_config['disks']['instances']).each do | disk_index |
+
+                        disk = "data/disks/disk-#{i}-#{disk_index}"
+                        vb.customize ['createhd',
+                                        '--filename', disk,                                    
+                                        '--size', group_config['disks']['size'].to_i * 1024 ] unless File.exist?("#{disk}.vdi")
+                        vb.customize ['storageattach', :id,
+                                        '--storagectl', 'SCSI',
+                                        '--port', 2 + disk_index,
+                                        '--device', 0,
+                                        '--type', 'hdd',
+                                        '--medium', "#{disk}.vdi"]
+
+                        # VirtualBox
+                        ( \
                             # Create our own controller for consistency and to remove VM dependency
                             # unless File.exist?("data/disks/disk-#{disk_index}.vdi")
                             #     # Adding OSD Controller;
@@ -46,20 +63,24 @@ Vagrant.configure(global['api_version']) do |config|
                             #     '--name', 'OSD',
                             #     '--add', 'scsi']
                             # end
-                            disk = "data/disks/disk-#{i}-#{disk_index}"
                             vb.customize ['createhd',
-                                        '--filename', disk,
+                                        '--filename', disk,                                    
                                         '--size', group_config['disks']['size'] * 1024 ] unless File.exist?("#{disk}.vdi")
-                            
                             vb.customize ['storageattach', :id,
                                             '--storagectl', 'SCSI',
                                             '--port', 2 + disk_index,
                                             '--device', 0,
                                             '--type', 'hdd',
                                             '--medium', "#{disk}.vdi"]
-                        end
-                    end                   
-                end) if vagrant_provider == "virtualbox"
+                        ) if vagrant_provider == "virtualbox"
+                        # LibVirt
+                        ( \
+                        vb.storage :file, 
+                            :size => group_config['disks']['size'] * 1024,
+                            :type => 'raw' 
+                        ) if vagrant_provider == "libvirt"
+                    end if group_config['disks'].include? 'instances'
+                end
 
                 # NETWORK
                 group_config['address'].each do | address |
