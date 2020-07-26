@@ -25,7 +25,7 @@ Vagrant.configure(global['api_version']) do |config|
                 node.vm.box = group_config['os']
                 node.vm.hostname = vm_name
     
-                node.vm.provider :virtualbox do | vb |
+                node.vm.provider ENV['_VAGRANT_PROVIDER'] do | vb |
                     vb.memory = group_config['memory']
                     vb.cpus = group_config['cpu']
                     vb.gui = group_config['gui']
