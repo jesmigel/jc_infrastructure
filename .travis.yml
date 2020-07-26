@@ -34,15 +34,14 @@ before_install:
     sudo apt-get -y purge python3-openssl && sudo apt-get -y autoremove
     sudo apt-get update && sudo apt-get install -y ca-certificates curl gcc iproute2 pwgen python3 python3-dev sudo
     curl -skL https://bootstrap.pypa.io/get-pip.py | sudo -H python3
-    sudo -R 700 ./*
     make submodules
     which vagrant
     sudo make validate_vm
 install:
   - |
-    ls
+    sudo make up_vm
 script:
   - |
-    ls
+    sudo make clean
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
