@@ -10,8 +10,6 @@ settings=YAML.load_file(config_file)
 # SETTINGS BREAKDOWN
 global=settings['global']
 nodes=settings['nodes']
-# k8s=settings['k8s']
-# proxy=settings['proxy']
 
 Vagrant.configure(global['api_version']) do |config|
     # install external plugins
@@ -20,16 +18,11 @@ Vagrant.configure(global['api_version']) do |config|
     # always use Vagrants insecure key
     config.ssh.insert_key = false
 
-    # config.dns.tld = "vm"
-
     nodes.each do | group_name, group_config |
         (1..group_config['instances']).each do | i |
             config.vm.define vm_name = "%s-%01d" % [group_config['node_prefix'], i] do | node |
                 node.vm.box = group_config['os']
                 node.vm.hostname = vm_name
-                # node.dns.patterns = [/^(\w+\.)*#{vm_name}\.vm$/]
-    
-                
     
                 node.vm.provider :virtualbox do | vb |
                     vb.memory = group_config['memory']
