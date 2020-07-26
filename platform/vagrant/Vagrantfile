@@ -29,8 +29,7 @@ Vagrant.configure(global['api_version']) do |config|
                 node.vm.hostname = vm_name
                 # node.dns.patterns = [/^(\w+\.)*#{vm_name}\.vm$/]
     
-                ip = "#{global['network']['subnet']}.#{i+group_config['network']}"
-                node.vm.network :private_network, ip: ip
+                
     
                 node.vm.provider :virtualbox do | vb |
                     vb.memory = group_config['memory']
@@ -39,6 +38,7 @@ Vagrant.configure(global['api_version']) do |config|
                     vb.linked_clone = true
                     vb.customize ["modifyvm", :id, "--vram", "8"] # ubuntu defaults to 256 MB which is a waste of precious RAM
                     vb.customize [ "guestproperty", "set", :id, "--timesync-threshold", 10000 ] # Time Sync
+
                     # ADDITIONAL DISKS
                     driverletters = ('c'..'z').to_a
                     if group_config['disks'].include? 'instances'
@@ -63,7 +63,13 @@ Vagrant.configure(global['api_version']) do |config|
                                             '--type', 'hdd',
                                             '--medium', "#{disk}.vdi"]
                         end
-                    end
+                    end                   
+                end
+
+                # NETWORK
+                group_config['address'].each do | address |
+                    ip = "#{address['network']}.#{i+address['host']}"
+                    node.vm.network :private_network, ip: ip
                 end
 
                 # MOUNT FILES

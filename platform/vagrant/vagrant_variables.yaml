@@ -1,8 +1,6 @@
 # GLOBAL VAGRANT SETTINGS
 global:
   api_version: 2
-  network:
-    subnet: 10.8.41
   plugins:
     # - dns
     - vagrant-disksize
@@ -11,6 +9,9 @@ global:
 nodes:  
   # KUBERNETES
   kubernetes:
+    address:
+      - network: 10.8.41
+        host: 100
     cpu: 4
     bootstrap: |
       # SWAP off
@@ -28,12 +29,16 @@ nodes:
     instances: 3
     memory: 6144
     mounts: []
-    network: 100
     node_prefix: k8s
     os: ubuntu/bionic64
 
   # PROXY
   proxy:
+    address:
+      - network: 10.8.41
+        host: 10
+      - network: 10.8.40
+        host: 10
     cpu: 1
     bootstrap: |
       # Set Timezone
