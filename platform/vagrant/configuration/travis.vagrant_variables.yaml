@@ -9,7 +9,7 @@ nodes:
     address:
       - network: 10.8.41
         host: 100
-    cpu: 4
+    cpu: 1
     bootstrap: |
       # SWAP off
       swapoff -a
@@ -19,12 +19,10 @@ nodes:
       apt-get update
       # NFS client
       apt-get -y install nfs-client
-    disks:
-      instances: 1
-      size: 60
+    disks: {}
     gui: false
     instances: 3
-    memory: 6144
+    memory: 512
     mounts: []
     node_prefix: k8s
     os: ubuntu/bionic64
