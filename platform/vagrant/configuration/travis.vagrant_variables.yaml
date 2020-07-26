@@ -12,11 +12,11 @@ nodes:
     cpu: 1
     bootstrap: |
       # SWAP off
-      swapoff -a
       # Set Timezone
       timedatectl set-timezone Australia/Melbourne
       # Prepare package manager
       apt-get update
+      swapoff -a
     disks: {}
     gui: false
     instances: 3
