@@ -25,7 +25,7 @@ nodes:
     memory: 512
     mounts: []
     node_prefix: k8s
-    os: ubuntu/bionic64
+    os: generic/ubuntu1804
 
   # PROXY
   proxy:
@@ -51,4 +51,4 @@ nodes:
     mounts: []
     network: 10
     node_prefix: local
-    os: ubuntu/bionic64
+    os: generic/ubuntu1804
