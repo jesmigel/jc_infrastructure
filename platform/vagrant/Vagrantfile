@@ -20,6 +20,8 @@ Vagrant.configure(global['api_version']) do |config|
     # always use Vagrants insecure key
     config.ssh.insert_key = false
 
+    config.vm.synced_folder ".", "/vagrant", disabled: true
+
     nodes.each do | group_name, group_config |
         (1..group_config['instances']).each do | i |
             config.vm.define vm_name = "%s-%01d" % [group_config['node_prefix'], i] do | node |
