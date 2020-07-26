@@ -15,6 +15,8 @@ nodes:
       swapoff -a
       # Set Timezone
       timedatectl set-timezone Australia/Melbourne
+      # Prepare package manager
+      apt-get update
     disks: {}
     gui: false
     instances: 3
@@ -34,6 +36,8 @@ nodes:
     bootstrap: |
       # Set Timezone
       timedatectl set-timezone Australia/Melbourne
+      # Prepare package manager
+      apt-get update
     disks: {}
     gui: false
     instances: 1
