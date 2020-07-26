@@ -288,7 +288,7 @@ endef
 # VAGRANT FUNCTIONS
 define vm_validate
 	@echo "Validate Vagrant Specification(s): $(1)/$(2)"
-	@cd $(1) && vagrant validate
+	@cd $(1) && vagrant validate --no-tty
 endef
 
 define vm_up
