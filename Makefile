@@ -89,35 +89,35 @@ init-ssh:
 
 up: up_vm up_dns status_dns
 
-validate_vm:
-	$(call vm_validate, $(_VAGRANT),$(_VAGRANT_CFG))
-
 bootstrap_mounts:
 	$(call bootstrap_mount,$(_VAGRANT)/$(_SHAREDFOLDER))
 	$(call bootstrap_mount,$(_VAGRANT)/$(_NGINX_CERTS))
 
+validate_vm:
+	$(call vagrant_func,Validate Vagrant Specification(s),validate)
+
 up_vm:
-	$(call vm_up, $(_VAGRANT))
+	$(call vagrant_func,Provisioning Vagrant VM,up)
 
 down:
-	$(call vm_down, $(_VAGRANT))
+	$(call vagrant_func,Suspending Vagrant VM,halt)
 
 build:
-	$(call vm_build, $(_VAGRANT))
+	$(call vagrant_func,Building Vagrant VM,provision)
 
 clean:
-	$(call vm_clean, $(_VAGRANT))
+	$(call vagrant_func,Destroying Vagrant VM(s),destroy)
 
 status: status_vm status_dns
 
 status_vm:
-	$(call vm_status, $(_VAGRANT))
+	$(call vagrant_func,Vagrant VM(s) Status,status)
 
 provision_vm:
-	$(call vm_provision, $(_VAGRANT))
+	$(call vagrant_func,Provisioning Vagrant VM(s),provision)
 
 reload_vm:
-	$(call vm_reload, $(_VAGRANT))
+	$(call vagrant_func,Reloading Vagrant VM(s),reload)
 
 # DNS COMMANDS
 # ============
@@ -292,46 +292,11 @@ define venv_exec
 	)
 endef
 
-# VAGRANT FUNCTIONS
-define vm_validate
-	@echo "Validate Vagrant Specification(s): $(2)"
-	@cd $(1) && vagrant validate
-	
-endef
-
-define vm_up
-	@echo "Provisioning Vagrant VM: $(1)"
-	@cd $(1) && vagrant up
-endef
-
-define vm_down
-	@echo "Suspending Vagrant VM: $(1) $(2)"
-	@cd $(1) && vagrant halt $(2)
-endef
-
-define vm_build
-	@echo "Building Vagrant VM: $(1)"
-	@cd $(1) && vagrant provision
-endef
-
-define vm_clean
-	@echo "Destroying Vagrant VM: $(1) $(2)"
-	@cd $(1) && vagrant destroy --force $(2)
-endef
-
-define vm_provision
-	@echo "Provisioning Vagrant VM: $(1)"
-	@cd $(1) && vagrant provision
-endef
-
-define vm_reload
-	@echo "Provisioning Vagrant VM: $(1)"
-	@cd $(1) && vagrant reload
-endef
-
-define vm_status
-	@echo "Vagrant Status in: $(1)"
-	@cd $(1) && vagrant status
+# VAGRANT FUNCTION
+define vagrant_func
+	@echo "$(1): [vagrant $(2)] $(3)"
+	@echo "config: $(_VAGRANT_CFG)"
+	@cd $(_VAGRANT) && export _VAGRANT_CFG=$(_VAGRANT_CFG) && vagrant $(2) $(3)
 endef
 
 # COMPOSE FUNCTIONS
