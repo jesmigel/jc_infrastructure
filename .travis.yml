@@ -41,7 +41,7 @@ install:
     make kubespray_inventory_init 
     # sudo make kubespray_inventory_build
     sudo source  ./venv/k8s/bin/activate;  cd ./submodule/kubespray && declare -a IPS=(10.8.41.101 10.8.41.102 10.8.41.103) && CONFIG_FILE=inventory/k8s/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
-  - sudo make up_vm _ENVIRONMENT=travis
+  - pwd && cd ../../ && sudo make up_vm _ENVIRONMENT=travis
 script:
   - |
     sudo make clean _ENVIRONMENT=travis
