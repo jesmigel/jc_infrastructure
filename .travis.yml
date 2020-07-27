@@ -50,6 +50,6 @@ script:
     # By default, destroy should always have prompts to avoid accidents.
     #   Force is applied in this context
     # sudo make clean _ENVIRONMENT=travis
-    sudo cd platform/vagrant && vagrant destroy --force _VAGRANT_CFG=travis.vagrant_variables.yaml
+    sudo make force_clean _VAGRANT_CFG=travis.vagrant_variables.yaml
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/

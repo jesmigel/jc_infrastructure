@@ -108,6 +108,9 @@ build:
 clean:
 	$(call vagrant_func,Destroying Vagrant VM(s),destroy)
 
+force_clean:
+	$(call vagrant_func,Destroying Vagrant VM(s),destroy --force)
+
 status: status_vm status_dns
 
 status_vm:
