@@ -19,7 +19,6 @@ Vagrant.configure(global['api_version']) do |config|
 
     # always use Vagrants insecure key
     config.ssh.insert_key = false
-
     config.vm.synced_folder ".", "/vagrant", disabled: true
 
     nodes.each do | group_name, group_config |
@@ -37,7 +36,15 @@ Vagrant.configure(global['api_version']) do |config|
                         vb.linked_clone = true
                         vb.customize ["modifyvm", :id, "--vram", "8"] # ubuntu defaults to 256 MB which is a waste of precious RAM
                         vb.customize [ "guestproperty", "set", :id, "--timesync-threshold", 10000 ] # Time Sync
+
+                        # MOUNT FILES
+                        group_config['mounts'].each do | mount |
+                            node.vm.synced_folder mount['host'], mount['guest'],
+                                type: "sshfs", disabled: false,
+                                sshfs_opts_append: "-o nonempty -o cache=no"
+                        end
                     ) if vagrant_provider == "virtualbox"
+
 
                     # ADDITIONAL DISKS
                     driverletters = ('c'..'z').to_a
@@ -45,6 +52,7 @@ Vagrant.configure(global['api_version']) do |config|
                     (1..group_config['disks']['instances']).each do | disk_index |
                         # VirtualBox
                         ( \
+                            disk = "data/disks/disk-#{i}-#{disk_index}"
                             # Create our own controller for consistency and to remove VM dependency
                             # unless File.exist?("data/disks/disk-#{disk_index}.vdi")
                             #     # Adding OSD Controller;
@@ -76,14 +84,7 @@ Vagrant.configure(global['api_version']) do |config|
                 group_config['address'].each do | address |
                     ip = "#{address['network']}.#{i+address['host']}"
                     node.vm.network :private_network, ip: ip
-                end
-
-                # MOUNT FILES
-                # group_config['mounts'].each do | mount |
-                #     node.vm.synced_folder mount['host'], mount['guest'],
-                #         type: "sshfs", disabled: false,
-                #         sshfs_opts_append: "-o nonempty -o cache=no"
-                # end
+                end                
 
                 # BOOTSTRAP NODE
                 node.vm.provision "shell", inline: group_config['bootstrap']
