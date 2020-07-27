@@ -1,6 +1,7 @@
 # GLOBAL VAGRANT SETTINGS
 global:
   api_version: 2
+  provider: virtualbox
   plugins:
     - vagrant-disksize
     - vagrant-sshfs

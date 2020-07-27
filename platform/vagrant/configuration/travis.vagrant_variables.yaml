@@ -1,6 +1,7 @@
 # GLOBAL VAGRANT SETTINGS
 global:
   api_version: 2
+  provider: libvirt
   plugins: []
 
 nodes:  

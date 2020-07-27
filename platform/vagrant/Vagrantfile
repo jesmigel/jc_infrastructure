@@ -5,13 +5,16 @@ require 'yaml'
 
 # IMPORT VAGRANT VARIABLES
 payload="configuration/#{ENV['_VAGRANT_CFG']}"
+
 config_file=File.expand_path(File.join(File.dirname(__FILE__), payload))
+
+puts payload, config_file
 settings=YAML.load_file(config_file)
-vagrant_provider=ENV['_VAGRANT_PROVIDER']
 
 # SETTINGS BREAKDOWN
 global=settings['global']
 nodes=settings['nodes']
+vagrant_provider=global['provider']
 
 Vagrant.configure(global['api_version']) do |config|
     # install external plugins
