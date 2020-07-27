@@ -16,14 +16,6 @@ env:
 
 before_install:
   - |
-    curl -Os https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_x86_64.deb
-    curl -Os https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_SHA256SUMS
-    curl -Os https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_SHA256SUMS.sig
-    gpg --receive-key 51852D87348FFC4C
-    gpg --verify vagrant_2.2.7_SHA256SUMS.sig vagrant_2.2.7_SHA256SUMS
-    sha256sum -c vagrant_2.2.7_SHA256SUMS 2>&1 | grep OK
-    sudo apt-get update && sudo apt-get install -y virtualenv source bridge-utils dnsmasq-base ebtables libvirt-bin libvirt-dev qemu-kvm qemu-utils ruby-dev
-  - |
     sudo make submodules_clean 
     sudo make submodules_init 
     sudo make submodules_sync 
@@ -35,6 +27,13 @@ before_install:
     sudo source  ./venv/k8s/bin/activate;  cd ./submodule/kubespray && declare -a IPS=(10.8.41.101 10.8.41.102 10.8.41.103) && CONFIG_FILE=inventory/k8s/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
     pwd && cd ../../ && pwd
   - |
+    curl -Os https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_x86_64.deb
+    curl -Os https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_SHA256SUMS
+    curl -Os https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_SHA256SUMS.sig
+    gpg --receive-key 51852D87348FFC4C
+    gpg --verify vagrant_2.2.7_SHA256SUMS.sig vagrant_2.2.7_SHA256SUMS
+    sha256sum -c vagrant_2.2.7_SHA256SUMS 2>&1 | grep OK
+    sudo apt-get update && sudo apt-get install -y bridge-utils dnsmasq-base ebtables libvirt-bin libvirt-dev qemu-kvm qemu-utils ruby-dev
     sudo dpkg -i vagrant_2.2.7_x86_64.deb
     sudo vagrant plugin install vagrant-libvirt
   - |
@@ -43,7 +42,7 @@ before_install:
     curl -skL https://bootstrap.pypa.io/get-pip.py | sudo -H python3
     sudo make validate_vm _ENVIRONMENT=travis
 install:
-  - sudo make up_vm _ENVIRONMENT=travis  
+  - sudo make up_vm _ENVIRONMENT=travis
 script:
   - |
     sudo make clean _ENVIRONMENT=travis
