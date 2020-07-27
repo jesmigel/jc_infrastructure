@@ -20,7 +20,7 @@ nodes:
     disks: {}
     gui: false
     instances: 3
-    memory: 512
+    memory: 1536
     mounts: []
     node_prefix: k8s
     os: debian/buster64
