@@ -31,15 +31,14 @@ before_install:
     curl -skL https://bootstrap.pypa.io/get-pip.py | sudo -H python3
     sudo make validate_vm _ENVIRONMENT=travis
 install:
-  - |
-    sudo make submodules_clean 
-    sudo make submodules_init 
-    sudo make submodules_sync 
-    sudo make submodules_status
-    sudo make up_vm _ENVIRONMENT=travis
-    sudo make kubespray_venv 
-    sudo make kubespray_inventory_init 
-    sudo make kubespray_inventory_build 
+  - sudo make submodules_clean 
+  - sudo make submodules_init 
+  - sudo make submodules_sync 
+  - sudo make submodules_status
+  - sudo make up_vm _ENVIRONMENT=travis
+  - sudo make kubespray_venv 
+  - sudo make kubespray_inventory_init 
+  - sudo make kubespray_inventory_build 
 script:
   - |
     sudo make clean _ENVIRONMENT=travis
