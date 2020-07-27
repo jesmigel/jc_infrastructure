@@ -1,7 +1,9 @@
-.PHONY: init \
-up init-ssh down build clean status help \
-kubespray_deploy kubespray_prereq kubespray_install kube_config \
-login_1 login_2 login_3 \
+.PHONY: h_common h_bootstrap h_submodules h_kubespray  \
+validate_vm bootstrap_mounts up_vm down build clean status_vm provision_vm \
+reload_vm up_dns build_dns status_dns down_dns logs_dns login_ng  \
+submodules_clean submodules_init submodules_sync submodules_status \
+kubespray_venv kubespray_inventory_init kubespray_inventory_build kubespray_exec \
+kubespray_post kube_config kube_dns
 
 include env/common.env
 
