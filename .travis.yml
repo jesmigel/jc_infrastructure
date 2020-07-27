@@ -32,7 +32,10 @@ before_install:
     sudo make validate_vm _ENVIRONMENT=travis
 install:
   - |
-    sudo submodules_clean submodules_init submodules_sync submodules_status
+    sudo make submodules_clean 
+    sudo make submodules_init 
+    sudo make submodules_sync 
+    sudo make submodules_status
     sudo make up_vm _ENVIRONMENT=travis
     sudo make kubespray_venv 
     sudo make kubespray_inventory_init 
