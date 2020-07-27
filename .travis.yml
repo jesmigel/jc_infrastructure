@@ -42,9 +42,9 @@ install:
     pwd && cd ../../ && pwd
   - sudo make validate_vm _ENVIRONMENT=travis _VAGRANT_CFG=travis.vagrant_variables.yaml
   - sudo make up_vm _ENVIRONMENT=travis _VAGRANT_CFG=travis.vagrant_variables.yaml
-  - sudo make status_vm
-  - sudo make reload_vm
-  - sudo make down
+  - sudo make status_vm _ENVIRONMENT=travis _VAGRANT_CFG=travis.vagrant_variables.yaml
+  - sudo make reload_vm _ENVIRONMENT=travis _VAGRANT_CFG=travis.vagrant_variables.yaml
+  - sudo make down _ENVIRONMENT=travis _VAGRANT_CFG=travis.vagrant_variables.yaml
 script:
   - |
     sudo make clean _ENVIRONMENT=travis
