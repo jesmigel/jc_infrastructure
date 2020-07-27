@@ -45,6 +45,6 @@ install:
   - sudo make up_vm _ENVIRONMENT=travis _VAGRANT_CFG=travis.vagrant_variables.yaml
 script:
   - |
-    sudo make clean
+    sudo make clean _ENVIRONMENT=travis _VAGRANT_CFG=travis.vagrant_variables.yaml
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
