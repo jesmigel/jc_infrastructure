@@ -1,4 +1,5 @@
 # jc_infrastructure
+[![Travis](https://img.shields.io/travis/jesmigel/jc_infrastructure.svg)](https://travis-ci.org/jesmigel/jc_infrastructure)
 
 ## Motivation
 To enable the capability of provisioning a kubernetes based infrastructure replicating key aspects of an onprem environment. This includes the following:
