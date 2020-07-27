@@ -29,12 +29,14 @@ before_install:
     sudo apt-get -y purge python3-openssl && sudo apt-get -y autoremove
     sudo apt-get update && sudo apt-get install -y ca-certificates curl gcc iproute2 pwgen python3 python3-dev sudo
     curl -skL https://bootstrap.pypa.io/get-pip.py | sudo -H python3
-    make submodules
-    which vagrant
     sudo make validate_vm _ENVIRONMENT=travis
 install:
   - |
-    sudo make up_vm kubespray_deploy _ENVIRONMENT=travis ANSIBLE_HOST_KEY_CHECKING=False
+    sudo submodules_clean submodules_init submodules_sync submodules_status
+    sudo make up_vm _ENVIRONMENT=travis
+    sudo make kubespray_venv 
+    sudo make kubespray_inventory_init 
+    sudo make kubespray_inventory_build 
 script:
   - |
     sudo make clean _ENVIRONMENT=travis
