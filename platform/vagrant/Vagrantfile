@@ -8,7 +8,7 @@ payload="configuration/#{ENV['_VAGRANT_CFG']}"
 
 config_file=File.expand_path(File.join(File.dirname(__FILE__), payload))
 
-puts payload, config_file
+puts "# CONFIG: #{config_file}"
 settings=YAML.load_file(config_file)
 
 # SETTINGS BREAKDOWN
