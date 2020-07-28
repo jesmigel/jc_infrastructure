@@ -36,7 +36,7 @@ nodes:
   proxy:
     address:
       - network: 10.8.41
-        host: 100
+        host: 10
       - network: 10.8.40
         host: 10
     cpu: 1

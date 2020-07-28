@@ -23,10 +23,9 @@ helm template stable-vault-0-6-0 hashicorp/vault \
 # Manual Activation - REMEMBER to save the root token and unseal keys!!!
 kubectl -n vault exec -ti stable-vault-0-6-0-0 -- vault operator init
 
+# Kubernetes integration
 kubectl -n vault exec -it stable-vault-0-6-0-0 -- /bin/sh
-
 vault auth enable kubernetes
-
 vault write auth/kubernetes/config \
     token_reviewer_jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \
     kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443" \
