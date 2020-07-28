@@ -126,19 +126,19 @@ reload_vm:
 # ============
 up_dns:
 	$(call bootstrap_mount, $(_PIHOLE))
-	$(call compose_up, $(_COMPOSE))
-
-build_dns:
-	$(call compose_build, $(_COMPOSE))
-
-status_dns:
-	$(call compose_ps, $(_COMPOSE))
+	$(call compose_func,DOCKER COMPOSE DNS UP,up -d)
 
 down_dns:
-	$(call compose_down, $(_COMPOSE))
+	$(call compose_func,DOCKER COMPOSE DOWN,down)
+
+build_dns:
+	$(call compose_func,DOCKER COMPOSE DNS BUILD,build)
+
+status_dns:
+	$(call compose_func,DOCKER COMPOSE DNS STATUS,ps)
 
 logs_dns:
-	$(call compose_logs, $(_COMPOSE))
+	$(call compose_func,DOCKER COMPOSE DNS LOGS,logs)
 
 # LOGIN
 # =====
@@ -303,22 +303,8 @@ define vagrant_func
 endef
 
 # COMPOSE FUNCTIONS
-define compose_up
-    cd $(1) && docker-compose up -d
-endef
-
-define compose_down
-    cd $(1) && docker-compose down
-endef
-
-define compose_build
-    cd $(1) && docker-compose build
-endef
-
-define compose_ps
-	cd $(1) && docker-compose ps
-endef
-
-define compose_logs
-	cd $(1) && docker-compose logs $(2)
+define compose_func
+	@echo "$(1): [compose $(2)] $(3)"
+	@echo "config: docker-compose.yaml"
+	@cd $(_COMPOSE) && docker-compose $(2) $(3)
 endef
