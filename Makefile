@@ -93,6 +93,9 @@ up: up_vm up_dns status_dns
 bootstrap_mounts:
 	$(call bootstrap_mount,$(_VAGRANT)/$(_SHAREDFOLDER))
 	$(call bootstrap_mount,$(_VAGRANT)/$(_NGINX_CERTS))
+	$(call bootstrap_mount,$(_VAGRANT)/$(_GRAFANA))
+	$(call bootstrap_mount,$(_VAGRANT)/$(_PROMETHEUS_SERVER))
+	$(call bootstrap_mount,$(_VAGRANT)/$(_PROMETHEUS_ALERTMANAGER))
 
 validate_vm:
 	$(call vagrant_func,Validate Vagrant Specification(s),validate)
