@@ -45,3 +45,7 @@ GF_AUTH_GITHUB_API_URL = https://api.github.com/user
 References:
 [Configmap](https://grafana.com/docs/grafana/latest/auth/github/#enable-github-in-grafana)
 [Env Vars](https://grafana.com/docs/grafana/latest/administration/configuration/#configure-with-environment-variables)
+
+# Sample DNS datasource entries
+prometheus-11-6-0-server.prometheus.svc.cluster.local
+loki.loki-stack.svc.cluster.local
