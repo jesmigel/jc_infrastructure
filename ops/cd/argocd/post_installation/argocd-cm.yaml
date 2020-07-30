@@ -20,6 +20,19 @@ data:
       ignoreDifferences: |
         jsonPointers:
         - /webhooks/0/clientConfig/caBundle
+  # PoC argocd - github sync
+  url: https://cd.local-1.vm
+  dex.config: |
+    connectors:
+      # GitHub example
+      - type: github
+        id: github
+        name: GitHub
+        config:
+          clientID: aabbccddeeff00112233
+          clientSecret: $dex.github.clientSecret
+          orgs:
+          - name: your-github-org
 kind: ConfigMap
 metadata:
   annotations: {}
