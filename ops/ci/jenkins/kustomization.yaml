@@ -11,4 +11,3 @@ resources:
   - jenkins/templates/rbac.yaml
   - jenkins/templates/service-account.yaml
   - jenkins/templates/jenkins-master-svc.yaml
-  - jenkins/templates/secret.yaml
