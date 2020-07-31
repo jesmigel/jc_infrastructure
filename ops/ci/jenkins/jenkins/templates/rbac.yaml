@@ -19,6 +19,9 @@ rules:
 - apiGroups: [""]
   resources: ["pods", "pods/exec", "persistentvolumeclaims"]
   verbs: ["create", "delete", "deletecollection", "patch", "update"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["*"]
 ---
 # Source: jenkins/templates/rbac.yaml
 # The sidecar container which is responsible for reloading configuration changes
