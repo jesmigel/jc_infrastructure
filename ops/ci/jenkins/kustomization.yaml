@@ -1,14 +1,14 @@
 resources:
   - ns.yaml
   - secrets-integrator.yaml
-  - jenkins/jenkins/templates/jenkins-master-deployment.yaml
-  - jenkins/jenkins/templates/jenkins-agent-svc.yaml
-  - jenkins/jenkins/templates/jenkins-master-ingress.yaml
-  - jenkins/jenkins/templates/home-pvc.yaml
-  - jenkins/jenkins/templates/jcasc-config.yaml
-  - jenkins/jenkins/templates/tests/test-config.yaml
-  - jenkins/jenkins/templates/config.yaml
-  - jenkins/jenkins/templates/rbac.yaml
-  - jenkins/jenkins/templates/service-account.yaml
-  - jenkins/jenkins/templates/jenkins-master-svc.yaml
-  - jenkins/jenkins/templates/secret.yaml
+  - jenkins/templates/jenkins-master-deployment.yaml
+  - jenkins/templates/jenkins-agent-svc.yaml
+  - jenkins/templates/jenkins-master-ingress.yaml
+  - jenkins/templates/home-pvc.yaml
+  - jenkins/templates/jcasc-config.yaml
+  - jenkins/templates/tests/test-config.yaml
+  - jenkins/templates/config.yaml
+  - jenkins/templates/rbac.yaml
+  - jenkins/templates/service-account.yaml
+  - jenkins/templates/jenkins-master-svc.yaml
+  - jenkins/templates/secret.yaml
