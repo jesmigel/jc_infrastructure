@@ -16,6 +16,11 @@ data:
         hs = {}
         hs.status = "Healthy"
         return hs
+    networking.k8s.io/v1beta1:
+      health.lua: |
+        hs = {}
+        hs.status = "Healthy"
+        return hs
     admissionregistration.k8s.io/MutatingWebhookConfiguration:
       ignoreDifferences: |
         jsonPointers:
