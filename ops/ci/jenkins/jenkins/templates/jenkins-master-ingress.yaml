@@ -18,4 +18,4 @@ spec:
       - backend:
           serviceName: stable-jenkins-1-27-0
           servicePort: 8080
-    host: "jenkins.gw-cloud.org"
+    host: "ci.local-1.vm"

@@ -83,4 +83,4 @@ data:
     unclassified:
       location:
         adminAddress: 
-        url: http://jenkins.gw-cloud.org
+        url: http://ci.local-1.vm

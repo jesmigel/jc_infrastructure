@@ -13,7 +13,7 @@ helm search repo jenkins
 
 helm template stable-jenkins-1-27-0 stable/jenkins \
 --set master.ingress.enabled=true \
---set master.ingress.hostName=jenkins.gw-cloud.org \
+--set master.ingress.hostName=ci.local-1.vm \
 --set master.JCasC.enabled=true \
 --set master.JCasC.defaultConfig=true \
 --set master.sidecars.configAutoReload.enabled=true \
