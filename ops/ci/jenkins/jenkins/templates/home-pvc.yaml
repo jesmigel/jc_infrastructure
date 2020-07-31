@@ -1,0 +1,19 @@
+---
+# Source: jenkins/templates/home-pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: stable-jenkins-1.27.0
+  namespace: jenkins
+  labels:
+    "app.kubernetes.io/name": 'jenkins'
+    "helm.sh/chart": "jenkins-2.1.0"
+    "app.kubernetes.io/managed-by": "Helm"
+    "app.kubernetes.io/instance": "stable-jenkins-1.27.0"
+    "app.kubernetes.io/component": "jenkins-master"
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "8Gi"
