@@ -1,6 +1,7 @@
 resources:
   - ns.yaml
   - secrets-integrator.yaml
+  - home-pv.yaml
   - jenkins/templates/jenkins-master-deployment.yaml
   - jenkins/templates/jenkins-agent-svc.yaml
   - jenkins/templates/jenkins-master-ingress.yaml
