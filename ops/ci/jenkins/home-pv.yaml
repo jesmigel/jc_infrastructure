@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jenkins-master-home
+  labels:
+    volume: jenkins-master-home
+spec:
+  accessModes:
+  - ReadWriteMany
+  capacity:
+    storage: 8Gi
+  nfs:
+    server: 10.8.41.11
+    path: /mnt/sharedfolder/jenkins/master/home
