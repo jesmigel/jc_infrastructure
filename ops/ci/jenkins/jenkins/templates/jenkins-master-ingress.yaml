@@ -8,14 +8,14 @@ metadata:
     "app.kubernetes.io/name": 'jenkins'
     "helm.sh/chart": "jenkins-2.1.0"
     "app.kubernetes.io/managed-by": "Helm"
-    "app.kubernetes.io/instance": "stable-jenkins-1.27.0"
+    "app.kubernetes.io/instance": "stable-jenkins-1-27-0"
     "app.kubernetes.io/component": "jenkins-master"
-  name: stable-jenkins-1.27.0
+  name: stable-jenkins-1-27-0
 spec:
   rules:
   - http:
       paths:
       - backend:
-          serviceName: stable-jenkins-1.27.0
+          serviceName: stable-jenkins-1-27-0
           servicePort: 8080
     host: "jenkins.gw-cloud.org"

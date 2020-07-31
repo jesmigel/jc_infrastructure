@@ -11,7 +11,7 @@ helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 # Confirm 
 helm search repo jenkins
 
-helm template stable-jenkins-1.27.0 stable/jenkins \
+helm template stable-jenkins-1-27-0 stable/jenkins \
 --set master.ingress.enabled=true \
 --set master.ingress.hostName=jenkins.gw-cloud.org \
 --set master.JCasC.enabled=true \
