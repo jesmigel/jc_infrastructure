@@ -1,0 +1,21 @@
+---
+# Source: mysql/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: stable-mysql-1-6-4
+  namespace: db
+  labels:
+    app: stable-mysql-1-6-4
+    chart: "mysql-1.6.4"
+    release: "stable-mysql-1-6-4"
+    heritage: "Helm"
+  annotations:
+spec:
+  type: ClusterIP
+  ports:
+  - name: mysql
+    port: 3306
+    targetPort: mysql
+  selector:
+    app: stable-mysql-1-6-4

@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: db-mysql-1
+  name: db-mysql
   labels:
     app: mysql
 spec:
@@ -11,35 +11,5 @@ spec:
   accessModes:
     - ReadWriteOnce
   nfs:
-    path: /mnt/sharedfolder/db/mysql/1
-    server: 10.8.41.11
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: db-mysql-2
-  labels:
-    app: mysql
-spec:
-  capacity:
-    storage: 25Gi
-  accessModes:
-    - ReadWriteOnce
-  nfs:
-    path: /mnt/sharedfolder/db/mysql/2
-    server: 10.8.41.11
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: db-mysql-3
-  labels:
-    app: mysql
-spec:
-  capacity:
-    storage: 25Gi
-  accessModes:
-    - ReadWriteOnce
-  nfs:
-    path: /mnt/sharedfolder/db/mysql/3
+    path: /mnt/sharedfolder/db/mysql/
     server: 10.8.41.11

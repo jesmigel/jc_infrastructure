@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secrets-integrator-db
+  namespace: db
+  labels:
+    app: vault-agent
+spec:
+  selector:
+    matchLabels:
+      app: vault-kube-integrator
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/agent-init-first: "true"
+        vault.hashicorp.com/agent-inject-secret-app.json: "db/kv/mysql"
+        vault.hashicorp.com/agent-inject-template-app.json: |
+          {{- with secret "db/kv/mysql" -}}
+          {
+            "apiVersion": "v1",
+            "kind": "Secret",
+            "metadata": {
+              "name": "db-mysql"
+            },
+            "type": "Opaque",
+            "stringData": {
+            {{ range $k, $v := .Data.data }}
+            "{{ $k }}": "{{ $v }}",
+            {{ end }}
+            "end": "NULL"
+            }
+          }
+          {{- end }}
+        vault.hashicorp.com/role: "db"
+      labels:
+        app: vault-kube-integrator
+    spec:
+      restartPolicy: Always
+      securityContext:
+        runAsUser: 0
+      serviceAccountName: db
+      containers:
+      - name: app
+        image: bitnami/kubectl:1.17.4
+        command: ["bash"]
+        resources:
+          {}
+        livenessProbe:
+          exec:
+            command:
+            - kubectl
+            - apply 
+            - -f
+            - /vault/secrets/
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        tty: true
+...
