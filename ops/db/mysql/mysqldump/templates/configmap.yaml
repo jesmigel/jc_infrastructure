@@ -39,7 +39,7 @@ data:
     TIMESTAMP="$(date +%Y%m%d%H%M%S)"
 
     echo "test mysql connection"
-    if [ -z "$(mysql -h ${MYSQL_HOST} -P ${MYSQL_PORT} -u ${MYSQL_USERNAME} -B -N -e 'SHOW DATABASES;')" ]; then
+    if [ -z "$(mysql -h ${MYSQL_HOST} -P ${MYSQL_PORT} -u ${MYSQL_USERNAME} -p'${MYSQL_ROOT_PASSWORD}' -B -e 'SHOW DATABASES;')" ]; then
       echo "mysql connection failed! exiting..."
       exit 1
     fi
@@ -51,10 +51,10 @@ data:
     echo "delete old backups"
     find ${BACKUP_DIR} -maxdepth 2 -mtime +${KEEP_DAYS} -regex "^${BACKUP_DIR}/.*[0-9]*_.*\.sql\.gz$" -type f -exec rm {} \;
     
-    for MYSQL_DB in $(mysql -h "${MYSQL_HOST}" -P ${MYSQL_PORT} -u ${MYSQL_USERNAME} -B -N -e "SHOW DATABASES;"|egrep -v '^(information|performance)_schema$'); do
+    for MYSQL_DB in $(mysql -h "${MYSQL_HOST}" -P ${MYSQL_PORT} -u ${MYSQL_USERNAME} -p'${MYSQL_ROOT_PASSWORD}' -B -e "SHOW DATABASES;"|egrep -v '^(information|performance)_schema$'); do
       echo "Backing up db ${MYSQL_DB}"
       
-      mysqldump ${MYSQL_OPTS} -h ${MYSQL_HOST} -P ${MYSQL_PORT} -u ${MYSQL_USERNAME} --databases ${MYSQL_DB} | gzip > ${BACKUP_DIR}/${TIMESTAMP}_${MYSQL_DB}.sql.gz
+      mysqldump ${MYSQL_OPTS} -h ${MYSQL_HOST} -P ${MYSQL_PORT} -u ${MYSQL_USERNAME} -p'${MYSQL_ROOT_PASSWORD}'--databases ${MYSQL_DB} | gzip > ${BACKUP_DIR}/${TIMESTAMP}_${MYSQL_DB}.sql.gz
       rc=$?
     done
 
