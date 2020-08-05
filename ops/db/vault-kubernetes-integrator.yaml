@@ -15,9 +15,9 @@ spec:
       annotations:
         vault.hashicorp.com/agent-inject: "true"
         vault.hashicorp.com/agent-init-first: "true"
-        vault.hashicorp.com/agent-inject-secret-app.json: "kv/db/mysql"
+        vault.hashicorp.com/agent-inject-secret-app.json: "db/kv/mysql"
         vault.hashicorp.com/agent-inject-template-app.json: |
-          {{- with secret "kv/db/mysql" -}}
+          {{- with secret "db/kv/mysql" -}}
           {
             "apiVersion": "v1",
             "kind": "Secret",
