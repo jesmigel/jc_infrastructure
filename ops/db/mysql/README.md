@@ -12,6 +12,6 @@ helm search repo mysql
 
 # Generate Template
 helm template stable-mysql-1-6-4 stable/mysql \
---set imageTag=8.0 \
+--set imageTag=8.0.21 \
 -n db --output-dir .
 ```

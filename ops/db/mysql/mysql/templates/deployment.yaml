@@ -43,7 +43,7 @@ spec:
       
       containers:
       - name: stable-mysql-1-6-4
-        image: "mysql:5.7.30"
+        image: "mysql:8.0.21"
         imagePullPolicy: "IfNotPresent"
         resources:
           requests:
@@ -80,6 +80,9 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /var/lib/mysql
+        - name: mysql-config-volume ## specify volume name
+          mountPath: /etc/mysql/conf.d/default_auth.cnf ## path to mount file
+          subPath: default_auth ## name of config
         # - name: extras
         #   mountPath: /usr/share/extras
         #   readOnly: true
@@ -88,5 +91,8 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: stable-mysql-1-6-4
+      - name: mysql-config-volume ## volume name
+        configMap:
+          name: mysql-config ## name of ConfigMap
       # - name: extras
       #   emptyDir: {}

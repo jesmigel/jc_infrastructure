@@ -5,6 +5,7 @@ resources:
   - clusterrolebinding.yaml
   - serviceaccount.yaml
   - persistentvolume.yaml
+  - configmap.yaml
   - mysql/templates/tests/test-configmap.yaml
   - mysql/templates/pvc.yaml
   - mysql/templates/deployment.yaml
