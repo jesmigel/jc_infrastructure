@@ -27,8 +27,6 @@ helm search repo mysqldump
 
 # Generate Template
 helm template stable-mysqldump-2-6-0 stable/mysqldump \
---set image.repository=mysql \
---set image.tag=8.0.21 \
 --set mysql.host='stable-mysql-1-6-4.db.svc.cluster.local' \
 --set mysql.password='toor' \
 -n db --output-dir .
