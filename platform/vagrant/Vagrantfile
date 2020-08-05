@@ -43,8 +43,10 @@ Vagrant.configure(global['api_version']) do |config|
                         # MOUNT FILES
                         group_config['mounts'].each do | mount |
                             node.vm.synced_folder mount['host'], mount['guest'],
-                                type: "sshfs", disabled: false,
-                                sshfs_opts_append: "-o nonempty -o cache=no"
+                                type: "nfs", 
+                                disabled: false,
+                                linux__nfs_options: ['rw','fsid=1','sync','no_subtree_check','no_root_squash','insecure']
+                                # sshfs_opts_append: "-o nonempty -o cache=no"
                         end
                     ) if vagrant_provider == "virtualbox"
 
