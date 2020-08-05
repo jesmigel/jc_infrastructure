@@ -1,0 +1,12 @@
+resources:
+  - ns.yaml
+  - vault-kubernetes-integrator.yaml
+  - clusterrole.yaml
+  - clusterrolebinding.yaml
+  - serviceaccount.yaml
+  - mysql/configmap.yaml
+  - mysql/persistentvolume.yaml
+  - mysql/persistentvolumeclaim.yaml
+  - mysql/statefulset.yaml
+  - service.yaml
+  # - mysql/vault-mysql-integrator.yaml

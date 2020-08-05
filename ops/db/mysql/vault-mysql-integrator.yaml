@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: accounts-integrator-db
+  namespace: db
+  labels:
+    app: db-agent
+spec:
+  selector:
+    matchLabels:
+      app: db-mysql-integrator
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/agent-init-first: "true"
+        vault.hashicorp.com/agent-inject-secret-root.tf: "db/kv/mysql/deployment"
+        vault.hashicorp.com/agent-inject-template-root.tf: |
+          {{- with secret "db/kv/mysql/deployment" -}}
+          # Configure the MySQL provider
+          provider "mysql" {
+            endpoint = "mysql.db.svc.cluster.local:3306"
+            username = "root"
+            password = "{{ .Data.data.MYSQL_ROOT_PASSWORD }}"
+          }
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-accounts.tf: "db/kv/mysql/accounts"
+        vault.hashicorp.com/agent-inject-template-accounts.tf: |
+          {{- with secret "db/kv/mysql/accounts" -}}
+          # DECLARE AND INITIALISE DB APPLICATION ACCOUNTS
+          {{ range $k, $v := .Data.data }}
+          #----------------------------------------------------------
+          # Create a User
+          resource "mysql_user" "user_{{ $k }}" {
+            user               = "{{ $k }}"
+            host               = "%"
+            plaintext_password = "{{ $v }}"
+          }
+          
+          # Granting Privileges to a User
+          resource "mysql_grant" "grant_user_{{ $k }}" {
+            user       = "${mysql_user.user_{{ $k }}.user}"
+            host       = "${mysql_user.user_{{ $k }}.host}"
+            database   = "${mysql_user.user_{{ $k }}.user}"
+            privileges = ["ALL"]
+          }
+
+          # Ideal Solution Below
+          # # Create Role Owner
+          # resource "mysql_role" "owner_{{ $k }}" {
+          #   name = "owner_{{ $k }}"
+          # }
+          # # Granting Privileges to a Role
+          # resource "mysql_grant" "grant_{{ $k }}" {
+          #   role       = "${mysql_role.owner_{{ $k }}.name}"
+          #   database   = "${mysql_user.user_{{ $k }}.user}"
+          #   privileges = ["ALL"]
+          # }
+          # # Adding a Role to a User
+          # resource "mysql_grant" "grant_owner_{{ $k }}" {
+          #   user     = "${mysql_user.user_{{ $k }}.user}"
+          #   host     = "${mysql_user.user_{{ $k }}.host}"
+          #   database = "${mysql_user.user_{{ $k }}.user}"
+          #   roles    = ["${mysql_role.owner_{{ $k }}.name}"]
+          # }
+
+
+          {{- end }}
+          {{- end }}
+        vault.hashicorp.com/role: "db"
+      labels:
+        app: db-mysql-integrator
+    spec:
+      restartPolicy: Always
+      serviceAccountName: db
+      containers:
+      - name: app
+        image: hashicorp/terraform:0.12.28
+        command: ["/bin/sh"]
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh 
+            - -c 
+            - "cp /vault/secrets/* /mnt/secrets/ && cd /mnt/secrets/ && terraform init && terraform apply -auto-approve"
+        resources:
+          {}
+        tty: true
+        volumeMounts:
+        - name: tf-mysql-persistent-storage
+          mountPath: /mnt/secrets
+      volumes:
+      - name: tf-mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-tf-pv-claim
+...
