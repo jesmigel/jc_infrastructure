@@ -54,7 +54,7 @@ data:
     for MYSQL_DB in $(mysql -h "${MYSQL_HOST}" -P ${MYSQL_PORT} -u ${MYSQL_USERNAME} -p${MYSQL_ROOT_PASSWORD} -B -e "SHOW DATABASES;"|egrep -v '^(information|performance)_schema$'); do
       echo "Backing up db ${MYSQL_DB}"
       
-      mysqldump ${MYSQL_OPTS} -h ${MYSQL_HOST} -P ${MYSQL_PORT} -u ${MYSQL_USERNAME} -p${MYSQL_ROOT_PASSWORD}--databases ${MYSQL_DB} > ${BACKUP_DIR}/${TIMESTAMP}_${MYSQL_DB}.sql
+      mysqldump ${MYSQL_OPTS} -h ${MYSQL_HOST} -P ${MYSQL_PORT} -u ${MYSQL_USERNAME} -p${MYSQL_ROOT_PASSWORD} --databases ${MYSQL_DB} > ${BACKUP_DIR}/${TIMESTAMP}_${MYSQL_DB}.sql
       rc=$?
     done
 
