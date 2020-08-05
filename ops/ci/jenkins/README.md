@@ -1,5 +1,4 @@
 # Jenkins Helm template
-=======================
 - [Jenkins helm git repo](https://github.com/helm/charts/tree/master/stable/jenkins)
 - [CNCF stable chart repo](https://kubernetes-charts.storage.googleapis.com/)
 - [CNCF helm git repo](https://github.com/helm/charts)

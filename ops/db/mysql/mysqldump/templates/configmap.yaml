@@ -16,3 +16,64 @@ data:
   MYSQL_PORT: "3306"
   MYSQL_OPTS: "--opt --single-transaction"
   KEEP_DAYS: "10"
+---
+# Source: mysqldump/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: stable-mysqldump-2-6-0-script
+  labels:
+    app.kubernetes.io/name: mysqldump
+    helm.sh/chart: mysqldump-2.6.0
+    app.kubernetes.io/instance: stable-mysqldump-2-6-0
+    app.kubernetes.io/version: "2.4.1"
+    app.kubernetes.io/managed-by: Helm
+data:
+  backup.sh: |-
+    #!/bin/sh
+    #
+    # mysql backup script
+    #
+    
+    BACKUP_DIR="/backup"
+    TIMESTAMP="$(date +%Y%m%d%H%M%S)"
+
+    echo "test mysql connection"
+    if [ -z "$(mysql -h ${MYSQL_HOST} -P ${MYSQL_PORT} -u ${MYSQL_USERNAME} -B -N -e 'SHOW DATABASES;')" ]; then
+      echo "mysql connection failed! exiting..."
+      exit 1
+    fi
+
+    echo "started" > ${BACKUP_DIR}/${TIMESTAMP}.state
+
+    
+    
+    echo "delete old backups"
+    find ${BACKUP_DIR} -maxdepth 2 -mtime +${KEEP_DAYS} -regex "^${BACKUP_DIR}/.*[0-9]*_.*\.sql\.gz$" -type f -exec rm {} \;
+    
+    for MYSQL_DB in $(mysql -h "${MYSQL_HOST}" -P ${MYSQL_PORT} -u ${MYSQL_USERNAME} -B -N -e "SHOW DATABASES;"|egrep -v '^(information|performance)_schema$'); do
+      echo "Backing up db ${MYSQL_DB}"
+      
+      mysqldump ${MYSQL_OPTS} -h ${MYSQL_HOST} -P ${MYSQL_PORT} -u ${MYSQL_USERNAME} --databases ${MYSQL_DB} | gzip > ${BACKUP_DIR}/${TIMESTAMP}_${MYSQL_DB}.sql.gz
+      rc=$?
+    done
+
+    
+    
+    
+
+    
+
+    if [ "$rc" != "0" ]; then
+      echo "backup failed"
+      exit 1
+    fi
+
+    
+
+    echo "complete" > ${BACKUP_DIR}/${TIMESTAMP}.state
+
+    echo "Disk usage in ${BACKUP_DIR}"
+    du -h -d 2 ${BACKUP_DIR}
+
+    echo "Backup successful! :-)"
