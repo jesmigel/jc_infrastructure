@@ -10,7 +10,6 @@ resources:
   - mysql/templates/pvc.yaml
   - mysql/templates/deployment.yaml
   - mysql/templates/svc.yaml
-  - mysqldump/templates
   - mysqldump/templates/cron.yaml
   - mysqldump/templates/pvc.yaml
   - mysqldump/templates/configmap.yaml
