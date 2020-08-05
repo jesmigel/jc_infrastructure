@@ -6,7 +6,6 @@ resources:
   - serviceaccount.yaml
   - mysql/configmap.yaml
   - mysql/persistentvolume.yaml
-  - mysql/persistentvolumeclaim.yaml
   - mysql/statefulset.yaml
   - service.yaml
   # - mysql/vault-mysql-integrator.yaml
