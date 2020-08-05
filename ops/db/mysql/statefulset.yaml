@@ -65,7 +65,7 @@ spec:
           mountPath: /etc/mysql/conf.d
       containers:
       - name: mysql
-        image: mysql:5.7
+        image: mysql:8.0
         envFrom:
           - secretRef:
               name: db-mysql
