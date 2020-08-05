@@ -1,0 +1,54 @@
+---
+# Source: mysqldump/templates/cron.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: stable-mysqldump-2-6-0
+  labels:
+    app.kubernetes.io/name: mysqldump
+    helm.sh/chart: mysqldump-2.6.0
+    app.kubernetes.io/instance: stable-mysqldump-2-6-0
+    app.kubernetes.io/version: "2.4.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  schedule: "0 3 * * *"
+  successfulJobsHistoryLimit: 5
+  failedJobsHistoryLimit: 5
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    metadata:
+      labels:
+        app: mysqldump
+        chart: mysqldump-2.6.0
+        cronjob-name: stable-mysqldump-2-6-0
+        release: "stable-mysqldump-2-6-0"
+        heritage: "Helm"
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          containers:
+          - name: mysql-backup
+            image: "mysql:8.0.21"
+            imagePullPolicy: "IfNotPresent"
+            command: ["/bin/bash", "/scripts/backup.sh"]
+            envFrom:
+            - configMapRef:
+                name: "stable-mysqldump-2-6-0"
+            - secretRef:
+                name: db-mysql
+            volumeMounts:
+            - name: backups
+              mountPath: /backup
+            - name: mysql-backup-script
+              mountPath: /scripts
+            resources:
+                    {}
+          restartPolicy: Never
+          volumes:
+          - name: backups
+            persistentVolumeClaim:
+              claimName: stable-mysqldump-2-6-0
+          - name: mysql-backup-script
+            configMap:
+              name: stable-mysqldump-2-6-0-script

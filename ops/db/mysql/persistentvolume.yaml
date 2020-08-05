@@ -13,3 +13,18 @@ spec:
   nfs:
     path: /mnt/sharedfolder/db/mysql/
     server: 10.8.41.11
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: db-mysqldump
+  labels:
+    app: mysqldump
+spec:
+  capacity:
+    storage: 25Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /mnt/sharedfolder/db/mysqldump/
+    server: 10.8.41.11

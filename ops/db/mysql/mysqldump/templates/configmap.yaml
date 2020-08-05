@@ -1,0 +1,18 @@
+---
+# Source: mysqldump/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: stable-mysqldump-2-6-0
+  labels:
+    app.kubernetes.io/name: mysqldump
+    helm.sh/chart: mysqldump-2.6.0
+    app.kubernetes.io/instance: stable-mysqldump-2-6-0
+    app.kubernetes.io/version: "2.4.1"
+    app.kubernetes.io/managed-by: Helm
+data:
+  MYSQL_HOST: "stable-mysql-1-6-4.db.svc.cluster.local"
+  MYSQL_USERNAME: "root"
+  MYSQL_PORT: "3306"
+  MYSQL_OPTS: "--opt --single-transaction"
+  KEEP_DAYS: "10"
