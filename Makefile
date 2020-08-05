@@ -126,6 +126,12 @@ provision_vm:
 reload_vm:
 	$(call vagrant_func,Reloading Vagrant VM(s),reload)
 
+# PROXY
+# =====
+reload_proxy:
+	$(call vm_exec,$(_VAGRANT_SSH_CONFIG),local-1,sudo /mnt/init/nfs.sh)
+	$(call vm_exec,$(_VAGRANT_SSH_CONFIG),local-1,sudo /mnt/init/nginx.sh)
+
 # DNS COMMANDS
 # ============
 up_dns:
