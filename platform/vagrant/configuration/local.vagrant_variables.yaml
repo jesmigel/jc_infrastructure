@@ -45,6 +45,7 @@ nodes:
       timedatectl set-timezone Australia/Melbourne
       # Prepare package manager
       apt-get update
+      apt get install -y  default-jdk docker.io
       # NGINX
       /mnt/init/nginx.sh
       # NFS - host(Laptop) guest(Vagrant virtualbox vm)
@@ -52,7 +53,7 @@ nodes:
     disks: {}
     gui: false
     instances: 1
-    memory: 256
+    memory: 512
     mounts:
       - host: ./mnt/nginx/conf.d
         guest: /etc/nginx/conf.d/

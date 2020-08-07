@@ -17,5 +17,6 @@ helm template stable-jenkins-1-27-0 stable/jenkins \
 --set master.JCasC.defaultConfig=true \
 --set master.sidecars.configAutoReload.enabled=true \
 --set agent.privileged=true \
+--set master.additionalPlugins={}
 -n jenkins --output-dir .
 ```
