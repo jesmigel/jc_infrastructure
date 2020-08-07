@@ -1,5 +1,5 @@
 {
-    "name": "getintodevops-hellonode",
+    "name": "Hello NODE.js",
     "version": "1.0.0",
     "description": "A Hello World HTTP server",
     "main": "main.js",
@@ -9,13 +9,13 @@
     },
     "repository": {
       "type": "git",
-      "url": "https://github.com/getintodevops/hellonode/"
+      "url": "https://github.com/jesmigel/jc_infrastructure.git"
     },
     "keywords": [
       "node",
       "docker",
       "dockerfile"
     ],
-    "author": "miiro@getintodevops.com",
-    "license": "ISC"
+    "author": "jesmigel.developer@gmail.com",
+    "license": "GNU GENERAL PUBLIC LICENSE"
   }
