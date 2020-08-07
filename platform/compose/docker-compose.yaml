@@ -27,9 +27,9 @@ services:
       - NET_ADMIN
     restart: unless-stopped
 
-  node-sample:
+  docker_image_builder:
     image: jesmigel/node-sample:dev
     build:
-      context: ./node-sample
+      context: ../../apps/node-sample
       dockerfile: Dockerfile
     
