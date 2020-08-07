@@ -1,5 +1,5 @@
 {
-    "name": "Hello NODE.js",
+    "name": "jc_infrastructure-nodefubar",
     "version": "1.0.0",
     "description": "A Hello World HTTP server",
     "main": "main.js",
