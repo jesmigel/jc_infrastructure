@@ -26,3 +26,10 @@ services:
     cap_add:
       - NET_ADMIN
     restart: unless-stopped
+
+  node-sample:
+    image: jesmigel/node-sample:dev
+    build:
+      context: ./node-sample
+      dockerfile: Dockerfile
+    
