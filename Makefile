@@ -10,6 +10,11 @@ include makefile.env
 _ENVIRONMENT=local
 _VAGRANT_CFG=$(_ENVIRONMENT).$(_VAGRANT_CFG_TEMPLATE)
 
+# TEST
+# ====
+test:
+	docker image build -t jesmigel/sample:0.1 -f apps/node-sample/Dockerfile apps/node-sample
+
 # TOOLTIP
 # =======
 help: h_common h_bootstrap h_vm_commands h_submodules h_kubespray
