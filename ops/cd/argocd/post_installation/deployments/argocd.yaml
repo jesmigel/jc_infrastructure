@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+spec:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  project: operations
+  source:
+    path: ops/cd/argocd/post_installation
+    repoURL: https://github.com/jesmigel/jc_infrastructure.git
+    targetRevision: HEAD

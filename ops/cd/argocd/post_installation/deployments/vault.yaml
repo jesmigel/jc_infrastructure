@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault
+  namespace: vault
+spec:
+  project: operations
+  source:
+    repoURL: 'https://github.com/jesmigel/jc_infrastructure.git'
+    path: ops/security/vault
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: vault
