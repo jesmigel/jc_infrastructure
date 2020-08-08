@@ -45,7 +45,7 @@ nodes:
       timedatectl set-timezone Australia/Melbourne
       # Prepare package manager
       apt-get update
-      apt get install -y  default-jdk docker.io
+      apt get install -y  default-jdk docker.io gnupg2 pass
       # NGINX
       /mnt/init/nginx.sh
       # NFS - host(Laptop) guest(Vagrant virtualbox vm)
