@@ -1,0 +1,73 @@
+---
+# Source: traefik/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stable-traefik-1-87-1
+  labels:
+    app: traefik
+    chart: traefik-1.87.1
+    release: "stable-traefik-1-87-1"
+    heritage: "Helm"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traefik
+      release: stable-traefik-1-87-1
+  template:
+    metadata:
+      annotations:
+        checksum/config: b3e541ccf18f535c24b43e0faf8d729a70f0b1dc9f7b64549a0167779dd1c5b3
+      labels:
+        app: traefik
+        chart: traefik-1.87.1
+        release: "stable-traefik-1-87-1"
+        heritage: "Helm"
+    spec:
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 60
+      containers:
+      - image: traefik:1.7.23
+        imagePullPolicy: IfNotPresent
+        name: stable-traefik-1-87-1
+        resources:
+          {}
+        readinessProbe:
+          httpGet:
+            path: /ping
+            port: "http"
+          failureThreshold: 1
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 2
+        livenessProbe:
+          httpGet:
+            path: /ping
+            port: "http"
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 2
+        volumeMounts:
+        - mountPath: /config
+          name: config
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
+        - name: httpn
+          containerPort: 8880
+          protocol: TCP
+        - name: https
+          containerPort: 443
+          protocol: TCP
+        args:
+        - --configfile=/config/traefik.toml
+
+      volumes:
+      - name: config
+        configMap:
+          name: stable-traefik-1-87-1

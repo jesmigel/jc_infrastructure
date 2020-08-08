@@ -1,0 +1,25 @@
+---
+# Source: traefik/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: stable-traefik-1-87-1
+  labels:
+    app: traefik
+    chart: traefik-1.87.1
+    release: "stable-traefik-1-87-1"
+    heritage: "Helm"
+  annotations:
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Cluster
+  selector:
+    app: traefik
+    release: stable-traefik-1-87-1
+  ports:
+  - port: 443
+    name: https
+    targetPort: httpn
+  - port: 80
+    name: http
+    targetPort: http

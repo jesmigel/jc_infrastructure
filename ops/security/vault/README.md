@@ -25,6 +25,7 @@ kubectl -n vault exec -ti stable-vault-0-6-0-0 -- vault operator init
 
 # Kubernetes integration
 kubectl -n vault exec -it stable-vault-0-6-0-0 -- /bin/sh
+vault login
 vault auth enable kubernetes
 vault write auth/kubernetes/config \
     token_reviewer_jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \

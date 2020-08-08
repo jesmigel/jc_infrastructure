@@ -1,0 +1,6 @@
+resources:
+  - ns.yaml
+  - kustomization.yaml
+  - traefik/templates/deployment.yaml
+  - traefik/templates/service.yaml
+  - traefik/templates/configmap.yaml
