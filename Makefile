@@ -10,10 +10,6 @@ include makefile.env
 _ENVIRONMENT=local
 _VAGRANT_CFG=$(_ENVIRONMENT).$(_VAGRANT_CFG_TEMPLATE)
 
-# TEST
-# ====
-test:
-	docker image build -t jesmigel/sample:0.1 -f apps/node-sample/Dockerfile apps/node-sample
 
 # TOOLTIP
 # =======
@@ -106,10 +102,10 @@ validate_vm:
 	$(call vagrant_func,Validate Vagrant Specification(s),validate)
 
 up_vm:
-	$(call vagrant_func,Provisioning Vagrant VM,up)
+	$(call vagrant_func,Provisioning Vagrant VM,up k8s-1 k8s-2 k8s-3)
 
 down:
-	$(call vagrant_func,Suspending Vagrant VM,halt)
+	$(call vagrant_func,Suspending Vagrant VM,halt k8s-1 k8s-2 k8s-3)
 
 build:
 	$(call vagrant_func,Building Vagrant VM,provision)
