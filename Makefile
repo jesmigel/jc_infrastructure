@@ -102,7 +102,7 @@ validate_vm:
 	$(call vagrant_func,Validate Vagrant Specification(s),validate)
 
 up_vm:
-	$(call vagrant_func,Provisioning Vagrant VM,up k8s-1 k8s-2 k8s-3)
+	$(call vagrant_func,Provisioning Vagrant VM,up k8s-1 k8s-2 k8s-3 local-1)
 
 down:
 	$(call vagrant_func,Suspending Vagrant VM,halt k8s-1 k8s-2 k8s-3)
