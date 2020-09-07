@@ -5,10 +5,10 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   labels:
     app: nfs-client-provisioner
-    chart: nfs-client-provisioner-1.2.8
+    chart: nfs-client-provisioner-1.2.9
     heritage: Helm
-    release: stable-nfs-client-provisioner-1-2-8
-  name: leader-locking-stable-nfs-client-provisioner-1-2-8
+    release: nfs-stable
+  name: leader-locking-nfs-stable-nfs-client-provisioner
 rules:
   - apiGroups: [""]
     resources: ["endpoints"]

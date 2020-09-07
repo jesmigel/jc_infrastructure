@@ -5,13 +5,13 @@ kind: StorageClass
 metadata:
   labels:
     app: nfs-client-provisioner
-    chart: nfs-client-provisioner-1.2.8
+    chart: nfs-client-provisioner-1.2.9
     heritage: Helm
-    release: stable-nfs-client-provisioner-1-2-8
+    release: nfs-stable
   name: nfs-client
   annotations:
     storageclass.kubernetes.io/is-default-class: "true"
-provisioner: cluster.local/stable-nfs-client-provisioner-1-2-8
+provisioner: cluster.local/nfs-stable-nfs-client-provisioner
 allowVolumeExpansion: true
 reclaimPolicy: Delete
 parameters:
