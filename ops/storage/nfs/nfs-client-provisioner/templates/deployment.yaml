@@ -26,7 +26,7 @@ spec:
     spec:
       serviceAccountName: nfs-stable-nfs-client-provisioner
       nodeSelector:
-        'kubernetes.io/hostname: node3'
+        kubernetes.io/hostname: node3
       containers:
         - name: nfs-client-provisioner
           image: "quay.io/external_storage/nfs-client-provisioner:v3.1.0-k8s1.11"
