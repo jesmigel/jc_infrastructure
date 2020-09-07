@@ -10,13 +10,13 @@ helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 # Confirm 
 helm search repo jenkins
 
-helm template stable-jenkins-1-27-0 stable/jenkins \
+helm template stable-jenkins-2-5-3 stable/jenkins \
 --set master.ingress.enabled=true \
 --set master.ingress.hostName=ci.local-1.vm \
 --set master.JCasC.enabled=true \
 --set master.JCasC.defaultConfig=true \
 --set master.sidecars.configAutoReload.enabled=true \
 --set agent.privileged=true \
---set master.additionalPlugins={}
+--set master.additionalPlugins={} \
 -n jenkins --output-dir .
 ```
