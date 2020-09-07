@@ -3,30 +3,35 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: stable-jenkins-1-27-0
+  name: stable-jenkins-2-5-3
   namespace: jenkins
   labels:
     "app.kubernetes.io/name": 'jenkins'
-    "helm.sh/chart": "jenkins-2.1.0"
+    "helm.sh/chart": "jenkins-2.5.4"
     "app.kubernetes.io/managed-by": "Helm"
-    "app.kubernetes.io/instance": "stable-jenkins-1-27-0"
+    "app.kubernetes.io/instance": "stable-jenkins-2-5-3"
     "app.kubernetes.io/component": "jenkins-master"
 data:
   apply_config.sh: |-
+    echo "applying Jenkins configuration"
     mkdir -p /usr/share/jenkins/ref/secrets/;
+    echo "disable Setup Wizard"
     # Prevent Setup Wizard when JCasC is enabled
     echo $JENKINS_VERSION > /var/jenkins_home/jenkins.install.UpgradeWizard.state
     echo $JENKINS_VERSION > /var/jenkins_home/jenkins.install.InstallUtil.lastExecVersion
+    echo "download plugins"
     # Install missing plugins
     cp /var/jenkins_config/plugins.txt /var/jenkins_home;
     rm -rf /usr/share/jenkins/ref/plugins/*.lock
     /usr/local/bin/install-plugins.sh `echo $(cat /var/jenkins_home/plugins.txt)`;
+    echo "copy plugins to shared volume"
     # Copy plugins to shared volume
     yes n | cp -i /usr/share/jenkins/ref/plugins/* /var/jenkins_plugins/;
+    echo "finished initialization"
   plugins.txt: |-
     kubernetes:1.25.7
     workflow-job:2.39
     workflow-aggregator:2.6
-    credentials-binding:1.22
+    credentials-binding:1.23
     git:4.2.2
     configuration-as-code:1.41
