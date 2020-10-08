@@ -1,9 +1,15 @@
 resources:
   - ns-and-sa.yaml
+  - rbac.yaml
+  - ap-rbac.yaml
   - default-server-secret.yaml
   - nginx-config.yaml
   - vs-definition.yaml
   - vsr-definition.yaml
   - ts-definition.yaml
-  - rbac.yaml
+  - policy-definition.yaml
+  - gc-definition.yaml
+  - global-configuration.yaml
+  - ap-logconf-definition.yaml 
+  - ap-policy-definition.yaml
   - nginx-ingress.yaml

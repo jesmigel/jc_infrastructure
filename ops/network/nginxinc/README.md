@@ -4,7 +4,13 @@ curl -L -O https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/master/
 curl -L -O https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/master/deployments/common/vs-definition.yaml
 curl -L -O https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/master/deployments/common/vsr-definition.yaml
 curl -L -O https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/master/deployments/common/ts-definition.yaml
+curl -L -O https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/master/deployments/common/policy-definition.yaml
+curl -L -O https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/master/deployments/common/gc-definition.yaml
+curl -L -O https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/master/deployments/common/global-configuration.yaml
+curl -L -O https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/master/deployments/common/ap-logconf-definition.yaml 
+curl -L -O https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/master/deployments/common/ap-policy-definition.yaml
 curl -L -O https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/master/deployments/rbac/rbac.yaml
+curl -L -O https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/master/deployments/rbac/ap-rbac.yaml
 curl -L -O https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/master/deployments/deployment/nginx-ingress.yaml
 curl -L -O https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/master/deployments/daemon-set/nginx-ingress.yaml
 
