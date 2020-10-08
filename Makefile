@@ -1,6 +1,6 @@
 .PHONY: h_common h_bootstrap h_submodules h_kubespray  \
 validate_vm bootstrap_mounts up_vm down build clean status_vm provision_vm \
-reload_vm up_dns build_dns status_dns down_dns logs_dns login_ng  \
+reload_vm up_dns build_dns status_dns down_dns logs_dns login_px  \
 submodules_clean submodules_init submodules_sync submodules_status \
 kubespray_venv kubespray_inventory_init kubespray_inventory_build kubespray_exec \
 kubespray_post kube_config kube_dns
@@ -25,7 +25,7 @@ h_common:
 	@echo " login_1: SSH to the node 1 of the VM cluster"
 	@echo " login_2: SSH to the node 2 of the VM cluster"
 	@echo " login_3: SSH to the node 3 of the VM cluster"
-	@echo "login_ng: SSH to the proxy node of the VM cluster"
+	@echo "login_px: SSH to the proxy node of the VM cluster"
 	@echo ""
 	@echo ""
 
@@ -101,17 +101,27 @@ bootstrap_mounts:
 validate_vm:
 	$(call vagrant_func,Validate Vagrant Specification(s),validate)
 
-up_vm:
-	$(call vagrant_func,Provisioning Vagrant VM,up k8s-1 k8s-2 k8s-3 local-1)
+up_vm: up_px up_k8s
 
-down:
+up_k8s:
+	$(call vagrant_func,Provisioning Vagrant VM,up k8s-1 k8s-2 k8s-3)
+
+up_px:
+	$(call vagrant_func,Provisioning Vagrant VM,up local-1)
+
+down: down_k8s
+
+down_k8s:
 	$(call vagrant_func,Suspending Vagrant VM,halt k8s-1 k8s-2 k8s-3)
+
+down_px:
+	$(call vagrant_func,Suspending Vagrant VM,halt local-1)
 
 build:
 	$(call vagrant_func,Building Vagrant VM,provision)
 
 clean:
-	$(call vagrant_func,Destroying Vagrant VM(s),destroy)
+	$(call vagrant_func,Destroying Vagrant VM(s),destroy k8s-1 k8s-2 k8s-3)
 
 force_clean:
 	$(call vagrant_func,Destroying Vagrant VM(s),destroy --force)
@@ -129,7 +139,7 @@ reload_vm:
 
 # PROXY
 # =====
-reload_proxy:
+reload_px:
 	$(call vm_exec,$(_VAGRANT_SSH_CONFIG),local-1,sudo /mnt/init/nfs.sh)
 	$(call vm_exec,$(_VAGRANT_SSH_CONFIG),local-1,sudo /mnt/init/nginx.sh)
 
@@ -151,9 +161,13 @@ status_dns:
 logs_dns:
 	$(call compose_func,DOCKER COMPOSE DNS LOGS,logs)
 
+
+login_dns:
+	$(call compose_func,DOCKER COMPOSE DNS LOGIN,exec pihole bash)
+
 # LOGIN
 # =====
-login_ng:
+login_px:
 	$(call login_ssh, $(_VAGRANT_SSH_CONFIG), local-1)
 login_1:
 	$(call login_ssh, $(_VAGRANT_SSH_CONFIG), k8s-1)
@@ -216,6 +230,13 @@ kubespray_exec:
 		pip install ansible; \
 		ansible-playbook -i $(_K8S_INVENTORY_DST)/hosts.yaml \
 		$(_KUBESPRAY_PATH)/cluster.yml -u vagrant -b -v --private-key=$(_VAGRANT_KEY) \
+	)
+kubespray_upgrade:
+	$(call venv_exec, \
+		$(_K8S_VENV), \
+		pip install ansible; \
+		ansible-playbook -i $(_K8S_INVENTORY_DST)/hosts.yaml \
+		$(_KUBESPRAY_PATH)/upgrade-cluster.yml -u vagrant -b -v --private-key=$(_VAGRANT_KEY) \
 	)
 
 kubespray_post:
